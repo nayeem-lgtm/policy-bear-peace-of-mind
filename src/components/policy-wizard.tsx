@@ -556,11 +556,11 @@ function PriceCard({ price, coverage, annual, setAnnual }: { price: number; cove
 function Decision({ outcome, firstName, coverage, price, onContinue, onEdit, onCallback }: { outcome: Outcome; firstName: string; coverage: number; price: number; onContinue: () => void; onEdit?: () => void; onCallback: () => void }) {
   if (outcome === 'declined') return <div className="wizard-content"><div className="decision-symbol warm"><Heart /></div><h2>This demo shows a decline for this final expense plan — other options may be available.</h2><div className="option-card"><strong>Guaranteed-issue final expense</strong><p>No health questions. You can’t be turned down for health reasons.</p><Button variant="action" size="touch" onClick={onContinue}>See guaranteed coverage</Button></div><div className="option-card"><strong>Talk to a licensed agent</strong><p>An agent can discuss other final expense options with you.</p><Button variant="quiet" onClick={onCallback}>Request a call back</Button></div></div>
   const graded = outcome === 'graded'
-  const name = firstName || 'friend'
+  const name = firstName.trim()
   return <div className="wizard-content celebrate">
     <div className="celebrate-burst" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ '--burst-origin': index % 2 ? '82%' : '18%', '--burst-x': `${(index % 2 ? -1 : 1) * (45 + index % 8 * 24)}px`, '--burst-y': `${-95 - index % 7 * 22}px`, '--burst-turn': `${index * 67}deg`, '--burst-delay': `${index % 6 * 65}ms` } as CSSProperties} />)}</div>
     <span className="celebrate-seal" aria-hidden="true"><PartyPopper /></span>
-    <h2 id="wizard-title">{graded ? `Good news, ${name}.` : `Congratulations, ${name}!`}</h2>
+    <h2 id="wizard-title">{graded ? `Good news${name ? `, ${name}` : ''}.` : `Congratulations${name ? `, ${name}` : ''}!`}</h2>
     <p className="celebrate-instruction">Click Finalize to provide your payment details and signature — then complete your application.</p>
     <div className="celebrate-brand"><img src={bearLogo.url} alt="PolicyBear" width="160" height="32" /><span>Final Expense</span></div>
     <section className="celebrate-summary" aria-label="Your coverage summary">
