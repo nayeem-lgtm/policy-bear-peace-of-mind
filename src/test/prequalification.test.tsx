@@ -146,7 +146,7 @@ describe('Identity split', () => {
   it('auto-advances identity to the separate SSN and owner step', () => {
     open('identity')
     fireEvent.change(screen.getByRole('combobox', { name: 'Country of birth' }), { target: { value: 'Canada' } })
-    fireEvent.click(screen.getByRole('radio', { name: /U\.S\. citizen/ }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Yes', exact: true }))
     act(() => { vi.advanceTimersByTime(800) })
     expect(window.location.hash).toBe('#step-ssn')
     expect(screen.getByText('Will you be the policy owner and the person paying?')).toBeInTheDocument()
