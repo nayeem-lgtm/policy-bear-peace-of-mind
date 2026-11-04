@@ -2251,6 +2251,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 :is(.health-step, .pay-form) .identity-choice[data-state=checked] { color: var(--primary); background: var(--health-selected); border-color: var(--primary); }
 @media (max-width: 480px) { .identity-birth-fields { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) { .address-tile-row { grid-template-columns: minmax(0, 1fr); } }
+.wizard-content:has(.payment-confirmation) .question-head { text-align: center; justify-content: center; }
+.wizard-content:has(.payment-confirmation) .question-badge { background: color-mix(in oklab, var(--success) 12%, var(--card)); border-color: color-mix(in oklab, var(--success) 25%, var(--border)); color: var(--success); }
+.payment-confirmation { width: 100%; gap: 24px; }
+.payment-confirmation-subtitle { margin: -8px 0 0; text-align: center; color: var(--muted-foreground); font-size: 15px; line-height: 1.5; }
+.payment-receipt { width: 100%; padding: 26px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); box-shadow: var(--wizard-shadow); }
+.payment-receipt-note { margin: 0 auto 28px; max-width: 430px; text-align: center; color: var(--brand-deep); font-size: 14px; line-height: 1.7; }
+.payment-receipt-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin: 0; text-align: center; }
+.payment-receipt-details dt { color: var(--muted-foreground); font-size: 12px; margin-bottom: 7px; }
+.payment-receipt-details dd { margin: 0; color: var(--brand-deep); font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.payment-receipt-total { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 1px solid var(--border); margin-top: 26px; padding-top: 24px; color: var(--brand-deep); font-size: 16px; font-weight: 700; }
+.payment-receipt-total strong { color: var(--primary); font-size: 24px; white-space: nowrap; }
+.payment-confirmation-continue { align-self: center; justify-self: center; min-width: 180px; }
+@media (max-width: 480px) { .payment-receipt { padding: 20px 16px; } .payment-receipt-details { grid-template-columns: minmax(0, 1fr); gap: 18px; } .payment-receipt-total { font-size: 14px; } }
 .address-autocomplete { position: relative; }
 .address-autocomplete .contact-tile { display: flex; }
 .address-suggestions { position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; right: 0; margin: 0; padding: 6px; list-style: none; border: 1px solid color-mix(in oklab, var(--primary) 22%, var(--border)); border-radius: 16px; background: var(--card); box-shadow: 0 22px 40px -22px color-mix(in oklab, var(--brand-deep) 70%, transparent); }

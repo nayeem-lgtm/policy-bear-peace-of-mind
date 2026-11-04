@@ -17,7 +17,7 @@ export const journeySteps = [
   ...basicInfoSteps, 'loading', 'price', ...preQualSteps,
   'address', 'identity', 'ssn', 'owner', 'health-intro', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8',
   'eligibility', 'gi-offer', 'beneficiary', 'insurance', 'underwriting', 'decision', 'payment',
-  'review', 'disclosures', 'signature', 'verify', 'submitting', 'issued', 'callback', 'ineligible',
+  'payment-saved', 'review', 'disclosures', 'signature', 'verify', 'submitting', 'issued', 'callback', 'ineligible',
 ] as const
 
 export type JourneyStep = (typeof journeySteps)[number]

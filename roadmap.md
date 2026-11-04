@@ -1,5 +1,7 @@
 # PolicyBear final expense
 
+- [ ] Change payment to Save and add the reference-style confirmation; verify both payment methods and Continue.
+
 - [x] Remove post-health review loading and add blue/gold preparation animation before congratulations; desktop/phone flow verified, 49 tests pass.
 
 - [x] Move congratulations after insurance, refine the celebration, and verify Finalize leads to payment with correct Back navigation on desktop and phone; 56 targeted tests pass.
