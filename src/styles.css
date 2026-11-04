@@ -2153,3 +2153,4 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .centered-step .otp-box.is-verified { border-color: var(--primary); background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 3%, var(--card)), color-mix(in oklab, var(--primary) 11%, var(--card))); }
 .centered-step .reconnect-demo, .centered-step .auto-next, .centered-step .skip-link { justify-self: center; text-align: center; }
 @media (max-width: 760px) { .three-fields { grid-template-columns: 1fr 1fr; } .three-fields > :first-child { grid-column: 1 / -1; } }
+.centered-step .reconnect-permission { padding: 18px 20px; } .centered-step .reconnect-permission .permission-optional { margin: 0 0 6px; }
