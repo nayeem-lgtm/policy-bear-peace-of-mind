@@ -301,7 +301,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     }
     if (screen === 'underwriting') return <LoadingState icon={<ShieldCheck />} title="Reviewing your application" lines={['Reviewing your answers', 'Checking eligibility', 'Preparing your decision']} active={loadingLine} duration={2800} />
     if (screen === 'eligibility') return <Decision outcome="declined" firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('gi-offer')} onCallback={() => go('callback')} />
-    if (screen === 'decision') return <Decision outcome={answers.coverageType === 'Guaranteed Issue' ? 'approved' : outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('payment')} onCallback={() => go('callback')} />
+    if (screen === 'decision') return <Decision outcome={answers.coverageType === 'Guaranteed Issue' ? 'approved' : outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('payment')} onEdit={() => go('price')} onCallback={() => go('callback')} />
     if (screen === 'gi-offer') return shell('Guaranteed-issue final expense coverage', 'No health questions. Ages 50–85. Pick an amount to see your price.', <><Radio.Root value={answers.coverage} onValueChange={(value) => update('coverage', value)} className="answer-grid">{['5000', '10000', '15000', '20000', '25000'].map((value) => <Radio.Item className="answer-card" value={value} key={value}><strong>${Number(value).toLocaleString()}</strong></Radio.Item>)}</Radio.Root><PriceCard price={calculatePrice(age || 68, answers.gender || 'Female', Math.min(coverage, 25000), answers.tobacco, 'guaranteed')} coverage={Math.min(coverage, 25000)} annual={annual} setAnnual={setAnnual} /><div className="info-panel">If death occurs from natural causes in the first 2 years, your beneficiary receives the premiums paid plus interest. Accidental loss is covered in full from day one. After 2 years, the full benefit is paid. [CARRIER_TO_CONFIRM]</div><div className="next-row"><button type="button" className="revisit-next" onClick={() => { update('coverageType', 'Guaranteed Issue'); go('beneficiary') }}>Next</button></div></>, { icon: <ShieldCheck /> })
     if (screen === 'beneficiary') {
       const isPerson = answers.beneficiaryType === 'A person'
@@ -527,7 +527,7 @@ function PriceCard({ price, coverage, annual, setAnnual }: { price: number; cove
     {annual && <p className="illustration-saving">5% yearly savings included</p>}
   </>
 }
-function Decision({ outcome, firstName, coverage, price, onContinue, onCallback }: { outcome: Outcome; firstName: string; coverage: number; price: number; onContinue: () => void; onCallback: () => void }) {
+function Decision({ outcome, firstName, coverage, price, onContinue, onEdit, onCallback }: { outcome: Outcome; firstName: string; coverage: number; price: number; onContinue: () => void; onEdit?: () => void; onCallback: () => void }) {
   if (outcome === 'declined') return <div className="wizard-content"><div className="decision-symbol warm"><Heart /></div><h2>This demo shows a decline for this final expense plan — other options may be available.</h2><div className="option-card"><strong>Guaranteed-issue final expense</strong><p>No health questions. You can’t be turned down for health reasons.</p><Button variant="action" size="touch" onClick={onContinue}>See guaranteed coverage</Button></div><div className="option-card"><strong>Talk to a licensed agent</strong><p>An agent can discuss other final expense options with you.</p><Button variant="quiet" onClick={onCallback}>Request a call back</Button></div></div>
   const graded = outcome === 'graded'
   const name = firstName || 'friend'
@@ -535,10 +535,12 @@ function Decision({ outcome, firstName, coverage, price, onContinue, onCallback 
     <div className="celebrate-burst" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ '--burst-origin': index % 2 ? '82%' : '18%', '--burst-x': `${(index % 2 ? -1 : 1) * (45 + index % 8 * 24)}px`, '--burst-y': `${-95 - index % 7 * 22}px`, '--burst-turn': `${index * 67}deg`, '--burst-delay': `${index % 6 * 65}ms` } as CSSProperties} />)}</div>
     <span className="celebrate-seal" aria-hidden="true"><PartyPopper /></span>
     <h2 id="wizard-title">{graded ? `Good news, ${name}.` : `Congratulations, ${name}!`}</h2>
+    <p className="celebrate-instruction">Click Finalize to provide your payment details and signature — then complete your application.</p>
+    <div className="celebrate-brand"><img src={bearLogo.url} alt="PolicyBear" width="160" height="32" /><span>Final Expense</span></div>
     <section className="celebrate-summary" aria-label="Your coverage summary">
       <p className="illustration-summary"><span className="illustration-price"><strong>${price.toFixed(2)}</strong> per month</span><span className="illustration-coverage">for <strong>${coverage.toLocaleString()}</strong> of final expense coverage</span></p>
       {graded && <p className="celebrate-note">For the first 2 years, the full benefit applies to accidental loss only; a partial benefit applies otherwise. Full coverage begins in year 3. [CARRIER_TO_CONFIRM]</p>}
     </section>
-    <div className="celebrate-actions"><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Finalize</Button></div>
+    <div className="celebrate-actions">{onEdit && <Button type="button" variant="outline" className="celebrate-edit" onClick={onEdit}><PenLine aria-hidden="true" />Make changes</Button>}<Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Finalize</Button></div>
   </div>
 }
