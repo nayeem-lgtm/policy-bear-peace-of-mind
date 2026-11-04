@@ -1895,6 +1895,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .beneficiary-step .contact-tile { min-width: 0; }
 .beneficiary-step .contact-tile-label { display: flex; align-items: center; gap: 4px; font-size: 14px; line-height: 1.4; font-weight: 800; color: var(--brand-deep); }
 .beneficiary-step .two-fields { gap: 10px; }
+.beneficiary-step > .contact-tile .contact-tile-label,
+.beneficiary-step > .two-fields .contact-tile-label { justify-content: center; text-align: center; }
+.beneficiary-step > .contact-tile .measurement-select select { text-align: center; text-align-last: center; padding-inline: 22px; }
+.beneficiary-step > .two-fields .contact-tile input { text-align: center; }
 .beneficiary-step .identity-choices { width: 100%; max-width: 340px; margin-inline: auto; }
 /* Keep the whole step, slim footer included, inside one screen */
 .app-body:has(.beneficiary-step) { padding-top: 12px; }
