@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { COVERAGE_MAX, COVERAGE_MIN, LICENSED_STATES, basicInfoSteps, chapterFor, chapterProgress, journeySteps, preQualSteps, quoteSteps } from '@/lib/final-expense-demo'
+import { COVERAGE_MAX, COVERAGE_MIN, LICENSED_STATES, basicInfoSteps, chapterFor, chapterProgress, coverageFromPrices, journeySteps, preQualSteps, quoteSteps } from '@/lib/final-expense-demo'
 
 describe('Coverage range', () => {
   it('runs from $5,000 to $50,000 as the owner offers it', () => {
     expect(COVERAGE_MIN).toBe(5000)
     expect(COVERAGE_MAX).toBe(50000)
+  })
+  it('shows the owner-supplied starting prices on the coverage cards', () => {
+    expect(coverageFromPrices).toEqual({ 10000: 30, 15000: 45, 20000: 60, 25000: 80 })
   })
 })
 
