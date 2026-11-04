@@ -47,24 +47,27 @@ describe('Pre-qualification navigation', () => {
     fillContact()
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-contact')
-    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
-    fireEvent.change(screen.getByRole('textbox', { name: 'Verification code' }), { target: { value: '123456' } })
+    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     expect(screen.getByRole('checkbox')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('checkbox'))
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
   })
 
-  it('allows skipping verification and automated marketing permission', () => {
+  it('requires the OTP before marketing permission can be skipped', () => {
     open('contact', contactAnswers)
+    expect(screen.queryByRole('button', { name: /skip this step/ })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('button', { name: /skip this step/ }))
     expect(window.location.hash).toBe('#step-size')
   })
 
   it('advances automatically once permission is ticked', () => {
     open('contact', contactAnswers)
-    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
-    fireEvent.change(screen.getByRole('textbox', { name: 'Verification code' }), { target: { value: '123456' } })
+    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('checkbox'))
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
