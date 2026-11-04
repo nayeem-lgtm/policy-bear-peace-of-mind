@@ -2269,6 +2269,60 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .payment-receipt-total strong { color: var(--primary); font-size: 24px; white-space: nowrap; }
 .payment-confirmation-continue { align-self: center; justify-self: center; min-width: 180px; }
 @media (max-width: 480px) { .payment-receipt { padding: 20px 16px; } .payment-receipt-details { grid-template-columns: minmax(0, 1fr); gap: 18px; } .payment-receipt-total { font-size: 14px; } }
+.wizard-content:has(.sign-flow) { width: 100%; max-width: 960px; }
+.wizard-content:has(.sign-flow) .question-head { text-align: center; justify-content: center; }
+.sign-flow { width: 100%; color: var(--brand-deep); }
+.sign-stepper { display: flex; justify-content: center; align-items: center; gap: 28px; padding: 0; margin: 12px 0 32px; list-style: none; }
+.sign-stepper li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted-foreground); }
+.sign-stepper li span { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--muted); color: var(--muted-foreground); font-weight: 700; }
+.sign-stepper li.current { color: var(--brand-deep); font-weight: 600; }
+.sign-stepper li.current span { background: var(--primary); color: var(--primary-foreground); }
+.sign-stepper li.complete span { background: var(--success); color: var(--primary-foreground); }
+.sign-stepper svg { width: 16px; height: 16px; }
+.sign-delivery { max-width: 580px; margin: auto; text-align: center; }
+.sign-flow h3 { font-size: 20px; font-weight: 700; margin: 0 0 18px; }
+.sign-flow h4 { font-size: 15px; font-weight: 700; margin: 20px 0 12px; }
+.sign-intro { padding: 16px; background: color-mix(in oklab, var(--brand-action) 9%, var(--card)); border: 1px solid color-mix(in oklab, var(--brand-action) 35%, var(--border)); border-radius: 8px; font-size: 14px; line-height: 1.6; margin: 0 0 24px; }
+.sign-delivery-choices { margin: 20px 0; }
+.sign-delivery-choices .identity-choice { display: flex; justify-content: center; align-items: center; gap: 9px; min-height: 72px; }
+.sign-choice-icon { color: var(--primary); display: inline-flex; }
+.sign-choice-icon svg { width: 22px; height: 22px; }
+.sign-destination { font-size: 14px; color: var(--primary); overflow-wrap: anywhere; }
+.sign-primary { width: 100%; min-height: 46px; margin-top: 16px; white-space: normal; }
+.sign-demo-note { color: var(--muted-foreground); font-size: 11px; line-height: 1.5; margin: 12px 0 0; }
+.sign-authorize-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.sign-document-view { min-width: 0; background: var(--muted); padding: 12px; border-radius: 8px; }
+.sign-document-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; font-size: 12px; }
+.sign-document-toolbar > span { display: flex; align-items: center; gap: 5px; }
+.sign-document-toolbar svg { width: 15px; height: 15px; }
+.sign-document-toolbar select { max-width: 100%; padding: 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--card); color: var(--brand-deep); font-size: 12px; }
+.sign-document-paper { background: var(--card); padding: 22px 18px; min-height: 560px; max-height: 650px; overflow: auto; border: 1px solid var(--border); }
+.sign-document-paper img { max-width: 130px; height: auto; }
+.sign-document-caption { font-size: 10px; color: var(--muted-foreground); margin: 8px 0 22px; }
+.sign-document-paper h3 { font-size: 13px; line-height: 1.5; text-transform: uppercase; }
+.sign-document-paper h4 { font-size: 12px; padding: 6px 8px; background: var(--brand-soft-blue); color: var(--primary); }
+.sign-document-paper dl { display: grid; gap: 14px; }
+.sign-document-paper dt { font-size: 10px; color: var(--muted-foreground); }
+.sign-document-paper dd { font-size: 12px; margin: 3px 0 0; overflow-wrap: anywhere; }
+.sign-document-paper > p:not(.sign-document-caption) { font-size: 12px; line-height: 1.6; }
+.sign-document-paper footer { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 12px; font-size: 10px; color: var(--muted-foreground); }
+.sign-authorization { min-width: 0; }
+.sign-consent-copy { border-top: 1px solid var(--border); padding-top: 4px; font-size: 12px; line-height: 1.7; }
+.sign-consent-copy h4 { display: flex; align-items: center; gap: 7px; margin-top: 10px; }
+.sign-consent-copy h4 svg { width: 16px; height: 16px; color: var(--primary); }
+.sign-consent-copy ul { padding-left: 18px; }
+.sign-consent-copy li { margin: 8px 0; }
+.sign-agreement { display: flex; align-items: flex-start; gap: 8px; padding: 12px; background: var(--brand-soft-blue); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; line-height: 1.6; margin: 16px 0; cursor: pointer; }
+.sign-agreement button { width: 18px; height: 18px; flex: none; border: 1px solid var(--primary); border-radius: 3px; background: var(--card); color: var(--primary); margin-top: 2px; }
+.sign-agreement svg { width: 16px; height: 16px; }
+.sign-pin-panel { border-top: 1px solid var(--border); padding-top: 12px; }
+.sign-pin-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
+.sign-pin-heading button, .sign-resend button { font-size: 11px; min-height: 30px; padding: 4px 8px; }
+.sign-pin-destination { color: var(--primary); font-size: 11px; overflow-wrap: anywhere; margin: 5px 0 12px; }
+.sign-pin-panel .contact-tile { display: flex; }
+.sign-resend { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted-foreground); }
+@media (max-width: 1100px) { .sign-authorize-layout { grid-template-columns: minmax(0, 1fr); } .sign-document-paper { min-height: 380px; max-height: 430px; } }
+@media (max-width: 480px) { .sign-stepper { gap: 12px; } .sign-stepper li { font-size: 10px; gap: 5px; } .sign-stepper li span { width: 24px; height: 24px; } .sign-flow h3 { font-size: 18px; } }
 .address-autocomplete { position: relative; }
 .address-autocomplete .contact-tile { display: flex; }
 .address-suggestions { position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; right: 0; margin: 0; padding: 6px; list-style: none; border: 1px solid color-mix(in oklab, var(--primary) 22%, var(--border)); border-radius: 16px; background: var(--card); box-shadow: 0 22px 40px -22px color-mix(in oklab, var(--brand-deep) 70%, transparent); }
