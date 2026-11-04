@@ -179,6 +179,8 @@ describe('Revisiting a step', () => {
     fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     act(() => { vi.advanceTimersByTime(2000) })
     expect(window.location.hash).toBe('#step-contact')
+    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('checkbox', { name: /I agree to the Terms/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     expect(window.location.hash).toBe('#step-size')
   })
