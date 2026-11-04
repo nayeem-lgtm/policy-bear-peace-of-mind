@@ -189,7 +189,7 @@ describe('Identity split', () => {
   })
   it.each([['Yes', 'h1'], ['No', 'ineligible']])('advances the policy-owner choice %s to %s', (choice, next) => {
     open('owner')
-    fireEvent.click(screen.getByRole('radio', { name: choice, exact: true }))
+    fireEvent.click(screen.getByRole('radio', { name: new RegExp(`^${choice}$`) }))
     act(() => { vi.advanceTimersByTime(350) })
     expect(window.location.hash).toBe(`#step-${next}`)
   })
