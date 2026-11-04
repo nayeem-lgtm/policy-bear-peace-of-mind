@@ -29,4 +29,4 @@
 - Keep Social Security and policy ownership as consecutive independent hash steps, with ownership choices auto-advancing; this separates sensitive entry from the ownership decision while preserving Back navigation.
 - Keep eligibility routing separate from the post-application celebration so declined offers remain available without repeating congratulations before beneficiary questions.
 - Route the last health answer directly through eligibility or beneficiary; reuse the underwriting hash for the browser-only timed preparation animation after insurance so Back skips transient screens.
-- Keep payment confirmation as a dedicated hash step between payment and review; its timestamp and sensitive fields stay in browser memory so saving never introduces persistence or transactions.
+- Keep payment confirmation as a dedicated hash step between payment and documents, mapping legacy review hashes to documents; its timestamp and sensitive fields stay in browser memory so saving never introduces persistence or transactions.

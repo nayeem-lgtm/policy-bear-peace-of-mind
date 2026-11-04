@@ -34,7 +34,7 @@ function fillContact() {
 }
 
 describe('Pre-qualification navigation', () => {
-  it.each(['EFT', 'Debit or credit card'])('saves %s to confirmation before application review without persisting payment details', (method) => {
+  it.each(['EFT', 'Debit or credit card'])('saves %s to confirmation then documents without persisting payment details', (method) => {
     open('payment')
     if (method !== 'EFT') fireEvent.click(screen.getByRole('radio', { name: method }))
     fireEvent.change(screen.getByRole('textbox', { name: method === 'EFT' ? 'Account holder name' : 'Name on card' }), { target: { value: 'Ann Lee' } })
@@ -51,7 +51,15 @@ describe('Pre-qualification navigation', () => {
     const saved = JSON.parse(localStorage.getItem('policybear-demo') || '{}')
     for (const key of ['accountName', 'routing', 'account', 'card', 'expiry', 'paymentZip']) expect(saved.answers).not.toHaveProperty(key)
     fireEvent.click(screen.getByRole('button', { name: /^Continue$/ }))
-    expect(window.location.hash).toBe('#step-review')
+    expect(window.location.hash).toBe('#step-disclosures')
+    fireEvent.click(screen.getByRole('button', { name: 'Go back to the previous question' }))
+    expect(window.location.hash).toBe('#step-payment-saved')
+  })
+  it('opens the documents for a legacy review link', () => {
+    open('review')
+    fireEvent.click(screen.getByRole('checkbox'))
+    fireEvent.click(screen.getByRole('button', { name: /^Continue$/ }))
+    expect(window.location.hash).toBe('#step-signature')
   })
   it.each(['First name', 'Last name', 'Email', 'Mobile phone'])('requires %s on the contact page', (name) => {
     open('contact')

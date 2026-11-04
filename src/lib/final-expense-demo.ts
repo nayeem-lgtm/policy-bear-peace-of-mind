@@ -17,7 +17,7 @@ export const journeySteps = [
   ...basicInfoSteps, 'loading', 'price', ...preQualSteps,
   'address', 'identity', 'ssn', 'owner', 'health-intro', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8',
   'eligibility', 'gi-offer', 'beneficiary', 'insurance', 'underwriting', 'decision', 'payment',
-  'payment-saved', 'review', 'disclosures', 'signature', 'verify', 'submitting', 'issued', 'callback', 'ineligible',
+  'payment-saved', 'disclosures', 'signature', 'verify', 'submitting', 'issued', 'callback', 'ineligible',
 ] as const
 
 export type JourneyStep = (typeof journeySteps)[number]
@@ -89,7 +89,7 @@ export function chapterFor(step: JourneyStep) {
   // Your Profile runs through the five rating questions and the illustration; every later question is Pre-Qualification.
   if (index < journeySteps.indexOf('who')) return 0
   if (index < journeySteps.indexOf('gi-offer')) return 1
-  if (index < journeySteps.indexOf('review')) return 2
+  if (index < journeySteps.indexOf('disclosures')) return 2
   return 3
 }
 
@@ -99,7 +99,7 @@ const chapterQuestions: readonly JourneyStep[][] = [
   [...basicInfoSteps],
   ['who', 'contact', 'size', 'address', 'identity', 'ssn', 'owner', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
   ['gi-offer', 'beneficiary', 'insurance', 'payment'],
-  ['review', 'disclosures', 'signature', 'verify'],
+  ['disclosures', 'signature', 'verify'],
 ]
 
 export function chapterProgress(step: JourneyStep) {
