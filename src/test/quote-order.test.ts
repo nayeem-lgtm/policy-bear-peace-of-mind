@@ -6,6 +6,9 @@ describe('Coverage range', () => {
     expect(COVERAGE_MIN).toBe(5000)
     expect(COVERAGE_MAX).toBe(50000)
   })
+  it('shows the owner-supplied starting prices on the coverage cards', () => {
+    expect(coverageFromPrices).toEqual({ 10000: 30, 15000: 45, 20000: 60, 25000: 80 })
+  })
 })
 
 describe('Quote sequence', () => {
