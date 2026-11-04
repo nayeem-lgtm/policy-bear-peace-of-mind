@@ -876,8 +876,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 /* Restrained PolicyBear presentation and shared navigation. */
-.skip-link { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; background: var(--primary); color: var(--primary-foreground); z-index: 50; border-radius: 4px; }
-.skip-link:focus { left: 20px; top: 12px; width: auto; height: auto; padding: 12px 20px; clip-path: none; }
+.site-header .skip-link { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; background: var(--primary); color: var(--primary-foreground); z-index: 50; border-radius: 4px; }
+.site-header .skip-link:focus { left: 20px; top: 12px; width: auto; height: auto; padding: 12px 20px; clip-path: none; }
 .site-navigation { display: flex; align-items: center; justify-content: center; gap: 24px; margin-left: auto; }
 .site-navigation a { display: inline-flex; align-items: center; min-height: 48px; color: var(--brand-deep); font-size: 16px; font-weight: 500; text-decoration: none; }
 .site-navigation a:hover, .site-navigation a[aria-current=page] { color: var(--primary); text-decoration: underline; text-underline-offset: 7px; }
@@ -1708,7 +1708,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .auto-next { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 14px 0 0; padding: 10px 14px; border-radius: 12px; background: var(--muted); color: var(--muted-foreground); font-size: 14px; text-align: center; transition: background .25s, color .25s; }
 .auto-next svg { width: 16px; height: 16px; }
 .auto-next.is-ready { background: color-mix(in oklab, var(--primary) 10%, transparent); color: var(--primary); font-weight: 700; }
-.skip-link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; align-self: center; margin: 16px auto 0; padding: 10px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--primary); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in oklab, var(--primary) 35%, transparent); }
+.skip-link { position: static; width: auto; height: auto; overflow: visible; clip-path: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; align-self: center; margin: 16px auto 0; padding: 10px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--primary); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in oklab, var(--primary) 35%, transparent); }
 .skip-link:hover { background: color-mix(in oklab, var(--primary) 8%, transparent); }
 .skip-link:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 .skip-link svg { width: 16px; height: 16px; transition: transform .2s; }
