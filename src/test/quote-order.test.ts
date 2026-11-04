@@ -82,7 +82,7 @@ describe('Chapter progress counter', () => {
   it('keeps the Application and Finalize totals honest', () => {
     expect(chapterProgress('gi-offer')).toEqual({ chapter: 2, position: 1, total: 4 })
     expect(chapterProgress('payment')).toEqual({ chapter: 2, position: 4, total: 4 })
-    expect(chapterProgress('disclosures')).toEqual({ chapter: 3, position: 1, total: 3 })
-    expect(chapterProgress('verify')).toEqual({ chapter: 3, position: 3, total: 3 })
+    expect(chapterProgress('sign-delivery')).toEqual({ chapter: 3, position: 1, total: 2 })
+    expect(chapterProgress('disclosures')).toEqual({ chapter: 3, position: 2, total: 2 })
   })
 })
