@@ -27,13 +27,19 @@ describe('Quote sequence', () => {
   it('maps the four owner-named chapters to the right screens', () => {
     for (const step of basicInfoSteps) expect(chapterFor(step)).toBe(0)
     expect(chapterFor('price')).toBe(0)
-    for (const step of ['who', 'contact', 'size', 'address', 'health-intro', 'h1', 'decision'] as const) expect(chapterFor(step)).toBe(1)
+    for (const step of ['who', 'contact', 'size', 'address', 'health-intro', 'h1', 'eligibility'] as const) expect(chapterFor(step)).toBe(1)
+    expect(chapterFor('decision')).toBe(2)
     expect(chapterFor('payment')).toBe(2)
     expect(chapterFor('signature')).toBe(3)
   })
   it('goes directly from permission to address without repeating personal details', () => {
     expect(journeySteps[journeySteps.indexOf('size') + 1]).toBe('address')
     expect([...journeySteps]).not.toContain('personal')
+  })
+  it('places congratulations after insurance and immediately before payment', () => {
+    expect(journeySteps[journeySteps.indexOf('insurance') + 1]).toBe('decision')
+    expect(journeySteps[journeySteps.indexOf('decision') + 1]).toBe('payment')
+    expect(journeySteps.indexOf('beneficiary')).toBeLessThan(journeySteps.indexOf('decision'))
   })
 })
 
