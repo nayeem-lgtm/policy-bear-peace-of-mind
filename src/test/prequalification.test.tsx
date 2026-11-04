@@ -34,6 +34,25 @@ function fillContact() {
 }
 
 describe('Pre-qualification navigation', () => {
+  it.each(['EFT', 'Debit or credit card'])('saves %s to confirmation before application review without persisting payment details', (method) => {
+    open('payment')
+    if (method !== 'EFT') fireEvent.click(screen.getByRole('radio', { name: method }))
+    fireEvent.change(screen.getByRole('textbox', { name: method === 'EFT' ? 'Account holder name' : 'Name on card' }), { target: { value: 'Ann Lee' } })
+    if (method === 'EFT') {
+      fireEvent.change(screen.getByPlaceholderText('9 digits'), { target: { value: '021000021' } })
+      fireEvent.change(screen.getByPlaceholderText('4–17 digits'), { target: { value: '123456789' } })
+    } else {
+      fireEvent.change(screen.getByPlaceholderText('1234 5678 9012 3456'), { target: { value: '4111111111111111' } })
+      fireEvent.change(screen.getByPlaceholderText('MM/YY'), { target: { value: '12/35' } })
+      fireEvent.change(screen.getByPlaceholderText('5 digits'), { target: { value: '10001' } })
+    }
+    fireEvent.click(screen.getByRole('button', { name: /^Save$/ }))
+    expect(window.location.hash).toBe('#step-payment-saved')
+    const saved = JSON.parse(localStorage.getItem('policybear-demo') || '{}')
+    for (const key of ['accountName', 'routing', 'account', 'card', 'expiry', 'paymentZip']) expect(saved.answers).not.toHaveProperty(key)
+    fireEvent.click(screen.getByRole('button', { name: /^Continue$/ }))
+    expect(window.location.hash).toBe('#step-review')
+  })
   it.each(['First name', 'Last name', 'Email', 'Mobile phone'])('requires %s on the contact page', (name) => {
     open('contact')
     expect(screen.getByRole('textbox', { name })).toBeRequired()

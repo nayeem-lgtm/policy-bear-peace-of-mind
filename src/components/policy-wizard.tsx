@@ -88,6 +88,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const phoneVerified = otp.length === 6
   const [loadingLine, setLoadingLine] = useState(0)
   const [policyNumber, setPolicyNumber] = useState('')
+  const [paymentSavedAt, setPaymentSavedAt] = useState<Date | null>(null)
   const heading = useRef<HTMLHeadingElement>(null)
   const screenIndex = journeySteps.indexOf(screen)
   const quoteIndex = quoteSteps.findIndex((step) => step === screen)
@@ -359,7 +360,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       const expOk = expiryValid(answers.expiry)
       const ready = Boolean(answers.accountName) && (isBank ? routingInfo.status === 'verified' && answers.account.length >= 4 : cardOk && expOk && answers.paymentZip.length === 5)
       const digits = (key: StringAnswerKey, max: number) => (event: React.ChangeEvent<HTMLInputElement>) => update(key, event.target.value.replace(/\D/g, '').slice(0, max))
-      return shell('Choose your preferred payment method to continue.', '', <form className="centered-step pay-form" onSubmit={submitNext('review', ready, isBank ? 'Please complete your bank details — the routing number must verify.' : 'Please enter a valid card number, expiry and ZIP.')}>
+      return shell('Choose your preferred payment method to continue.', '', <form className="centered-step pay-form" onSubmit={(event) => { event.preventDefault(); if (!ready) { setError(isBank ? 'Please complete your bank details — the routing number must verify.' : 'Please enter a valid card number, expiry and ZIP.'); return } setPaymentSavedAt(new Date()); go('payment-saved') }}>
         <Radio.Root aria-label="Payment method" value={answers.paymentMethod} onValueChange={(value) => update('paymentMethod', value)} className="identity-choices pay-method-choices">
           {(['EFT', 'Debit or credit card'] as const).map((option) => <Radio.Item className="identity-choice pay-method-choice" key={option} value={option} onClick={() => update('paymentMethod', option)}><span className="pay-method-icon" aria-hidden="true">{option === 'EFT' ? <Landmark /> : <CreditCard />}</span><strong>{option}</strong></Radio.Item>)}
         </Radio.Root>
@@ -391,8 +392,21 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
             </div>
           </>}
         </div>
-        <div className="next-row panel-foot"><button type="submit" className="revisit-next" disabled={!ready}>Next</button></div>
+        <div className="next-row panel-foot"><Button type="submit" variant="action" className="revisit-next" disabled={!ready}>Save</Button></div>
       </form>, { icon: <Landmark /> })
+    }
+    if (screen === 'payment-saved') {
+      const isBank = answers.paymentMethod !== 'Debit or credit card'
+      const savedTime = paymentSavedAt?.toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      return shell(isBank ? 'EFT Details Saved Successfully' : 'Card Details Saved Successfully', '', <div className="centered-step payment-confirmation">
+        <p className="payment-confirmation-subtitle">Your {isBank ? 'bank transfer' : 'card'} details are ready for this application.</p>
+        <div className="payment-receipt">
+          <p className="payment-receipt-note">No transaction has been processed. Continue to review and sign your application.</p>
+          <dl className="payment-receipt-details"><div><dt>Payment Method</dt><dd>{isBank ? 'Electronic Fund Transfer (EFT)' : 'Debit or credit card'}</dd></div><div><dt>Date &amp; Time</dt><dd>{savedTime || 'Not saved in this session'}</dd></div></dl>
+          <div className="payment-receipt-total"><span>Monthly payment amount</span><strong>${monthly.toFixed(2)}</strong></div>
+        </div>
+        <Button type="button" variant="action" className="revisit-next payment-confirmation-continue" onClick={() => go('review')}>Continue</Button>
+      </div>, { icon: <ShieldCheck /> })
     }
     if (screen === 'review') { const reviewRows: Array<[string, string, JourneyStep]> = [['About you', `${answers.firstName} ${answers.lastName}`, 'contact'], ['Address', `${answers.street}, ${answers.city}`, 'address'], ['Health answers', `${answers.health.filter((value) => value === 'Yes').length} yes answers`, 'h1'], ['Coverage & price', `$${coverage.toLocaleString()} · $${monthly.toFixed(2)}/month`, 'price'], ['Beneficiary', answers.beneficiaryType === 'A person' ? `${answers.beneficiaryFirst} ${answers.beneficiaryLast}` : answers.beneficiaryType, 'beneficiary'], ['Other insurance', answers.otherInsurance, 'insurance'], ['Payment', `${answers.paymentMethod} •••• ${answers.account.slice(-4) || answers.card.slice(-4)}`, 'payment']]; return shell('Review your application', 'Check the details below before you sign.', <>{reviewRows.map(([label, value, target]) => <div className="review-row" key={label}><span><small>{label}</small>{value || 'Not provided'}</span><Button type="button" variant="quiet" onClick={() => go(target)}>Edit</Button></div>)}<Button variant="action" size="touch" className="continue-button" onClick={() => go('disclosures')}>Looks good — continue to sign</Button></>) }
     if (screen === 'disclosures') return shell('Please review your documents', '', <>{['Application', 'Authorization to release health information', 'Bank draft authorization', '[STATE_NOTICES]'].map((document) => <details className="document-row" key={document}><summary>{document}<ChevronDown /></summary><p>Prototype document text for review. Final carrier document will replace this placeholder.</p><Button variant="quiet">Download PDF (mock)</Button></details>)}<CheckRow checked={documents} onChange={setDocuments}>I have read and agree to the documents above.</CheckRow><Button variant="action" size="touch" className="continue-button" disabled={!documents} onClick={() => go('signature')}>Continue</Button></>)
