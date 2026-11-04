@@ -176,6 +176,9 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const advance = (next: JourneyStep) => { window.clearTimeout(advanceTimer.current); advanceTimer.current = window.setTimeout(() => go(next), 300) }
   useEffect(() => () => { window.clearTimeout(advanceTimer.current); window.clearTimeout(customTimer.current) }, [])
   const [furthest, setFurthest] = useState(0)
+  const identityTouched = useRef(false)
+  const [identitySelection, setIdentitySelection] = useState(0)
+  const chooseIdentity = (key: 'country' | 'birthState' | 'citizen' | 'resident', value: string) => { identityTouched.current = true; update(key, value); setIdentitySelection((count) => count + 1) }
   useEffect(() => { setFurthest((value) => Math.max(value, journeySteps.indexOf(screen))) }, [screen])
   const revisiting = journeySteps.indexOf(screen) < furthest
   const nextLink = (next: JourneyStep, ready = true) => revisiting ? <button type="button" className="revisit-next" disabled={!ready} onClick={() => go(next)}>Next</button> : null
@@ -184,12 +187,21 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const sizeReady = Boolean(answers.feet && answers.inches && z.coerce.number().min(80).max(500).safeParse(answers.weight).success)
   const ssnProtected = answers.ssn.replace(/\D/g, '').length === 9
   useEffect(() => {
-    const next = screen === 'contact' && contactReady && consent ? 'size' : screen === 'size' && sizeReady ? 'address' : screen === 'identity' && identityReady ? 'ssn' : null
+    const next = screen === 'contact' && contactReady && consent ? 'size' : screen === 'size' && sizeReady ? 'address' : null
     if (!next || revisiting) return
     const timer = window.setTimeout(() => go(next), screen === 'contact' || screen === 'size' ? 1400 : 700)
     return () => window.clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, contactReady, sizeReady, consent, phoneVerified, revisiting, identityReady, answers.firstName, answers.lastName, answers.email, answers.phone, answers.weight])
+  useEffect(() => {
+    if (screen !== 'identity') { identityTouched.current = false; return }
+    if (!identityTouched.current) return
+    const next = identityReady ? 'ssn' : answers.citizen === 'No' && answers.resident === 'No — neither' ? 'ineligible' : null
+    if (!next) return
+    const timer = window.setTimeout(() => go(next), 300)
+    return () => window.clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen, identityReady, identitySelection, answers.citizen, answers.resident])
   const back = () => { let i = screenIndex - 1; while (i > 0 && ['loading', 'underwriting', 'submitting'].includes(journeySteps[i] ?? '')) i -= 1; const previous = journeySteps[Math.max(0, i)]; if (previous) go(previous) }
   const choose = (key: StringAnswerKey, value: string, next?: JourneyStep) => { update(key, value); if (next) advance(next) }
   // Custom coverage advances on its own once the slider settles, so no Continue button is needed.
@@ -272,7 +284,6 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       <div className="identity-birth-fields">{(['country', ...(answers.country === 'United States' ? ['birthState'] : [])] as ('country' | 'birthState')[]).map((key) => <label key={key} className={`contact-tile${answers[key] ? ' is-filled' : ''}`}><span className="contact-tile-label">{key === 'country' ? 'Country of birth' : 'State of birth'}</span><span className="measurement-select"><select aria-label={key === 'country' ? 'Country of birth' : 'State of birth'} required value={answers[key]} onChange={(event) => update(key, event.target.value)}><option value="">Select {key === 'country' ? 'country' : 'state'}</option>{(key === 'country' ? ['United States', 'Canada', 'Other'] : US_STATES).map((option) => <option key={option}>{option}</option>)}</select><ChevronDown aria-hidden="true" /></span></label>)}</div>
       <fieldset className="identity-question"><legend>Are you a U.S. citizen?</legend><Radio.Root aria-label="Are you a U.S. citizen?" value={answers.citizen} onValueChange={(value) => update('citizen', value)} className="identity-choices">{[{ value: 'Yes — U.S. citizen', label: 'Yes' }, { value: 'No', label: 'No' }].map((option) => <Radio.Item key={option.value} value={option.value} className="identity-choice"><strong>{option.label}</strong></Radio.Item>)}</Radio.Root></fieldset>
       {answers.citizen === 'No' && <fieldset className="identity-question"><legend>Have you been a U.S. resident for over 2 years?</legend><Radio.Root aria-label="U.S. residency" value={answers.resident} onValueChange={(value) => update('resident', value)} className="identity-choices">{[{ value: 'Yes — resident over 2 years', label: 'Yes' }, { value: 'No — neither', label: 'No' }].map((option) => <Radio.Item key={option.value} value={option.value} className="identity-choice"><strong>{option.label}</strong></Radio.Item>)}</Radio.Root></fieldset>}
-      {answers.resident === 'No — neither' && answers.citizen === 'No' ? <Button type="button" variant="action" size="touch" className="wide-button" onClick={() => go('ineligible')}>See how an agent can help</Button> : revisiting && <div className="next-row"><Button type="submit" variant="action" className="revisit-next" disabled={!identityReady}>Next</Button></div>}
     </form>, { icon: <Fingerprint /> })
     if (screen === 'ssn') return shell('Social Security & policy owner', '', <form className="ssn-form" onSubmit={submitNext('h1', Boolean(answers.owner && ssnProtected), 'Please enter a 9-digit Social Security number and answer the policy owner question.')}><div className="ssn-security-group"><label className="field-label">Social Security number<div className={`secure-field${ssnProtected ? ' is-protected' : ''}`}><span className="secure-lock" aria-hidden="true">{ssnProtected ? <Check /> : <LockKeyhole />}</span><input value={answers.ssn} type={showSSN ? 'text' : 'password'} inputMode="numeric" maxLength={11} placeholder="123-45-6789" autoComplete="off" onChange={(event) => update('ssn', formatSSN(event.target.value))} /><Button type="button" variant="quiet" aria-label={showSSN ? 'Hide number' : 'Show number'} onClick={() => setShowSSN(!showSSN)}>{showSSN ? <EyeOff /> : <Eye />}</Button></div></label><TrustBadges /><p className="ssn-demo-note"><LockKeyhole /> Demo only — use sample numbers. Nothing is saved.</p></div><p className="field-prompt">Will you be the policy owner and the person paying?</p>{cards('owner', ['Yes', 'No'])}{answers.owner === 'No' ? <Button type="button" variant="action" size="touch" className="wide-button" onClick={() => go('ineligible')}>See how an agent can help</Button> : <NextButton />}</form>, { icon: <LockKeyhole /> })
     if (screen === 'health-intro' || /^h[1-8]$/.test(screen)) {
