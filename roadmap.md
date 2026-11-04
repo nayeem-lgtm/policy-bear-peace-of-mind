@@ -1,6 +1,6 @@
 # PolicyBear final expense
 
-- [ ] Change payment to Save and add the reference-style confirmation; verify both payment methods and Continue.
+- [x] Change payment to Save and add the reference-style confirmation; both payment methods and Continue verified on desktop/phone, 55 tests pass.
 
 - [x] Remove post-health review loading and add blue/gold preparation animation before congratulations; desktop/phone flow verified, 49 tests pass.
 
