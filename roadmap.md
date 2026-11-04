@@ -1,6 +1,6 @@
 # PolicyBear final expense
 
-- [ ] Unify the illustration price and benefit, clarify coverage wording, remove the demo/payment note and improve the CTA; verify desktop and phone.
+- [x] Unify the illustration price and benefit, clarify coverage wording, remove the demo/payment note and improve the CTA; verified quote through the next screen, monthly/yearly controls and coverage changes on desktop and phone, all 39 tests pass.
 - [x] Simplify the illustration using the profile question design: centred heading, two separate estimate/coverage boxes, concise payment controls and one clear CTA.
 
 - [x] Reposition Mr Bear's fact-check pair on profile screens: 36px below the question card with the whole pair centred as one unit.
