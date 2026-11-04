@@ -2184,6 +2184,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .address-tile-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .address-tile-row.location { grid-template-columns: minmax(0, 1fr) minmax(0, .65fr); }
 .address-step .measurement-select select { height: 28px; font-size: 17px; }
+.identity-birth-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.identity-birth-fields > :only-child { grid-column: 1 / -1; }
+.identity-step .contact-tile { min-width: 0; }
+.identity-step .contact-tile-label { font-size: 14px; line-height: 1.4; font-weight: 800; color: var(--brand-deep); }
+.identity-step .measurement-select select { height: 30px; font-size: 17px; }
+.identity-question { min-width: 0; margin: 10px 0 0; padding: 0; border: 0; }
+.identity-question legend { width: 100%; padding: 0; margin-bottom: 12px; text-align: center; font-size: 17px; line-height: 1.5; font-weight: 700; color: var(--brand-deep); }
+.identity-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.identity-choice { display: flex; align-items: center; justify-content: center; min-height: 76px; padding: 14px 12px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: var(--card); color: color-mix(in oklab, var(--brand-deep) 78%, transparent); font-size: 17px; cursor: pointer; box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 60%, transparent); transition: border-color 200ms, background 200ms, box-shadow 220ms; }
+.identity-choice strong { font-weight: 600; }
+.identity-choice:hover { border-color: color-mix(in oklab, var(--primary) 42%, var(--border)); background: color-mix(in oklab, var(--primary) 6%, var(--card)); }
+.identity-choice[data-state=checked] { border-color: var(--primary); color: var(--primary); background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 3%, var(--card)), color-mix(in oklab, var(--primary) 11%, var(--card))); box-shadow: 0 16px 30px -20px color-mix(in oklab, var(--primary) 75%, transparent); }
+.identity-choice:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+@media (max-width: 480px) { .identity-birth-fields { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) { .address-tile-row { grid-template-columns: minmax(0, 1fr); } }
 .address-autocomplete { position: relative; }
 .address-autocomplete .contact-tile { display: flex; }
