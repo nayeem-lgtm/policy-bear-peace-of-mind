@@ -2252,7 +2252,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 480px) { .identity-birth-fields { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) { .address-tile-row { grid-template-columns: minmax(0, 1fr); } }
 .wizard-content:has(.payment-confirmation) .question-head { text-align: center; justify-content: center; }
-.wizard-content:has(.payment-confirmation) .question-badge { background: color-mix(in oklab, var(--success) 12%, var(--card)); border-color: color-mix(in oklab, var(--success) 25%, var(--border)); color: var(--success); }
+.wizard-content:has(.payment-confirmation) .question-badge { width: 64px; height: 64px; background: transparent; border: 0; box-shadow: none; }
+.wizard-content:has(.payment-confirmation) .question-badge .payment-success-seal { width: 64px; height: 64px; filter: drop-shadow(0 4px 5px color-mix(in oklab, var(--success) 15%, transparent)); animation: payment-seal-arrive 420ms ease-out both; }
+.payment-success-seal-fill { fill: var(--success); }
+.payment-success-seal-check { stroke: var(--primary-foreground); }
+@keyframes payment-seal-arrive { from { opacity: 0; transform: scale(.8) rotate(-12deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+@media (prefers-reduced-motion: reduce) { .wizard-content:has(.payment-confirmation) .question-badge .payment-success-seal { animation: none; } }
 .payment-confirmation { width: 100%; gap: 24px; }
 .payment-confirmation-subtitle { margin: -8px 0 0; text-align: center; color: var(--muted-foreground); font-size: 15px; line-height: 1.5; }
 .payment-receipt { width: 100%; padding: 26px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); box-shadow: var(--wizard-shadow); }
