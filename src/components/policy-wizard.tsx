@@ -302,7 +302,50 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     if (screen === 'underwriting') return <LoadingState icon={<ShieldCheck />} title="Reviewing your application" lines={['Reviewing your answers', 'Checking eligibility', 'Preparing your decision']} active={loadingLine} duration={2800} />
     if (screen === 'decision') return <Decision outcome={outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go(outcome === 'declined' ? 'gi-offer' : 'beneficiary')} onCallback={() => go('callback')} />
     if (screen === 'gi-offer') return shell('Guaranteed-issue final expense coverage', 'No health questions. Ages 50–85. Pick an amount to see your price.', <><Radio.Root value={answers.coverage} onValueChange={(value) => update('coverage', value)} className="answer-grid">{['5000', '10000', '15000', '20000', '25000'].map((value) => <Radio.Item className="answer-card" value={value} key={value}><strong>${Number(value).toLocaleString()}</strong></Radio.Item>)}</Radio.Root><PriceCard price={calculatePrice(age || 68, answers.gender || 'Female', Math.min(coverage, 25000), answers.tobacco, 'guaranteed')} coverage={Math.min(coverage, 25000)} annual={annual} setAnnual={setAnnual} /><div className="info-panel">If death occurs from natural causes in the first 2 years, your beneficiary receives the premiums paid plus interest. Accidental loss is covered in full from day one. After 2 years, the full benefit is paid. [CARRIER_TO_CONFIRM]</div><div className="next-row"><button type="button" className="revisit-next" onClick={() => { update('coverageType', 'Guaranteed Issue'); go('beneficiary') }}>Next</button></div></>, { icon: <ShieldCheck /> })
-    if (screen === 'beneficiary') return shell('Who should receive your benefit?', 'They can use it for funeral costs and other final bills.', <form className="app-form" onSubmit={submitNext('insurance', answers.beneficiaryType !== 'A person' || Boolean(answers.beneficiaryFirst && answers.beneficiaryLast && answers.relationship), 'Please add their first name, last name and relationship.')}>{cards('beneficiaryType', ['A person', 'My estate', 'All my children, equally', 'A trust', 'A charity or organisation'], (option) => option === 'A person' ? undefined : 'insurance', beneficiaryIcons, 'stack', beneficiaryDescriptions, 'beneficiary-list')}{answers.beneficiaryType === 'A person' ? <div className="app-panel beneficiary-panel"><div className="two-fields">{field('beneficiaryFirst', 'First name')}{field('beneficiaryLast', 'Last name')}</div><div className="two-fields">{select('relationship', 'Relationship', ['Spouse', 'Husband', 'Wife', 'Son', 'Daughter', 'Grandson', 'Granddaughter', 'Brother', 'Sister', 'Mother', 'Father', 'Nephew', 'Niece', 'Friend', 'Domestic Partner', 'Other'], false, 'Select a relationship')}{field('beneficiaryPhone', 'Phone (optional)', { type: 'tel' })}</div><div className="panel-foot"><p className="panel-hint"><ShieldCheck /> You can change this later.</p><button type="submit" className="revisit-next">Next</button></div></div> : nextLink('insurance', Boolean(answers.beneficiaryType))}</form>, { icon: <Users /> })
+    if (screen === 'beneficiary') {
+      const isPerson = answers.beneficiaryType === 'A person'
+      const beneficiaryPhoneDigits = answers.beneficiaryPhone.replace(/\D/g, '')
+      const beneficiaryValid = !isPerson || Boolean(
+        answers.beneficiaryFirst.trim() && answers.beneficiaryLast.trim() && answers.relationship &&
+        answers.beneficiaryKnowPhone &&
+        (answers.beneficiaryKnowPhone === 'No' || beneficiaryPhoneDigits.length >= 10) &&
+        answers.beneficiaryKnowAddress &&
+        (answers.beneficiaryKnowAddress === 'No' || answers.beneficiaryAddress.trim()))
+      return shell('Who should receive your benefit?', '', <form className="centered-step beneficiary-step" onSubmit={submitNext('insurance', beneficiaryValid, 'Please complete the primary beneficiary details.')}>
+        <p className="beneficiary-chapter">Primary beneficiary</p>
+        <label className={`contact-tile${answers.beneficiaryType ? ' is-filled' : ''}`}>
+          <span className="contact-tile-label">Beneficiary type<span className="contact-required" aria-hidden="true"> *</span></span>
+          <span className="measurement-select">
+            <select aria-label="Beneficiary type" value={answers.beneficiaryType} onChange={(event) => update('beneficiaryType', event.target.value)}>
+              {['A person', 'My estate', 'All my children, equally', 'A trust', 'A charity or organisation'].map((option) => <option key={option}>{option}</option>)}
+            </select>
+            <ChevronDown aria-hidden="true" />
+          </span>
+        </label>
+        {isPerson && <>
+          <label className={`contact-tile${answers.relationship ? ' is-filled' : ''}`}>
+            <span className="contact-tile-label">Relationship<span className="contact-required" aria-hidden="true"> *</span></span>
+            <span className="measurement-select">
+              <select aria-label="Relationship" value={answers.relationship} onChange={(event) => update('relationship', event.target.value)}>
+                <option value="">Select relationship</option>
+                {['Spouse', 'Husband', 'Wife', 'Son', 'Daughter', 'Grandson', 'Granddaughter', 'Brother', 'Sister', 'Mother', 'Father', 'Nephew', 'Niece', 'Friend', 'Domestic Partner', 'Other'].map((option) => <option key={option}>{option}</option>)}
+              </select>
+              <ChevronDown aria-hidden="true" />
+            </span>
+          </label>
+          <div className="two-fields">{tile('beneficiaryFirst', 'First name')}{tile('beneficiaryLast', 'Last name')}</div>
+          <fieldset className="identity-question"><legend>Do you know the phone number for this beneficiary?<span className="contact-required" aria-hidden="true"> *</span></legend>
+            <Radio.Root aria-label="Do you know the phone number for this beneficiary?" value={answers.beneficiaryKnowPhone} onValueChange={(value) => update('beneficiaryKnowPhone', value)} className="identity-choices">{['Yes', 'No'].map((option) => <Radio.Item key={option} value={option} className="identity-choice"><strong>{option}</strong></Radio.Item>)}</Radio.Root>
+          </fieldset>
+          {answers.beneficiaryKnowPhone === 'Yes' && tile('beneficiaryPhone', 'Phone number', false, { type: 'tel', placeholder: '(***) ***-****' })}
+          <fieldset className="identity-question"><legend>Do you know the address for this beneficiary?<span className="contact-required" aria-hidden="true"> *</span></legend>
+            <Radio.Root aria-label="Do you know the address for this beneficiary?" value={answers.beneficiaryKnowAddress} onValueChange={(value) => update('beneficiaryKnowAddress', value)} className="identity-choices">{['Yes', 'No'].map((option) => <Radio.Item key={option} value={option} className="identity-choice"><strong>{option}</strong></Radio.Item>)}</Radio.Root>
+          </fieldset>
+          {answers.beneficiaryKnowAddress === 'Yes' && tile('beneficiaryAddress', 'Street address', false, { placeholder: 'Street, city, state, ZIP' })}
+        </>}
+        <div className="next-row"><Button type="submit" variant="action" className="revisit-next" disabled={!beneficiaryValid}>Next</Button></div>
+      </form>, { icon: <Users /> })
+    }
     if (screen === 'insurance') return shell('Do you have any other life insurance or annuities, or a pending application?', '', <>{cards('otherInsurance', ['No', 'Yes'], (option) => option === 'No' ? 'payment' : undefined, undefined, 'pair')}{answers.otherInsurance === 'Yes' && <div className="app-panel"><p className="app-panel-title"><RotateCcw /> Will this policy replace or be paid for by cancelling any of them?</p>{cards('replacing', ['No', 'Yes'], 'payment', undefined, 'pair')}{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</div>}{nextLink('payment', answers.otherInsurance === 'No' || Boolean(answers.replacing))}</>, { icon: <ShieldCheck /> })
     if (screen === 'payment') {
       const isBank = answers.paymentMethod === 'Bank account'
