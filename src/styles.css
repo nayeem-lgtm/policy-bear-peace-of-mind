@@ -2178,6 +2178,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .contact-tile.is-filled .contact-tile-label { color: color-mix(in oklab, var(--primary) 80%, var(--brand-deep)); }
 .contact-tile input { width: 100%; min-width: 0; height: 28px; padding: 0; border: 0; background: transparent; outline: none; font: inherit; font-size: 17px; font-weight: 600; color: var(--primary); }
 .contact-tile input::placeholder { color: color-mix(in oklab, var(--brand-deep) 30%, transparent); font-weight: 500; }
+.measurement-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.measurement-tile { min-width: 0; padding: 14px; }
+.size-step .contact-tile-label { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 1.4; font-weight: 800; color: var(--brand-deep); }
+.size-step .contact-tile-label svg { width: 16px; height: 16px; flex: none; color: var(--primary); }
+.measurement-select { position: relative; display: flex; align-items: center; }
+.measurement-select select { width: 100%; min-width: 0; height: 32px; padding: 0 22px 0 0; appearance: none; border: 0; background: transparent; color: var(--primary); font: inherit; font-size: 20px; font-weight: 600; cursor: pointer; outline: none; }
+.measurement-select > svg { position: absolute; right: 0; width: 16px; height: 16px; color: var(--primary); pointer-events: none; }
+.size-step .contact-tile input { height: 32px; font-size: 20px; }
+@media (max-width: 480px) { .measurement-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } .measurement-fields > :last-child { grid-column: 1 / -1; } }
 .phone-row { display: flex; align-items: center; gap: 8px; }
 .verify-chip, .verified-chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 700; }
 .verify-chip { border: 0; background: var(--primary); color: var(--primary-foreground); cursor: pointer; transition: opacity 200ms; }
