@@ -18,10 +18,19 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-function open(step: string) {
-  if (step === 'opt-in') localStorage.setItem('policybear-demo', JSON.stringify({ answers: { phone: '5555555555' }, screen: 'opt-in', at: Date.now() }))
+function open(step: string, seed?: Record<string, string>) {
+  if (seed) localStorage.setItem('policybear-demo', JSON.stringify({ answers: seed, screen: step, at: Date.now() }))
   window.history.replaceState(null, '', `/#step-${step}`)
   render(<PolicyWizard onStepChange={() => {}} />)
+}
+
+const contactAnswers = { firstName: 'Ann', lastName: 'Lee', email: 'ann@example.com', phone: '5555555555' }
+
+function fillContact() {
+  fireEvent.change(screen.getByRole('textbox', { name: 'First name' }), { target: { value: 'Ann' } })
+  fireEvent.change(screen.getByRole('textbox', { name: 'Last name' }), { target: { value: 'Lee' } })
+  fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'ann@example.com' } })
+  fireEvent.change(screen.getByRole('textbox', { name: 'Mobile phone' }), { target: { value: '5555555555' } })
 }
 
 describe('Pre-qualification navigation', () => {
@@ -33,38 +42,40 @@ describe('Pre-qualification navigation', () => {
     expect(screen.getByRole('textbox', { name: 'First name' })).toBeInTheDocument()
   })
 
-  it('verifies the phone, then moves to permission', () => {
-    localStorage.setItem('policybear-demo', JSON.stringify({ answers: { phone: '5555555555' }, screen: 'phone-verify', at: Date.now() }))
-    open('phone-verify')
+  it('collects contact, verifies the phone and asks permission on one page', () => {
+    open('contact')
+    fillContact()
+    act(() => { vi.advanceTimersByTime(1500) })
+    expect(window.location.hash).toBe('#step-contact')
     fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
     fireEvent.change(screen.getByRole('textbox', { name: 'Verification code' }), { target: { value: '123456' } })
-    act(() => { vi.advanceTimersByTime(800) })
-    expect(window.location.hash).toBe('#step-opt-in')
+    expect(screen.getByRole('checkbox')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('checkbox'))
+    act(() => { vi.advanceTimersByTime(1500) })
+    expect(window.location.hash).toBe('#step-size')
   })
 
-  it('allows skipping automated marketing permission', () => {
-    open('opt-in')
-    expect(screen.getByRole('checkbox')).not.toBeChecked()
+  it('allows skipping verification and automated marketing permission', () => {
+    open('contact', contactAnswers)
     fireEvent.click(screen.getByRole('button', { name: /skip this step/ }))
     expect(window.location.hash).toBe('#step-size')
   })
 
   it('advances automatically once permission is ticked', () => {
-    open('opt-in')
+    open('contact', contactAnswers)
+    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('checkbox'))
-    act(() => { vi.advanceTimersByTime(800) })
+    act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
   })
 
-  it('advances from contact details once all are valid, with no Continue button', () => {
+  it('stays on contact details until verified or skipped, with no Continue button', () => {
     open('contact')
     expect(screen.queryByRole('button', { name: /Continue/ })).toBeNull()
-    fireEvent.change(screen.getByRole('textbox', { name: 'First name' }), { target: { value: 'Ann' } })
-    fireEvent.change(screen.getByRole('textbox', { name: 'Last name' }), { target: { value: 'Lee' } })
-    fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'ann@example.com' } })
-    fireEvent.change(screen.getByRole('textbox', { name: 'Mobile phone' }), { target: { value: '5555555555' } })
+    fillContact()
     act(() => { vi.advanceTimersByTime(1500) })
-    expect(window.location.hash).toBe('#step-phone-verify')
+    expect(window.location.hash).toBe('#step-contact')
   })
   it('returns from address to height and weight', () => {
     open('address')
@@ -86,17 +97,14 @@ describe('Pre-qualification navigation', () => {
 })
 describe('Revisiting a step', () => {
   it('shows a small Next button after going Back, with no auto-advance', () => {
-    open('phone-verify')
+    open('size')
     fireEvent.click(screen.getByRole('button', { name: /Go back/ }))
     expect(window.location.hash).toBe('#step-contact')
-    fireEvent.change(screen.getByRole('textbox', { name: 'First name' }), { target: { value: 'Ann' } })
-    fireEvent.change(screen.getByRole('textbox', { name: 'Last name' }), { target: { value: 'Lee' } })
-    fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'ann@example.com' } })
-    fireEvent.change(screen.getByRole('textbox', { name: 'Mobile phone' }), { target: { value: '5555555555' } })
+    fillContact()
     act(() => { vi.advanceTimersByTime(2000) })
     expect(window.location.hash).toBe('#step-contact')
     fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    expect(window.location.hash).toBe('#step-phone-verify')
+    expect(window.location.hash).toBe('#step-size')
   })
 })
 
