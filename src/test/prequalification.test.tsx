@@ -143,6 +143,29 @@ describe('Revisiting a step', () => {
 })
 
 describe('Identity split', () => {
+  it('waits on Back and advances again after an identity selection', () => {
+    open('identity')
+    fireEvent.change(screen.getByRole('combobox', { name: 'Country of birth' }), { target: { value: 'Canada' } })
+    fireEvent.click(screen.getByRole('radio', { name: /^Yes$/ }))
+    act(() => { vi.advanceTimersByTime(350) })
+    expect(window.location.hash).toBe('#step-ssn')
+    act(() => { window.location.hash = '#step-identity'; window.dispatchEvent(new HashChangeEvent('hashchange')) })
+    act(() => { vi.advanceTimersByTime(800) })
+    expect(window.location.hash).toBe('#step-identity')
+    fireEvent.change(screen.getByRole('combobox', { name: 'Country of birth' }), { target: { value: 'Other' } })
+    act(() => { vi.advanceTimersByTime(350) })
+    expect(window.location.hash).toBe('#step-ssn')
+  })
+  it('automatically routes noncitizens after their residency choice', () => {
+    open('identity')
+    fireEvent.change(screen.getByRole('combobox', { name: 'Country of birth' }), { target: { value: 'Canada' } })
+    fireEvent.click(screen.getByRole('radio', { name: /^No$/ }))
+    const residencyNo = screen.getAllByRole('radio', { name: /^No$/ })[1]
+    if (!residencyNo) throw new Error('Residency choice is missing')
+    fireEvent.click(residencyNo)
+    act(() => { vi.advanceTimersByTime(350) })
+    expect(window.location.hash).toBe('#step-ineligible')
+  })
   it('auto-advances identity to the separate SSN and owner step', () => {
     open('identity')
     fireEvent.change(screen.getByRole('combobox', { name: 'Country of birth' }), { target: { value: 'Canada' } })
