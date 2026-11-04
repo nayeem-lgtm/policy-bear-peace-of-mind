@@ -17,19 +17,19 @@ describe('Quote sequence', () => {
     expect(journeySteps.indexOf('price')).toBe(journeySteps.indexOf('coverage') + 2)
   })
   it('asks the pre-qualification questions after the illustration, with opt-in still last', () => {
-    expect([...preQualSteps]).toEqual(['who', 'contact', 'size', 'opt-in'])
+    expect([...preQualSteps]).toEqual(['who', 'contact', 'phone-verify', 'opt-in', 'size'])
     expect(journeySteps.indexOf('who')).toBe(journeySteps.indexOf('price') + 1)
-    expect(quoteSteps.at(-1)).toBe('opt-in')
+    expect(quoteSteps.at(-1)).toBe('size')
   })
   it('maps the four owner-named chapters to the right screens', () => {
     for (const step of basicInfoSteps) expect(chapterFor(step)).toBe(0)
     expect(chapterFor('price')).toBe(0)
-    for (const step of ['who', 'contact', 'size', 'opt-in', 'address', 'health-intro', 'h1', 'decision'] as const) expect(chapterFor(step)).toBe(1)
+    for (const step of ['who', 'contact', 'phone-verify', 'opt-in', 'size', 'address', 'health-intro', 'h1', 'decision'] as const) expect(chapterFor(step)).toBe(1)
     expect(chapterFor('payment')).toBe(2)
     expect(chapterFor('signature')).toBe(3)
   })
   it('goes directly from permission to address without repeating personal details', () => {
-    expect(journeySteps[journeySteps.indexOf('opt-in') + 1]).toBe('address')
+    expect(journeySteps[journeySteps.indexOf('size') + 1]).toBe('address')
     expect([...journeySteps]).not.toContain('personal')
   })
 })

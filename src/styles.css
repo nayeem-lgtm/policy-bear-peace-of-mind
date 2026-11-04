@@ -2133,3 +2133,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .recipient-choices .recipient-choice[data-state=checked] .recipient-icon { background: linear-gradient(140deg, var(--primary), color-mix(in oklab, var(--primary) 70%, var(--brand-deep))); color: var(--primary-foreground); box-shadow: 0 7px 15px -7px color-mix(in oklab, var(--primary) 85%, transparent); }
 .recipient-choices .recipient-choice[data-state=checked] strong { color: var(--primary); }
 @container (max-width: 380px) { .recipient-choices .recipient-choice { min-height: 84px; padding: 12px 10px; gap: 8px; } .recipient-choices .recipient-copy strong { font-size: 15px; } .recipient-choices .recipient-icon { width: 38px; height: 38px; } .recipient-choices .recipient-icon svg { width: 20px; height: 20px; } }
+
+/* Contact, phone verification and opt-in: match Your Profile centred pattern */
+.wizard-content:has(.centered-step) .question-head { display: block; text-align: center; margin-bottom: 22px; }
+.wizard-content:has(.centered-step) .question-badge { width: 52px; height: 52px; margin: 0 auto 14px; background: var(--brand-soft-blue); color: var(--primary); }
+.wizard-content:has(.centered-step) .question-badge svg { width: 26px; height: 26px; }
+.wizard-content:has(.centered-step) .question-head h2 { text-align: center; margin: 0; }
+.wizard-content:has(.centered-step) .question-head h2::after { content: ''; display: block; width: 48px; height: 3px; margin: 12px auto 0; border-radius: 3px; background: var(--brand-action); }
+.wizard-content:has(.centered-step) .question-head p { text-align: center; }
+.centered-step { display: grid; gap: 12px; }
+.three-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.centered-step .text-field { border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 14px; background: var(--card); box-shadow: 0 12px 24px -22px color-mix(in oklab, var(--brand-deep) 60%, transparent); transition: border-color 200ms, box-shadow 200ms, background 200ms; }
+.centered-step .text-field:hover { border-color: color-mix(in oklab, var(--primary) 42%, var(--border)); }
+.centered-step .text-field:focus { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 4%, var(--card)); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent); outline: none; }
+.centered-step .reconnect-number, .centered-step .otp-box, .centered-step .reconnect-permission { border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 60%, transparent); }
+.centered-step .otp-box { text-align: center; justify-items: center; }
+.centered-step .otp-box .revisit-next { margin-inline: auto; }
+.centered-step .otp-field { max-width: 240px; margin-inline: auto; text-align: center; letter-spacing: .4em; font-size: 22px; }
+.centered-step .otp-box.is-verified { border-color: var(--primary); background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 3%, var(--card)), color-mix(in oklab, var(--primary) 11%, var(--card))); }
+.centered-step .reconnect-demo, .centered-step .auto-next, .centered-step .skip-link { justify-self: center; text-align: center; }
+@media (max-width: 760px) { .three-fields { grid-template-columns: 1fr 1fr; } .three-fields > :first-child { grid-column: 1 / -1; } }
