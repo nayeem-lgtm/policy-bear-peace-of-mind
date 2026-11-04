@@ -1,6 +1,6 @@
 # PolicyBear final expense
 
-- [ ] Move congratulations after insurance, refine the celebration, and verify Finalize leads to payment with correct Back navigation.
+- [x] Move congratulations after insurance, refine the celebration, and verify Finalize leads to payment with correct Back navigation on desktop and phone; 56 targeted tests pass.
 
 - [x] Separate Social Security from policy ownership, align original security seals with the profile design, and verify desktop/phone navigation.
 
