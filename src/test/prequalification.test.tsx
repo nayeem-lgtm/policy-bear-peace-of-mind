@@ -65,12 +65,12 @@ describe('Pre-qualification navigation', () => {
     expect(window.location.hash).toBe('#step-size')
   })
 
-  it('requires the OTP before marketing permission can be skipped', () => {
+  it('requires the OTP before continuing without marketing permission', () => {
     open('contact', contactAnswers)
-    expect(screen.queryByRole('button', { name: /skip this step/ })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Next' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
     fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
-    fireEvent.click(screen.getByRole('button', { name: /skip this step/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     expect(window.location.hash).toBe('#step-size')
   })
 
