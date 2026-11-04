@@ -16,7 +16,7 @@ export const quoteSteps = [...basicInfoSteps, ...preQualSteps] as const
 export const journeySteps = [
   ...basicInfoSteps, 'loading', 'price', ...preQualSteps,
   'address', 'identity', 'ssn', 'owner', 'health-intro', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8',
-  'underwriting', 'eligibility', 'gi-offer', 'beneficiary', 'insurance', 'decision', 'payment', 'draft',
+  'eligibility', 'gi-offer', 'beneficiary', 'insurance', 'underwriting', 'decision', 'payment', 'draft',
   'review', 'disclosures', 'signature', 'verify', 'submitting', 'issued', 'callback', 'ineligible',
 ] as const
 

@@ -1810,6 +1810,27 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (prefers-reduced-motion: reduce) { .health-card, .health-segments span { transition: none; } .health-card:hover { transform: none; } }
 
 /* Restrained coverage decision, coordinated with the quote timeline */
+.coverage-loading { text-align: center; padding: 40px 12px; }
+.coverage-loading-art { position: relative; width: 180px; height: 210px; margin: 0 auto 24px; }
+.coverage-loading-ring { width: 160px; height: 160px; margin: 0 10px; transform: rotate(-90deg); fill: none; stroke-width: 3; }
+.coverage-loading-track { stroke: var(--brand-soft-blue); }
+.coverage-loading-progress { stroke: var(--primary); stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; animation: coverage-ring-fill 3200ms cubic-bezier(.2,.7,.3,1) forwards; }
+.coverage-loading-shield { position: absolute; inset: 26px 36px 76px; display: grid; place-items: center; background: var(--brand-soft-blue); border-radius: 50%; color: var(--primary); animation: coverage-shield-rise 1600ms ease-in-out infinite; }
+.coverage-loading-shield svg { width: 58px; height: 58px; }
+.coverage-loading-trail { position: absolute; bottom: 0; left: 24px; right: 24px; display: flex; justify-content: space-between; color: var(--brand-action); }
+.coverage-loading-trail span { opacity: .2; animation: coverage-paw-step 1200ms ease-in-out infinite; }
+.coverage-loading-trail span:nth-child(2) { animation-delay: 150ms; transform: translateY(-8px); }
+.coverage-loading-trail span:nth-child(3) { animation-delay: 300ms; }
+.coverage-loading-trail span:nth-child(4) { animation-delay: 450ms; transform: translateY(-8px); }
+.coverage-loading-trail svg { width: 22px; height: 22px; }
+.coverage-loading h2 { color: var(--brand-deep); font-size: 26px; line-height: 1.3; margin: 0 0 12px; }
+.coverage-loading p { color: var(--muted-foreground); font-size: 14px; line-height: 1.7; margin: 0; }
+.coverage-loading-bar { width: min(100%, 220px); height: 4px; background: var(--brand-soft-blue); border-radius: 4px; overflow: hidden; margin: 24px auto 0; }
+.coverage-loading-bar span { display: block; height: 100%; background: var(--primary); transform-origin: left; animation: load-grow 3200ms ease-out forwards; }
+@keyframes coverage-ring-fill { to { stroke-dashoffset: 0; } }
+@keyframes coverage-shield-rise { 50% { transform: translateY(-4px); } }
+@keyframes coverage-paw-step { 30%, 55% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .coverage-loading * { animation: none; } .coverage-loading-progress { stroke-dashoffset: 110; } .coverage-loading-trail span { opacity: 1; } }
 .celebrate { position: relative; isolation: isolate; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0; }
 .celebrate-burst { position: absolute; inset: -90px -10px -35px; pointer-events: none; overflow: hidden; z-index: -1; }
 .celebrate-burst i { position: absolute; top: 220px; left: var(--burst-origin); width: 7px; height: 12px; border-radius: 2px; background: var(--brand-action); opacity: 0; animation: celebration-burst 2600ms ease-out var(--burst-delay) both; }
