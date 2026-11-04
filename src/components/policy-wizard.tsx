@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { AlertCircle, ArrowLeft, Check, ChevronDown, Clock, Cigarette, CreditCard, Eye, EyeOff, Fingerprint, Heart, HeartPulse, Landmark, LockKeyhole, MapPin, Mars, Minus, Moon, PenLine, Phone, Smartphone, Plus, RotateCcw, Ruler, Scale, ShieldCheck, Sparkles, Sun, Sunrise, User, UserRound, Users, Venus, X } from 'lucide-react'
+import { AlertCircle, ArrowLeft, Check, ChevronDown, Clock, Cigarette, CreditCard, Eye, EyeOff, Fingerprint, Heart, HeartPulse, Landmark, LockKeyhole, MapPin, Mars, Minus, Moon, PenLine, Phone, Smartphone, Plus, RotateCcw, Ruler, Scale, ShieldCheck, Sparkles, Sun, Sunrise, UserRound, Users, Venus, X } from 'lucide-react'
 import * as Radio from '@radix-ui/react-radio-group'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { z } from 'zod'
@@ -28,13 +28,13 @@ type Answers = {
   firstName: string; middleName: string; lastName: string; email: string; phone: string
   street: string; apt: string; country: string; birthState: string; citizen: string; resident: string
   owner: string; ssn: string; beneficiaryType: string; beneficiaryFirst: string; beneficiaryLast: string
-  relationship: string; beneficiaryPhone: string; otherInsurance: string; replacing: string
+  relationship: string; beneficiaryPhone: string; beneficiaryKnowPhone: string; beneficiaryKnowAddress: string; beneficiaryAddress: string; otherInsurance: string; replacing: string
   paymentMethod: string; accountName: string; accountType: string; routing: string; account: string
   accountConfirm: string; card: string; expiry: string; paymentZip: string; draftDate: string
   signature: string; callbackTime: string; coverageType: string; health: string[]
 }
 type StringAnswerKey = Exclude<keyof Answers, 'health'>
-const blank: Answers = { zip: '', city: '', state: '', who: '', month: '', day: '', year: '', gender: '', tobacco: '', feet: '', inches: '', weight: '', coverage: '15000', firstName: '', middleName: '', lastName: '', email: '', phone: '', street: '', apt: '', country: 'United States', birthState: '', citizen: '', resident: '', owner: '', ssn: '', beneficiaryType: 'A person', beneficiaryFirst: '', beneficiaryLast: '', relationship: '', beneficiaryPhone: '', otherInsurance: '', replacing: '', paymentMethod: 'Bank account', accountName: '', accountType: 'Checking', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', draftDate: '1st of the month', signature: '', callbackTime: '', coverageType: '', health: Array(8).fill('') }
+const blank: Answers = { zip: '', city: '', state: '', who: '', month: '', day: '', year: '', gender: '', tobacco: '', feet: '', inches: '', weight: '', coverage: '15000', firstName: '', middleName: '', lastName: '', email: '', phone: '', street: '', apt: '', country: 'United States', birthState: '', citizen: '', resident: '', owner: '', ssn: '', beneficiaryType: 'A person', beneficiaryFirst: '', beneficiaryLast: '', relationship: '', beneficiaryPhone: '', beneficiaryKnowPhone: '', beneficiaryKnowAddress: '', beneficiaryAddress: '', otherInsurance: '', replacing: '', paymentMethod: 'Bank account', accountName: '', accountType: 'Checking', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', draftDate: '1st of the month', signature: '', callbackTime: '', coverageType: '', health: Array(8).fill('') }
 const labels = ['Your Profile', 'Pre-Qualification', 'Application', 'Finalize']
 const phone = '[FE_PHONE]'
 // Mars + Venus pair for the sex question: brand blue for Mars, gold for Venus.
@@ -59,8 +59,6 @@ const coverageOptions = [
 ]
 const RecipientIcon = ({ kind = 'family' }: { kind?: 'self' | 'partner' | 'parent' | 'other' | 'family' }) => <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'self' ? <><circle cx="16" cy="10" r="4" /><path d="M7 26v-3a9 9 0 0 1 18 0v3" /></> : <><circle cx="10" cy="10" r="3.7" /><circle cx="23" cy={kind === 'parent' ? '8' : '10'} r="3.7" /><path d="M3 26v-3a7 7 0 0 1 13-3M18 20a7 7 0 0 1 12 3v3" />{kind === 'parent' && <path d="M21 6h4M21 10h4" />}</>}{kind === 'other' ? <path className="recipient-gold" d="M17 25h7M20.5 21.5v7" /> : <path className="recipient-gold" d="M16 28s-5-3-5-6a2.8 2.8 0 0 1 5-1.6A2.8 2.8 0 0 1 21 22c0 3-5 6-5 6Z" />}</svg>
 const whoIcons: Record<string, React.ReactNode> = { Me: <RecipientIcon kind="self" />, 'My spouse or partner': <RecipientIcon kind="partner" />, 'My mom or dad': <RecipientIcon kind="parent" />, 'Someone else': <RecipientIcon kind="other" /> }
-const beneficiaryIcons: Record<string, React.ReactNode> = { 'A person': <User />, 'My estate': <Landmark />, 'All my children, equally': <Users />, 'A trust': <ShieldCheck />, 'A charity or organisation': <Heart /> }
-const beneficiaryDescriptions: Record<string, string> = { 'A person': 'Someone you name below', 'My estate': 'Handled by your estate', 'All my children, equally': 'Split evenly between them', 'A trust': 'A trust you’ve already set up', 'A charity or organisation': 'A cause you support' }
 const callbackIcons: Record<string, React.ReactNode> = { Morning: <Sunrise />, Afternoon: <Sun />, Evening: <Moon /> }
 
 export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) => void }) {
