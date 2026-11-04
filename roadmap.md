@@ -1,5 +1,7 @@
 # PolicyBear final expense
 
+- [x] Simplify the illustration using the profile question design: centred heading, two separate estimate/coverage boxes, concise payment controls and one clear CTA.
+
 - [x] Reposition Mr Bear's fact-check pair on profile screens: 36px below the question card with the whole pair centred as one unit.
 - [x] Fix the invisible wizard "Resend code" / "No thanks, skip this step" buttons (shared .skip-link style conflicted with the header's visually-hidden skip link).
 - [x] Full journey walkthrough after the remix: landing → quote → illustration → contact/OTP/consent → address → identity → SSN → 8 health questions → underwriting → decision, no page errors; skip/resend buttons now clickable. Beneficiary and later application screens verified earlier pre-remix.
