@@ -63,6 +63,8 @@ describe('Pre-qualification navigation', () => {
 
   it('advances automatically once permission is ticked', () => {
     open('contact', contactAnswers)
+    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('checkbox'))
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
