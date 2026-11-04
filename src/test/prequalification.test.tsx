@@ -196,6 +196,18 @@ describe('Identity split', () => {
 })
 
 describe('Application auto-advance', () => {
+  it('edits coverage from congratulations and returns with the updated amount', () => {
+    open('decision', { coverage: '15000', firstName: 'Ann' })
+    fireEvent.click(screen.getByRole('button', { name: 'Make changes' }))
+    expect(window.location.hash).toBe('#step-price')
+    fireEvent.change(screen.getByRole('slider'), { target: { value: '20000' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }))
+    expect(window.location.hash).toBe('#step-decision')
+    const saved = JSON.parse(localStorage.getItem('policybear-demo') || '{}')
+    expect(saved.answers.coverage).toBe('20000')
+    fireEvent.click(screen.getByRole('button', { name: 'Finalize' }))
+    expect(window.location.hash).toBe('#step-payment')
+  })
   it('automatically moves through all eight health answers and starts the review', () => {
     open('h1')
     for (let index = 1; index <= 8; index += 1) {
