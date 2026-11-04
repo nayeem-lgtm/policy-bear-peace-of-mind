@@ -70,7 +70,7 @@ export function AddressAutocomplete({ value, onChange, onPick }: { value: string
           if (!showList) return
           if (event.key === 'ArrowDown') { event.preventDefault(); setActive((i) => (i + 1) % suggestions.length) }
           else if (event.key === 'ArrowUp') { event.preventDefault(); setActive((i) => (i <= 0 ? suggestions.length - 1 : i - 1)) }
-          else if (event.key === 'Enter' && active >= 0) { event.preventDefault(); void pick(suggestions[active]) }
+          else if (event.key === 'Enter' && suggestions[active]) { event.preventDefault(); void pick(suggestions[active]!) }
           else if (event.key === 'Escape') setOpen(false)
         }} />
     </label>

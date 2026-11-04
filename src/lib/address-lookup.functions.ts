@@ -8,7 +8,7 @@ const encoder = new TextEncoder()
 const toHex = (buffer: ArrayBuffer) => Array.from(new Uint8Array(buffer), (byte) => byte.toString(16).padStart(2, '0')).join('')
 
 async function sign(payload: string) {
-  const secret = process.env.ADDRESS_SESSION_SECRET
+  const secret = process.env['ADDRESS_SESSION_SECRET']
   if (!secret) throw new Error('Address lookup is not configured.')
   const key = await crypto.subtle.importKey('raw', encoder.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
   return toHex(await crypto.subtle.sign('HMAC', key, encoder.encode(payload)))
@@ -25,8 +25,8 @@ async function verifyGuestSession(token: string) {
 }
 
 function credentials() {
-  const lovableKey = process.env.LOVABLE_API_KEY
-  const mapsKey = process.env.GOOGLE_MAPS_API_KEY
+  const lovableKey = process.env['LOVABLE_API_KEY']
+  const mapsKey = process.env['GOOGLE_MAPS_API_KEY']
   if (!lovableKey || !mapsKey) throw new Error('Address lookup is not configured.')
   return { Authorization: `Bearer ${lovableKey}`, 'X-Connection-Api-Key': mapsKey }
 }
