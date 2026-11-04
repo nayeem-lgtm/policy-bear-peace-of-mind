@@ -1753,10 +1753,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .ssn-form .ssn-input-row input { height: 40px; font-size: 24px; font-weight: 600; letter-spacing: 0; }
 .ssn-visibility { width: 36px; height: 36px; flex: none; padding: 8px; color: var(--primary); border-radius: 8px; }
 .ssn-visibility svg { width: 18px; height: 18px; }
-.ssn-trust { margin-top: 24px; }
-.ssn-trust-seals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 12px; }
-.ssn-seal-slot { min-width: 0; height: 76px; display: flex; align-items: center; justify-content: center; padding: 12px 10px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 8px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 40%, transparent); }
-.ssn-seal { display: block; height: auto; width: 100%; max-height: 42px; object-fit: contain; }
+.ssn-trust { margin-top: 20px; }
+.ssn-trust-seals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 18px; width: min(100%, 340px); margin-inline: auto; }
+.ssn-seal-slot { min-width: 0; height: 44px; display: flex; align-items: center; justify-content: center; padding: 4px 0; }
+.ssn-seal { display: block; height: auto; width: 100%; max-width: 96px; max-height: 30px; object-fit: contain; }
 .ssn-trust-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 14px; gap: 8px; }
 .ssn-trust-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-width: 0; text-align: center; }
 .ssn-trust-icon { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; color: var(--primary); background: var(--brand-soft-blue); border-radius: 50%; }
@@ -1773,8 +1773,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .ssn-form .next-row { margin-top: 20px; }
 @media (max-width: 620px) {
   .ssn-input-tile { padding: 14px 16px; }
-  .ssn-trust-seals { gap: 8px; }
-  .ssn-seal-slot { height: 64px; padding: 8px; }
+  .ssn-trust-seals { gap: 16px; width: min(100%, 300px); }
+  .ssn-seal-slot { height: 40px; padding: 4px 0; }
   .ssn-trust-item { gap: 5px; }
   .ssn-trust-item strong { font-size: 10px; }
   .ssn-trust-full { display: none; }

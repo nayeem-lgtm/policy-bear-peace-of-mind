@@ -288,7 +288,6 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     if (screen === 'ssn') return shell('Your Social Security number', '', <form className="centered-step ssn-form" onSubmit={submitNext('owner', ssnProtected, 'Please enter a 9-digit Social Security number.')}>
       <label className={`contact-tile ssn-input-tile${answers.ssn ? ' is-filled' : ''}`}><span className="contact-tile-label"><LockKeyhole aria-hidden="true" />Social Security number<span className="contact-required" aria-hidden="true">*</span></span><span className="ssn-input-row"><input aria-label="Social Security number" required value={answers.ssn} type={showSSN ? 'text' : 'password'} inputMode="numeric" maxLength={11} placeholder="123-45-6789" autoComplete="off" onChange={(event) => update('ssn', formatSSN(event.target.value))} /><Button type="button" variant="quiet" className="ssn-visibility" aria-label={showSSN ? 'Hide number' : 'Show number'} onClick={() => setShowSSN(!showSSN)}>{showSSN ? <EyeOff /> : <Eye />}</Button></span></label>
       <TrustBadges />
-      <p className="ssn-demo-note"><LockKeyhole /> Demo only — use sample numbers. Nothing is saved.</p>
       <div className="next-row"><Button type="submit" variant="action" className="revisit-next" disabled={!ssnProtected}>Next</Button></div>
     </form>, { icon: <LockKeyhole /> })
     if (screen === 'owner') return shell('Will you be the policy owner and the person paying?', '', <div className="centered-step owner-step"><Radio.Root aria-label="Policy owner" value={answers.owner} onValueChange={(value) => update('owner', value)} className="identity-choices">{['Yes', 'No'].map((option) => <Radio.Item key={option} value={option} className="identity-choice" onClick={() => choose('owner', option, option === 'Yes' ? 'h1' : 'ineligible')}><strong>{option}</strong></Radio.Item>)}</Radio.Root></div>, { icon: <UserRound /> })
@@ -421,25 +420,12 @@ function ContactConsent({ checked, onChange }: { checked: boolean; onChange: (va
 }
 function NextButton() { return <div className="next-row"><button type="submit" className="revisit-next">Next</button></div> }
 
-const ssnTrustBadges = [
-  { icon: <LockKeyhole />, title: '256-bit encryption', short: '256-bit SSL' },
-  { icon: <ShieldCheck />, title: 'Never stored', short: 'Never stored' },
-  { icon: <Fingerprint />, title: 'Never sold or shared', short: 'Never shared' },
-]
-
 function TrustBadges() {
   return <div className="ssn-trust">
     <div className="ssn-trust-seals" aria-label="Security verification seals">
       <div className="ssn-seal-slot"><img className="ssn-seal" src={geotrustSeal.url} alt="Secured by GeoTrust" width="407" height="111" /></div>
       <div className="ssn-seal-slot"><img className="ssn-seal" src={trusteSeal.url} alt="TRUSTe Certified Privacy, powered by TrustArc" width="338" height="119" /></div>
       <div className="ssn-seal-slot"><img className="ssn-seal" src={trustlockSeal.url} alt="TrustLock verified SSL secure" width="317" height="125" /></div>
-    </div>
-    <div className="ssn-trust-row">
-      {ssnTrustBadges.map((badge) => <span className="ssn-trust-item" key={badge.title}>
-        <span className="ssn-trust-icon" aria-hidden="true">{badge.icon}</span>
-        <strong className="ssn-trust-full">{badge.title}</strong>
-        <strong className="ssn-trust-short">{badge.short}</strong>
-      </span>)}
     </div>
   </div>
 }
