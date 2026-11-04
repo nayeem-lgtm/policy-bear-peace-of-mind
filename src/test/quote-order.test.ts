@@ -16,15 +16,15 @@ describe('Quote sequence', () => {
     expect(journeySteps.indexOf('loading')).toBe(journeySteps.indexOf('coverage') + 1)
     expect(journeySteps.indexOf('price')).toBe(journeySteps.indexOf('coverage') + 2)
   })
-  it('asks the pre-qualification questions after the illustration, with opt-in still last', () => {
-    expect([...preQualSteps]).toEqual(['who', 'contact', 'phone-verify', 'opt-in', 'size'])
+  it('asks the pre-qualification questions after the illustration, with contact before height and weight', () => {
+    expect([...preQualSteps]).toEqual(['who', 'contact', 'size'])
     expect(journeySteps.indexOf('who')).toBe(journeySteps.indexOf('price') + 1)
     expect(quoteSteps.at(-1)).toBe('size')
   })
   it('maps the four owner-named chapters to the right screens', () => {
     for (const step of basicInfoSteps) expect(chapterFor(step)).toBe(0)
     expect(chapterFor('price')).toBe(0)
-    for (const step of ['who', 'contact', 'phone-verify', 'opt-in', 'size', 'address', 'health-intro', 'h1', 'decision'] as const) expect(chapterFor(step)).toBe(1)
+    for (const step of ['who', 'contact', 'size', 'address', 'health-intro', 'h1', 'decision'] as const) expect(chapterFor(step)).toBe(1)
     expect(chapterFor('payment')).toBe(2)
     expect(chapterFor('signature')).toBe(3)
   })
@@ -59,10 +59,10 @@ describe('Chapter progress counter', () => {
     expect(chapterProgress('loading').position).toBe(5)
     expect(chapterProgress('price')).toEqual({ chapter: 0, position: 5, total: 5 })
   })
-  it('counts the sixteen Pre-Qualification questions without the illustration', () => {
-    expect(chapterProgress('who')).toEqual({ chapter: 1, position: 1, total: 16 })
-    expect(chapterProgress('h8')).toEqual({ chapter: 1, position: 16, total: 16 })
-    expect(chapterProgress('underwriting').position).toBe(16)
+  it('counts the fourteen Pre-Qualification questions without the illustration', () => {
+    expect(chapterProgress('who')).toEqual({ chapter: 1, position: 1, total: 14 })
+    expect(chapterProgress('h8')).toEqual({ chapter: 1, position: 14, total: 14 })
+    expect(chapterProgress('underwriting').position).toBe(14)
   })
   it('keeps the Application and Finalize totals honest', () => {
     expect(chapterProgress('gi-offer')).toEqual({ chapter: 2, position: 1, total: 5 })
