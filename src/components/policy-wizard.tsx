@@ -82,8 +82,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const [signatureMode, setSignatureMode] = useState<'type' | 'draw'>('type')
   const [signatureStyle, setSignatureStyle] = useState(0)
   const [hasDrawing, setHasDrawing] = useState(false)
-  const [authorized, setAuthorized] = useState(false)
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const [otp, setOtp] = useState('')
   const phoneVerified = otp.length === 6
