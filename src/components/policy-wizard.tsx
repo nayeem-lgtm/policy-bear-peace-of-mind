@@ -34,7 +34,7 @@ type Answers = {
   signature: string; callbackTime: string; coverageType: string; health: string[]
 }
 type StringAnswerKey = Exclude<keyof Answers, 'health'>
-const blank: Answers = { zip: '', city: '', state: '', who: '', month: '', day: '', year: '', gender: '', tobacco: '', feet: '', inches: '', weight: '', coverage: '15000', firstName: '', middleName: '', lastName: '', email: '', phone: '', street: '', apt: '', country: 'United States', birthState: '', citizen: '', resident: '', owner: '', ssn: '', beneficiaryType: 'A person', beneficiaryFirst: '', beneficiaryLast: '', relationship: '', beneficiaryPhone: '', beneficiaryKnowPhone: '', beneficiaryKnowAddress: '', beneficiaryAddress: '', otherInsurance: '', replacing: '', paymentMethod: 'Bank account', accountName: '', accountType: 'Checking', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', draftDate: '1st of the month', signature: '', callbackTime: '', coverageType: '', health: Array(8).fill('') }
+const blank: Answers = { zip: '', city: '', state: '', who: '', month: '', day: '', year: '', gender: '', tobacco: '', feet: '', inches: '', weight: '', coverage: '15000', firstName: '', middleName: '', lastName: '', email: '', phone: '', street: '', apt: '', country: 'United States', birthState: '', citizen: '', resident: '', owner: '', ssn: '', beneficiaryType: 'A person', beneficiaryFirst: '', beneficiaryLast: '', relationship: '', beneficiaryPhone: '', beneficiaryKnowPhone: '', beneficiaryKnowAddress: '', beneficiaryAddress: '', otherInsurance: '', replacing: '', paymentMethod: 'EFT', accountName: '', accountType: 'Checking', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', draftDate: '1st of the month', signature: '', callbackTime: '', coverageType: '', health: Array(8).fill('') }
 const labels = ['Your Profile', 'Pre-Qualification', 'Application', 'Finalize']
 const phone = '[FE_PHONE]'
 // Mars + Venus pair for the sex question: brand blue for Mars, gold for Venus.
@@ -82,7 +82,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const [signatureMode, setSignatureMode] = useState<'type' | 'draw'>('type')
   const [signatureStyle, setSignatureStyle] = useState(0)
   const [hasDrawing, setHasDrawing] = useState(false)
-  const [code, setCode] = useState(false)
+  const [code, setCode] = useState('')
   const [otpSent, setOtpSent] = useState(false)
   const [otp, setOtp] = useState('')
   const phoneVerified = otp.length === 6
@@ -111,7 +111,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     try {
       const saved = JSON.parse(localStorage.getItem('policybear-demo') || 'null')
       if (saved?.answers && Date.now() - saved.at < 7 * 86400000) {
-        const restored = { ...blank, ...(saved.answers as Partial<Answers>), ssn: '', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', health: blank.health.map((value, index) => Array.isArray(saved.answers.health) ? saved.answers.health[index] || value : value) }
+        const restored = { ...blank, ...(saved.answers as Partial<Answers>), paymentMethod: (saved.answers as Partial<Answers>).paymentMethod === 'Debit or credit card' ? 'Debit or credit card' : 'EFT', ssn: '', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', health:blank.health.map((value, index) => Array.isArray(saved.answers.health) ? saved.answers.health[index] || value : value) }
         setAnswers(restored)
         localStorage.setItem('policybear-demo', JSON.stringify({ answers: sanitizedAnswers(restored), screen: saved.screen, at: Date.now() }))
         if (saved.screen === 'personal') savedStep = 'address'
