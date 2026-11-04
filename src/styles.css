@@ -2197,3 +2197,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .centered-step > .revisit-next { margin: 6px auto 0; align-self: center; justify-self: center; }
 .revisit-next:hover:not(:disabled), .send-code-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 18px 30px -16px color-mix(in oklab, var(--primary) 95%, transparent); }
 .revisit-next:disabled, .send-code-btn:disabled { opacity: .4; box-shadow: none; }
+
+/* Professional Next / Send code — clean solid brand button */
+.revisit-next, .send-code-btn { gap: 8px; height: 46px; min-width: 140px; justify-content: center; padding: 0 26px; border-radius: 12px; background: var(--primary); color: var(--primary-foreground); font-size: 15px; font-weight: 600; letter-spacing: 0; box-shadow: 0 1px 2px color-mix(in oklab, var(--brand-deep) 20%, transparent), 0 8px 18px -12px color-mix(in oklab, var(--primary) 70%, transparent); transition: background 180ms, box-shadow 180ms, transform 180ms; }
+.revisit-next svg, .send-code-btn svg { width: 16px; height: 16px; padding: 0; border-radius: 0; background: none; color: currentColor; }
+.revisit-next:hover:not(:disabled), .send-code-btn:hover:not(:disabled) { background: color-mix(in oklab, var(--primary) 86%, var(--brand-deep)); transform: none; box-shadow: 0 1px 2px color-mix(in oklab, var(--brand-deep) 20%, transparent), 0 10px 20px -12px color-mix(in oklab, var(--primary) 80%, transparent); }
+.revisit-next:active:not(:disabled), .send-code-btn:active:not(:disabled) { transform: translateY(1px); }
+.revisit-next:disabled, .send-code-btn:disabled { opacity: 1; background: color-mix(in oklab, var(--primary) 12%, var(--card)); color: color-mix(in oklab, var(--primary) 45%, var(--muted-foreground)); box-shadow: none; }
