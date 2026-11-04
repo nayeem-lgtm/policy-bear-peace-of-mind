@@ -116,21 +116,22 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
         setAnswers(restored)
         localStorage.setItem('policybear-demo', JSON.stringify({ answers: sanitizedAnswers(restored), screen: saved.screen, at: Date.now() }))
         if (saved.screen === 'personal') savedStep = 'address'
+        else if (saved.screen === 'review') savedStep = 'disclosures'
         else if (journeySteps.includes(saved.screen)) savedStep = saved.screen
         setResume(true)
       }
     } catch { /* Browsing privacy settings should not block the demo. */ }
-    const fromHash = location.hash.replace('#step-', '').replace(/^personal$/, 'address') as JourneyStep
+    const fromHash = location.hash.replace('#step-', '').replace(/^personal$/, 'address').replace(/^review$/, 'disclosures') as JourneyStep
     if (journeySteps.includes(fromHash)) setScreen(fromHash)
     else if (savedStep) setScreen(savedStep)
     setReady(true)
-    const hashChange = () => { const next = location.hash.replace('#step-', '').replace(/^personal$/, 'address') as JourneyStep; if (journeySteps.includes(next)) setScreen(next) }
+    const hashChange = () => { const next = location.hash.replace('#step-', '').replace(/^personal$/, 'address').replace(/^review$/, 'disclosures') as JourneyStep; if (journeySteps.includes(next)) setScreen(next) }
     window.addEventListener('hashchange', hashChange)
     return () => window.removeEventListener('hashchange', hashChange)
   }, [])
 
   useEffect(() => {
-    const next = routeHash.replace(/^#?step-/, '').replace(/^personal$/, 'address') as JourneyStep
+    const next = routeHash.replace(/^#?step-/, '').replace(/^personal$/, 'address').replace(/^review$/, 'disclosures') as JourneyStep
     if (!journeySteps.includes(next)) return
     setScreen(next)
     setError('')
@@ -401,14 +402,13 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       return shell(isBank ? 'EFT Details Saved Successfully' : 'Card Details Saved Successfully', '', <div className="centered-step payment-confirmation">
         <p className="payment-confirmation-subtitle">Your {isBank ? 'bank transfer' : 'card'} details are ready for this application.</p>
         <div className="payment-receipt">
-          <p className="payment-receipt-note">No transaction has been processed. Continue to review and sign your application.</p>
+          <p className="payment-receipt-note">No transaction has been processed. Continue to review your documents and sign your application.</p>
           <dl className="payment-receipt-details"><div><dt>Payment Method</dt><dd>{isBank ? 'Electronic Fund Transfer (EFT)' : 'Debit or credit card'}</dd></div><div><dt>Date &amp; Time</dt><dd>{savedTime || 'Not saved in this session'}</dd></div></dl>
           <div className="payment-receipt-total"><span>Amount to be charged</span><strong>${monthly.toFixed(2)}</strong></div>
         </div>
-        <Button type="button" variant="action" className="revisit-next payment-confirmation-continue" onClick={() => go('review')}>Continue</Button>
+        <Button type="button" variant="action" className="revisit-next payment-confirmation-continue" onClick={() => go('disclosures')}>Continue</Button>
       </div>, { icon: <svg className="payment-success-seal" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path className="payment-success-seal-fill" d="m32 3 7.1 6.3 9.4-.2 2.7 9 7.8 5.2-3.1 8.7 3.1 8.7-7.8 5.2-2.7 9-9.4-.2L32 61l-7.1-6.3-9.4.2-2.7-9L5 40.7 8.1 32 5 23.3l7.8-5.2 2.7-9 9.4.2L32 3Z" /><path className="payment-success-seal-check" d="m21 32 7.5 7.5L44 24" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg> })
     }
-    if (screen === 'review') { const reviewRows: Array<[string, string, JourneyStep]> = [['About you', `${answers.firstName} ${answers.lastName}`, 'contact'], ['Address', `${answers.street}, ${answers.city}`, 'address'], ['Health answers', `${answers.health.filter((value) => value === 'Yes').length} yes answers`, 'h1'], ['Coverage & price', `$${coverage.toLocaleString()} · $${monthly.toFixed(2)}/month`, 'price'], ['Beneficiary', answers.beneficiaryType === 'A person' ? `${answers.beneficiaryFirst} ${answers.beneficiaryLast}` : answers.beneficiaryType, 'beneficiary'], ['Other insurance', answers.otherInsurance, 'insurance'], ['Payment', `${answers.paymentMethod} •••• ${answers.account.slice(-4) || answers.card.slice(-4)}`, 'payment']]; return shell('Review your application', 'Check the details below before you sign.', <>{reviewRows.map(([label, value, target]) => <div className="review-row" key={label}><span><small>{label}</small>{value || 'Not provided'}</span><Button type="button" variant="quiet" onClick={() => go(target)}>Edit</Button></div>)}<Button variant="action" size="touch" className="continue-button" onClick={() => go('disclosures')}>Looks good — continue to sign</Button></>) }
     if (screen === 'disclosures') return shell('Please review your documents', '', <>{['Application', 'Authorization to release health information', 'Bank draft authorization', '[STATE_NOTICES]'].map((document) => <details className="document-row" key={document}><summary>{document}<ChevronDown /></summary><p>Prototype document text for review. Final carrier document will replace this placeholder.</p><Button variant="quiet">Download PDF (mock)</Button></details>)}<CheckRow checked={documents} onChange={setDocuments}>I have read and agree to the documents above.</CheckRow><Button variant="action" size="touch" className="continue-button" disabled={!documents} onClick={() => go('signature')}>Continue</Button></>)
     if (screen === 'signature') return shell('Sign your application', 'Choose how you would like to sign.', <><div className="signature-mode" role="group" aria-label="Signature method"><Button type="button" variant={signatureMode === 'type' ? 'action' : 'quiet'} onClick={() => setSignatureMode('type')}>Type signature</Button><Button type="button" variant={signatureMode === 'draw' ? 'action' : 'quiet'} onClick={() => setSignatureMode('draw')}><PenLine /> Draw signature</Button></div>{signatureMode === 'type' ? <>{field('signature', 'Full legal name')}<p className="field-prompt">Choose a signature style</p><div className="signature-styles" role="radiogroup" aria-label="Signature style">{['Classic', 'Smooth', 'Simple'].map((label, index) => <Button type="button" variant="quiet" role="radio" aria-checked={signatureStyle === index} className={signatureStyle === index ? 'selected' : ''} onClick={() => setSignatureStyle(index)} key={label}><span className={`signature-sample signature-style-${index}`}>{answers.signature || 'Your name'}</span><small>{label}</small></Button>)}</div><div className={`signature-preview signature-style-${signatureStyle}`}>{answers.signature || 'Your signature'}</div></> : <DrawSignature onChange={setHasDrawing} />}<p className="valid-note">Dated {new Date().toLocaleDateString()}</p><CheckRow checked={signed} onChange={setSigned}>I agree to sign electronically and that this is my legal signature.</CheckRow><Button variant="action" size="touch" className="continue-button" disabled={!signed || (signatureMode === 'type' ? answers.signature.trim().length < 3 : !hasDrawing)} onClick={() => go('verify')}>Continue</Button></>)
     if (screen === 'verify') return shell('Verify it’s you', `We sent a 6-digit code to ${answers.phone ? `(***) ***-${answers.phone.replace(/\D/g, '').slice(-4)}` : '(•••) •••-1234'} (mock).`, <><label className="field-label">Verification code<input className="text-field code-field" value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} inputMode="numeric" maxLength={6} autoComplete="one-time-code" /></label><p className="question-call">Any 6 digits work in this prototype.</p><Button variant="quiet" className="wide-button">Send by email instead</Button><Button variant="action" size="touch" className="continue-button" disabled={code.length !== 6} onClick={() => go('submitting')}>Sign and submit</Button></>)
