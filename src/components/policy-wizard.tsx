@@ -403,7 +403,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
         <div className="payment-receipt">
           <p className="payment-receipt-note">No transaction has been processed. Continue to review and sign your application.</p>
           <dl className="payment-receipt-details"><div><dt>Payment Method</dt><dd>{isBank ? 'Electronic Fund Transfer (EFT)' : 'Debit or credit card'}</dd></div><div><dt>Date &amp; Time</dt><dd>{savedTime || 'Not saved in this session'}</dd></div></dl>
-          <div className="payment-receipt-total"><span>Monthly payment amount</span><strong>${monthly.toFixed(2)}</strong></div>
+          <div className="payment-receipt-total"><span>Amount to be charged</span><strong>${monthly.toFixed(2)}</strong></div>
         </div>
         <Button type="button" variant="action" className="revisit-next payment-confirmation-continue" onClick={() => go('review')}>Continue</Button>
       </div>, { icon: <ShieldCheck /> })
