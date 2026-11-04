@@ -488,14 +488,12 @@ function Decision({ outcome, firstName, coverage, price, onContinue, onCallback 
   const graded = outcome === 'graded'
   const name = firstName || 'friend'
   return <div className="wizard-content celebrate">
-    <div className="celebrate-status"><span className="celebrate-seal" aria-hidden="true"><Check /></span><span>{graded ? 'Coverage option available' : 'Your coverage match'}</span></div>
+    <span className="celebrate-seal" aria-hidden="true"><ShieldCheck /></span>
     <h2 id="wizard-title">{graded ? `Good news, ${name}.` : `Congratulations, ${name}!`}</h2>
-    <p className="celebrate-sub">{graded ? 'Your demo result offers graded final expense coverage.' : 'Your demo application qualifies for final expense coverage.'}</p>
-    <section className="celebrate-policy" aria-label="Your coverage summary">
-      <div className="celebrate-policy-top"><ShieldCheck /><span>{graded ? 'Graded coverage' : 'Immediate full coverage'}</span></div>
-      <dl className="celebrate-figures"><div><dt>Coverage amount</dt><dd>${coverage.toLocaleString()}</dd></div><div><dt>Monthly premium</dt><dd>${price.toFixed(2)}<span>/mo</span></dd></div></dl>
-      <p className="celebrate-note">{graded ? `For the first 2 years, the full benefit is paid for accidental loss; for other causes, a partial benefit applies. From year 3, your family receives the full $${coverage.toLocaleString()}. [CARRIER_TO_CONFIRM]` : 'Full benefit from day one [CARRIER_TO_CONFIRM]'}</p>
+    <section className="celebrate-summary" aria-label="Your coverage summary">
+      <p className="illustration-summary"><span className="illustration-price"><strong>${price.toFixed(2)}</strong> per month</span><span className="illustration-coverage">for <strong>${coverage.toLocaleString()}</strong> of final expense coverage</span></p>
+      {graded && <p className="celebrate-note">For the first 2 years, the full benefit applies to accidental loss only; a partial benefit applies otherwise. Full coverage begins in year 3. [CARRIER_TO_CONFIRM]</p>}
     </section>
-    <div className="celebrate-actions"><small>Illustrative result · Not an issued policy</small><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}>Personalize my policy</Button></div>
+    <div className="celebrate-actions"><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Personalize my policy</Button><small>Illustrative result · Not an issued policy</small></div>
   </div>
 }
