@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { AlertCircle, ArrowLeft, Check, ChevronDown, Clock, Cigarette, CreditCard, Eye, EyeOff, Fingerprint, Heart, HeartPulse, Landmark, LockKeyhole, MapPin, Mars, Minus, Moon, PenLine, Phone, Smartphone, Plus, RotateCcw, Ruler, Scale, ShieldCheck, Sparkles, Sun, Sunrise, UserRound, Users, Venus, X } from 'lucide-react'
+import { AlertCircle, ArrowLeft, Check, ChevronDown, Clock, Cigarette, CreditCard, Eye, EyeOff, Fingerprint, Heart, HeartPulse, Landmark, LockKeyhole, MapPin, Mars, Minus, Moon, PartyPopper, PenLine, Phone, Smartphone, Plus, RotateCcw, Ruler, Scale, ShieldCheck, Sparkles, Sun, Sunrise, UserRound, Users, Venus, X } from 'lucide-react'
 import * as Radio from '@radix-ui/react-radio-group'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { z } from 'zod'
@@ -111,7 +111,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     try {
       const saved = JSON.parse(localStorage.getItem('policybear-demo') || 'null')
       if (saved?.answers && Date.now() - saved.at < 7 * 86400000) {
-        const restored = { ...blank, ...(saved.answers as Partial<Answers>), ssn: '', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', health: [...blank.health, ...(Array.isArray(saved.answers.health) ? saved.answers.health : [])].slice(0, 8) }
+        const restored = { ...blank, ...(saved.answers as Partial<Answers>), ssn: '', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', health: blank.health.map((value, index) => Array.isArray(saved.answers.health) ? saved.answers.health[index] || value : value) }
         setAnswers(restored)
         localStorage.setItem('policybear-demo', JSON.stringify({ answers: sanitizedAnswers(restored), screen: saved.screen, at: Date.now() }))
         if (saved.screen === 'personal') savedStep = 'address'
@@ -163,11 +163,11 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     const second = window.setTimeout(() => setLoadingLine(2), 1300)
     const finish = window.setTimeout(() => {
       if (screen === 'loading') go('price')
-      if (screen === 'underwriting') go('decision')
+      if (screen === 'underwriting') go(outcome === 'declined' ? 'eligibility' : 'beneficiary')
       if (screen === 'submitting') { setPolicyNumber(`PB-FE-${Math.floor(100000 + Math.random() * 900000)}`); go('issued') }
     }, screen === 'underwriting' ? 2800 : 2200)
     return () => { clearTimeout(first); clearTimeout(second); clearTimeout(finish) }
-  }, [screen])
+  }, [screen, outcome])
 
   const update = (key: StringAnswerKey, value: string) => { setAnswers((current) => ({ ...current, [key]: value })); setError('') }
   const go = (next: JourneyStep) => { window.clearTimeout(advanceTimer.current); window.clearTimeout(customTimer.current); setError(''); setResume(false); location.hash = `step-${next}`; setScreen(next) }
@@ -200,7 +200,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     return () => window.clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, identityReady, identitySelection, answers.citizen, answers.resident])
-  const back = () => { let i = screenIndex - 1; while (i > 0 && ['loading', 'underwriting', 'submitting'].includes(journeySteps[i] ?? '')) i -= 1; const previous = journeySteps[Math.max(0, i)]; if (previous) go(previous) }
+  const back = () => { let i = screenIndex - 1; const skipped = ['loading', 'underwriting', 'submitting', ...(outcome !== 'declined' ? ['eligibility', 'gi-offer'] : [])]; while (i > 0 && skipped.includes(journeySteps[i] ?? '')) i -= 1; const previous = journeySteps[Math.max(0, i)]; if (previous) go(previous) }
   const choose = (key: StringAnswerKey, value: string, next?: JourneyStep) => { update(key, value); if (next) advance(next) }
   // Custom coverage advances on its own once the slider settles, so no Continue button is needed.
   const settleCustom = (value: string) => {
@@ -300,7 +300,8 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       </div>, { icon: <HeartPulse /> })
     }
     if (screen === 'underwriting') return <LoadingState icon={<ShieldCheck />} title="Reviewing your application" lines={['Reviewing your answers', 'Checking eligibility', 'Preparing your decision']} active={loadingLine} duration={2800} />
-    if (screen === 'decision') return <Decision outcome={outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go(outcome === 'declined' ? 'gi-offer' : 'beneficiary')} onCallback={() => go('callback')} />
+    if (screen === 'eligibility') return <Decision outcome="declined" firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('gi-offer')} onCallback={() => go('callback')} />
+    if (screen === 'decision') return <Decision outcome={answers.coverageType === 'Guaranteed Issue' ? 'approved' : outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('payment')} onCallback={() => go('callback')} />
     if (screen === 'gi-offer') return shell('Guaranteed-issue final expense coverage', 'No health questions. Ages 50–85. Pick an amount to see your price.', <><Radio.Root value={answers.coverage} onValueChange={(value) => update('coverage', value)} className="answer-grid">{['5000', '10000', '15000', '20000', '25000'].map((value) => <Radio.Item className="answer-card" value={value} key={value}><strong>${Number(value).toLocaleString()}</strong></Radio.Item>)}</Radio.Root><PriceCard price={calculatePrice(age || 68, answers.gender || 'Female', Math.min(coverage, 25000), answers.tobacco, 'guaranteed')} coverage={Math.min(coverage, 25000)} annual={annual} setAnnual={setAnnual} /><div className="info-panel">If death occurs from natural causes in the first 2 years, your beneficiary receives the premiums paid plus interest. Accidental loss is covered in full from day one. After 2 years, the full benefit is paid. [CARRIER_TO_CONFIRM]</div><div className="next-row"><button type="button" className="revisit-next" onClick={() => { update('coverageType', 'Guaranteed Issue'); go('beneficiary') }}>Next</button></div></>, { icon: <ShieldCheck /> })
     if (screen === 'beneficiary') {
       const isPerson = answers.beneficiaryType === 'A person'
@@ -346,9 +347,9 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       </form>, { icon: <Users /> })
     }
     if (screen === 'insurance') return shell('Do you have any other life insurance or annuities, or a pending application?', '', <div className="centered-step health-step">
-      <Radio.Root aria-label="Other life insurance" value={answers.otherInsurance} onValueChange={(value) => update('otherInsurance', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('otherInsurance', option, option === 'No' ? 'payment' : undefined)}><strong>{option}</strong></Radio.Item>)}</Radio.Root>
-      {answers.otherInsurance === 'Yes' && <fieldset className="identity-question"><legend>Will this policy replace or be paid for by cancelling any of them?</legend><Radio.Root aria-label="Replacement policy" value={answers.replacing} onValueChange={(value) => update('replacing', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('replacing', option, 'payment')}><strong>{option}</strong></Radio.Item>)}</Radio.Root>{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</fieldset>}
-      {nextLink('payment', answers.otherInsurance === 'No' || Boolean(answers.replacing))}
+      <Radio.Root aria-label="Other life insurance" value={answers.otherInsurance} onValueChange={(value) => update('otherInsurance', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('otherInsurance', option, option === 'No' ? 'decision' : undefined)}><strong>{option}</strong></Radio.Item>)}</Radio.Root>
+      {answers.otherInsurance === 'Yes' && <fieldset className="identity-question"><legend>Will this policy replace or be paid for by cancelling any of them?</legend><Radio.Root aria-label="Replacement policy" value={answers.replacing} onValueChange={(value) => update('replacing', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('replacing', option, 'decision')}><strong>{option}</strong></Radio.Item>)}</Radio.Root>{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</fieldset>}
+      {nextLink('decision', answers.otherInsurance === 'No' || Boolean(answers.replacing))}
     </div>, { icon: <ShieldCheck /> })
     if (screen === 'payment') {
       const isBank = answers.paymentMethod === 'Bank account'
@@ -532,13 +533,13 @@ function Decision({ outcome, firstName, coverage, price, onContinue, onCallback 
   const graded = outcome === 'graded'
   const name = firstName || 'friend'
   return <div className="wizard-content celebrate">
-    <div className="celebrate-burst" aria-hidden="true">{Array.from({ length: 28 }, (_, index) => <i key={index} style={{ '--burst-x': `${Math.round(Math.cos(index * 2.4) * (100 + index % 5 * 28))}px`, '--burst-y': `${Math.round(Math.sin(index * 2.4) * (75 + index % 4 * 24))}px`, '--burst-turn': `${index * 47}deg`, '--burst-delay': `${index % 4 * 45}ms` } as CSSProperties} />)}</div>
-    <span className="celebrate-seal" aria-hidden="true"><ShieldCheck /></span>
+    <div className="celebrate-burst" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ '--burst-origin': index % 2 ? '82%' : '18%', '--burst-x': `${(index % 2 ? -1 : 1) * (45 + index % 8 * 24)}px`, '--burst-y': `${-95 - index % 7 * 22}px`, '--burst-turn': `${index * 67}deg`, '--burst-delay': `${index % 6 * 65}ms` } as CSSProperties} />)}</div>
+    <span className="celebrate-seal" aria-hidden="true"><PartyPopper /></span>
     <h2 id="wizard-title">{graded ? `Good news, ${name}.` : `Congratulations, ${name}!`}</h2>
     <section className="celebrate-summary" aria-label="Your coverage summary">
       <p className="illustration-summary"><span className="illustration-price"><strong>${price.toFixed(2)}</strong> per month</span><span className="illustration-coverage">for <strong>${coverage.toLocaleString()}</strong> of final expense coverage</span></p>
       {graded && <p className="celebrate-note">For the first 2 years, the full benefit applies to accidental loss only; a partial benefit applies otherwise. Full coverage begins in year 3. [CARRIER_TO_CONFIRM]</p>}
     </section>
-    <div className="celebrate-actions"><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Make it mine</Button></div>
+    <div className="celebrate-actions"><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Finalize</Button></div>
   </div>
 }
