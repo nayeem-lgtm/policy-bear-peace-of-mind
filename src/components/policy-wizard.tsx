@@ -295,19 +295,11 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       const index = screen === 'health-intro' ? 0 : Number(screen.slice(1)) - 1
       const item = healthQuestions[index] ?? healthQuestions[0]
       const value = answers.health[index] || ''
-      const next = (index === 7 ? 'underwriting' : `h${index + 2}`) as JourneyStep
-      return shell(item.question, '', <div className="health-step">
-        <div className="health-meta">
-          <span className="health-topic"><HeartPulse /> {index === 0 ? 'A few health questions' : item.topic}</span>
-          <span className="health-count"><b>{index + 1}</b> of 8</span>
-        </div>
-        <div className="health-segments" aria-hidden="true">{healthQuestions.map((_, i) => <span key={i} className={i < index ? 'done' : i === index ? 'current' : undefined} />)}</div>
-        {index === 0 && <p className="health-lead">Just 8 quick yes-or-no questions — no exam, no paperwork.</p>}
-        <Radio.Root aria-label={`Health question ${index + 1}`} value={value} onValueChange={(v) => healthChoice(index, v)} className="health-choices">
-          {(['No', 'Yes'] as const).map((option) => <Radio.Item key={option} className={`answer-card health-card health-${option.toLowerCase()}`} value={option}><span className="health-icon" aria-hidden="true">{option === 'No' ? <Check /> : <X />}</span><span className="answer-copy"><strong>{option}</strong></span></Radio.Item>)}
+      return shell(item.question, '', <div className="centered-step health-step">
+        <Radio.Root aria-label={`Health question ${index + 1}`} value={value} onValueChange={(v) => setAnswers((current) => ({ ...current, health: current.health.map((answer, i) => i === index ? v : answer) }))} className="identity-choices health-choices">
+          {(['No', 'Yes'] as const).map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => healthChoice(index, option)}><strong>{option}</strong></Radio.Item>)}
         </Radio.Root>
-        {value && <div className="health-next">{continueTo(next, 'Next')}</div>}
-      </div>)
+      </div>, { icon: <HeartPulse /> })
     }
     if (screen === 'underwriting') return <LoadingState icon={<ShieldCheck />} title="Reviewing your application" lines={['Reviewing your answers', 'Checking eligibility', 'Preparing your decision']} active={loadingLine} duration={2800} />
     if (screen === 'decision') return <Decision outcome={outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go(outcome === 'declined' ? 'gi-offer' : 'beneficiary')} onCallback={() => go('callback')} />

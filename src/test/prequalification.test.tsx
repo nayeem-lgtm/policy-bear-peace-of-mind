@@ -196,6 +196,26 @@ describe('Identity split', () => {
 })
 
 describe('Application auto-advance', () => {
+  it('automatically moves through all eight health answers and starts the review', () => {
+    open('h1')
+    for (let index = 1; index <= 8; index += 1) {
+      expect(window.location.hash).toBe(`#step-h${index}`)
+      fireEvent.click(screen.getByRole('radio', { name: /^No$/ }))
+      act(() => { vi.advanceTimersByTime(350) })
+    }
+    expect(window.location.hash).toBe('#step-underwriting')
+  })
+  it('allows selecting the same health answer again after Back', () => {
+    open('h1')
+    fireEvent.click(screen.getByRole('radio', { name: /^Yes$/ }))
+    act(() => { vi.advanceTimersByTime(350) })
+    expect(window.location.hash).toBe('#step-h2')
+    fireEvent.click(screen.getByRole('button', { name: /Go back/ }))
+    expect(window.location.hash).toBe('#step-h1')
+    fireEvent.click(screen.getByRole('radio', { name: /^Yes$/ }))
+    act(() => { vi.advanceTimersByTime(350) })
+    expect(window.location.hash).toBe('#step-h2')
+  })
   it('moves on from other insurance when No is chosen', () => {
     open('insurance')
     fireEvent.click(screen.getByRole('radio', { name: /^No/ }))
