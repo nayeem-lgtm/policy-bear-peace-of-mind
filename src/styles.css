@@ -1617,7 +1617,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .app-tip-stage > .back-orb { order: 1; align-self: flex-start; margin: 0; }
 .app-tip-stage > .wizard-content { order: 2; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px 28px 24px; box-shadow: 0 24px 48px -28px color-mix(in oklab, var(--primary) 45%, transparent); }
 .app-tip-stage > .wizard-content .answer-list { margin-bottom: 0; }
-.app-body .app-tip-stage .bear-tip { order: 3; align-items: flex-end; justify-content: center; gap: 10px; margin-top: 12px; }
+.app-body .app-tip-stage .bear-tip { order: 3; align-items: flex-end; justify-content: center; gap: 10px; margin-top: 32px; }
 .app-body .app-tip-stage .bear-tip-bubble { flex: 0 1 400px; }
 .app-body .app-tip-stage .bear-tip-img { width: 108px; margin-bottom: -6px; }
 .app-body .app-tip-stage .bear-tip-bubble { border-width: 1.5px; background: color-mix(in oklab, var(--primary) 4%, var(--card)); box-shadow: none; padding: 14px 18px; }
@@ -1952,8 +1952,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .app-tip-stage .answer-list .answer-card[data-state=checked] .answer-badge { background: var(--primary); color: var(--primary-foreground); }
 .app-tip-stage .tobacco-choices .answer-card[data-state=checked], .app-tip-stage .sex-choices .answer-card[data-state=checked] { background: color-mix(in oklab, var(--primary) 7%, var(--card)); border-color: var(--primary); }
 /* Mr Bear fact check — the myth flips away to reveal the fact */
-.app-body .app-tip-stage .bear-tip { order: 3; margin-top: 20px; flex-direction: row; align-items: center; justify-content: center; gap: 13px; padding: 0; border-top: 0; background: transparent; position: relative; }
-.app-body .app-tip-stage .bear-tip-img { position: absolute; right: calc(50% + 188px); top: 50%; transform: translateY(-50%); width: 78px; margin: 0; filter: none; flex: none; }
+.app-body .app-tip-stage .bear-tip { order: 3; margin-top: 36px; flex-direction: row; align-items: flex-end; justify-content: center; gap: 10px; padding: 0; border-top: 0; background: transparent; }
+.app-body .app-tip-stage .bear-tip-img { width: 78px; margin: 0 0 -6px; filter: none; flex: none; }
 .app-body .app-tip-stage .bear-tip-bubble { position: relative; flex: 0 1 400px; min-width: 0; padding: 12px 16px 22px; border: 1px solid color-mix(in oklab, var(--primary) 13%, transparent); border-radius: 16px; background: linear-gradient(120deg, color-mix(in oklab, var(--primary) 6%, var(--card)), var(--card)); box-shadow: 0 16px 32px -26px color-mix(in oklab, var(--brand-deep) 65%, transparent); }
 .app-body .app-tip-stage .bear-tip-bubble::after { display: none; }
 .app-body .app-tip-stage .bear-tip-kicker { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in oklab, var(--primary) 78%, var(--brand-deep)); margin-bottom: 9px; }
