@@ -164,9 +164,9 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     const second = window.setTimeout(() => setLoadingLine(2), 1300)
     const finish = window.setTimeout(() => {
       if (screen === 'loading') go('price')
-      if (screen === 'underwriting') go(outcome === 'declined' ? 'eligibility' : 'beneficiary')
+      if (screen === 'underwriting') go('decision')
       if (screen === 'submitting') { setPolicyNumber(`PB-FE-${Math.floor(100000 + Math.random() * 900000)}`); go('issued') }
-    }, screen === 'underwriting' ? 2800 : 2200)
+    }, screen === 'underwriting' ? 3200 : 2200)
     return () => { clearTimeout(first); clearTimeout(second); clearTimeout(finish) }
   }, [screen, outcome])
 
@@ -211,8 +211,9 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   }
   const clearCustomTimer = () => { window.clearTimeout(customTimer.current); customTimer.current = 0 }
   const healthChoice = (index: number, value: string) => {
-    setAnswers((current) => ({ ...current, health: current.health.map((answer, i) => i === index ? value : answer) }))
-    advance(index === 7 ? 'underwriting' : (`h${index + 2}` as JourneyStep))
+    const health = answers.health.map((answer, i) => i === index ? value : answer)
+    setAnswers((current) => ({ ...current, health }))
+    advance(index === 7 ? ((forced || determineOutcome(health)) === 'declined' ? 'eligibility' : 'beneficiary') : (`h${index + 2}` as JourneyStep))
   }
   const dobTouched = useRef(false)
   const validDOBNow = age >= 50 && age <= 85 && Boolean(answers.day && answers.month && answers.year)
@@ -300,7 +301,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
         </Radio.Root>
       </div>, { icon: <HeartPulse /> })
     }
-    if (screen === 'underwriting') return <LoadingState icon={<ShieldCheck />} title="Reviewing your application" lines={['Reviewing your answers', 'Checking eligibility', 'Preparing your decision']} active={loadingLine} duration={2800} />
+    if (screen === 'underwriting') return <CoverageLoading />
     if (screen === 'eligibility') return <Decision outcome="declined" firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('gi-offer')} onCallback={() => go('callback')} />
     if (screen === 'decision') return <Decision outcome={answers.coverageType === 'Guaranteed Issue' ? 'approved' : outcome} firstName={answers.firstName} coverage={coverage} price={monthly} onContinue={() => go('payment')} onEdit={() => { setEditingCoverage(true); setAnnual(false); go('price') }} onCallback={() => go('callback')} />
     if (screen === 'gi-offer') return shell('Guaranteed-issue final expense coverage', 'No health questions. Ages 50–85. Pick an amount to see your price.', <><Radio.Root value={answers.coverage} onValueChange={(value) => update('coverage', value)} className="answer-grid">{['5000', '10000', '15000', '20000', '25000'].map((value) => <Radio.Item className="answer-card" value={value} key={value}><strong>${Number(value).toLocaleString()}</strong></Radio.Item>)}</Radio.Root><PriceCard price={calculatePrice(age || 68, answers.gender || 'Female', Math.min(coverage, 25000), answers.tobacco, 'guaranteed')} coverage={Math.min(coverage, 25000)} annual={annual} setAnnual={setAnnual} /><div className="info-panel">If death occurs from natural causes in the first 2 years, your beneficiary receives the premiums paid plus interest. Accidental loss is covered in full from day one. After 2 years, the full benefit is paid. [CARRIER_TO_CONFIRM]</div><div className="next-row"><button type="button" className="revisit-next" onClick={() => { update('coverageType', 'Guaranteed Issue'); go('beneficiary') }}>Next</button></div></>, { icon: <ShieldCheck /> })
@@ -348,8 +349,8 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       </form>, { icon: <Users /> })
     }
     if (screen === 'insurance') return shell('Do you have any other life insurance or annuities, or a pending application?', '', <div className="centered-step health-step">
-      <Radio.Root aria-label="Other life insurance" value={answers.otherInsurance} onValueChange={(value) => update('otherInsurance', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('otherInsurance', option, option === 'No' ? 'decision' : undefined)}><strong>{option}</strong></Radio.Item>)}</Radio.Root>
-      {answers.otherInsurance === 'Yes' && <fieldset className="identity-question"><legend>Will this policy replace or be paid for by cancelling any of them?</legend><Radio.Root aria-label="Replacement policy" value={answers.replacing} onValueChange={(value) => update('replacing', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('replacing', option, 'decision')}><strong>{option}</strong></Radio.Item>)}</Radio.Root>{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</fieldset>}
+      <Radio.Root aria-label="Other life insurance" value={answers.otherInsurance} onValueChange={(value) => update('otherInsurance', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('otherInsurance', option, option === 'No' ? 'underwriting' : undefined)}><strong>{option}</strong></Radio.Item>)}</Radio.Root>
+      {answers.otherInsurance === 'Yes' && <fieldset className="identity-question"><legend>Will this policy replace or be paid for by cancelling any of them?</legend><Radio.Root aria-label="Replacement policy" value={answers.replacing} onValueChange={(value) => update('replacing', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('replacing', option, 'underwriting')}><strong>{option}</strong></Radio.Item>)}</Radio.Root>{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</fieldset>}
     </div>, { icon: <ShieldCheck /> })
     if (screen === 'payment') {
       const isBank = answers.paymentMethod === 'Bank account'
@@ -506,6 +507,13 @@ function DrawSignature({ onChange }: { onChange: (drawn: boolean) => void }) {
   }
 
   return <div className="draw-signature"><div className="draw-heading"><span>Draw your signature below</span><Button type="button" variant="quiet" onClick={clear}><RotateCcw /> Clear</Button></div><canvas ref={canvas} width="470" height="180" aria-label="Draw your signature" onPointerDown={start} onPointerMove={move} onPointerUp={stop} onPointerCancel={stop} onPointerLeave={stop} /><p>Use your finger, mouse, or trackpad.</p></div>
+}
+function CoverageLoading() {
+  return <div className="coverage-loading" role="status" aria-live="polite">
+    <div className="coverage-loading-art" aria-hidden="true"><svg className="coverage-loading-ring" viewBox="0 0 160 160"><circle className="coverage-loading-track" cx="80" cy="80" r="70" /><circle className="coverage-loading-progress" cx="80" cy="80" r="70" /></svg><div className="coverage-loading-shield"><CoverageBadgeIcon /></div><div className="coverage-loading-trail">{[0, 1, 2, 3].map((i) => <span key={i}><PawGlyph /></span>)}</div></div>
+    <h2>Preparing your coverage</h2><p>Bringing your details together.<br />Stay with us for a moment.</p>
+    <div className="coverage-loading-bar" aria-hidden="true"><span /></div>
+  </div>
 }
 function LoadingState({ icon, title, lines, active, duration = 2200 }: { icon: React.ReactNode; title: string; lines: string[]; active: number; duration?: number }) {
   const style = { '--load-ms': `${duration}ms` } as React.CSSProperties
