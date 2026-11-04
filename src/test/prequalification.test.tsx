@@ -160,7 +160,9 @@ describe('Identity split', () => {
     open('identity')
     fireEvent.change(screen.getByRole('combobox', { name: 'Country of birth' }), { target: { value: 'Canada' } })
     fireEvent.click(screen.getByRole('radio', { name: /^No$/ }))
-    fireEvent.click(screen.getAllByRole('radio', { name: /^No$/ })[1])
+    const residencyNo = screen.getAllByRole('radio', { name: /^No$/ })[1]
+    if (!residencyNo) throw new Error('Residency choice is missing')
+    fireEvent.click(residencyNo)
     act(() => { vi.advanceTimersByTime(350) })
     expect(window.location.hash).toBe('#step-ineligible')
   })
