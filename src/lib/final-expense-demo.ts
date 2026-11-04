@@ -4,6 +4,9 @@ export type Outcome = 'approved' | 'graded' | 'declined'
 export const COVERAGE_MIN = 5000
 export const COVERAGE_MAX = 50000
 
+// Owner-supplied "From" starting prices shown on the coverage choice cards.
+export const coverageFromPrices: Record<string, number> = { 10000: 30, 15000: 45, 20000: 60, 25000: 80 }
+
 // Your Profile (shown as "Your Profile", formerly "Basic Info" then "About You") holds the five rating questions (state, gender, date of birth, tobacco, coverage).
 // The illustration is shown right after them; the remaining questions are Pre-Qualification.
 export const basicInfoSteps = ['state', 'gender', 'dob', 'tobacco', 'coverage'] as const
