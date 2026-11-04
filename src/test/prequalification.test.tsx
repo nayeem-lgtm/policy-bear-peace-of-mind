@@ -46,11 +46,11 @@ describe('Pre-qualification navigation', () => {
       fireEvent.change(screen.getByPlaceholderText('MM/YY'), { target: { value: '12/35' } })
       fireEvent.change(screen.getByPlaceholderText('5 digits'), { target: { value: '10001' } })
     }
-    fireEvent.click(screen.getByRole('button', { name: 'Save', exact: true }))
+    fireEvent.click(screen.getByRole('button', { name: /^Save$/ }))
     expect(window.location.hash).toBe('#step-payment-saved')
     const saved = JSON.parse(localStorage.getItem('policybear-demo') || '{}')
     for (const key of ['accountName', 'routing', 'account', 'card', 'expiry', 'paymentZip']) expect(saved.answers).not.toHaveProperty(key)
-    fireEvent.click(screen.getByRole('button', { name: 'Continue', exact: true }))
+    fireEvent.click(screen.getByRole('button', { name: /^Continue$/ }))
     expect(window.location.hash).toBe('#step-review')
   })
   it.each(['First name', 'Last name', 'Email', 'Mobile phone'])('requires %s on the contact page', (name) => {
