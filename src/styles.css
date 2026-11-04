@@ -2157,11 +2157,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .centered-step .reconnect-demo, .centered-step .auto-next, .centered-step .skip-link { justify-self: center; text-align: center; }
 @media (max-width: 760px) { .three-fields { grid-template-columns: 1fr 1fr; } .three-fields > :first-child { grid-column: 1 / -1; } }
 .centered-step .reconnect-permission { padding: 18px 20px; } .centered-step .reconnect-permission .permission-optional { margin: 0 0 6px; }
-.contact-step .reconnect-permission { padding: 12px 14px; }
-.contact-step .contact-consent .check-row { font-size: 12px; line-height: 1.5; gap: 9px; margin: 0 0 8px; }
-.contact-step .contact-consent .check-row > button { width: 20px; height: 20px; flex-basis: 20px; }
-.contact-step .contact-consent .check-row svg { width: 14px; height: 14px; }
-.contact-step .consent-paragraph + .consent-paragraph { margin-top: 6px; }
+.contact-step .reconnect-permission { padding: 10px 12px; }
+.contact-step .contact-consent .check-row { font-size: 11px; line-height: 1.45; gap: 7px; margin: 0; }
+.contact-step .contact-consent .check-row > button { width: 16px; height: 16px; flex-basis: 16px; }
+.contact-step .contact-consent .check-row svg { width: 11px; height: 11px; }
+.contact-step .consent-paragraph + .consent-paragraph { margin-top: 4px; }
 .contact-step .consent-resources { font-size: 12px; line-height: 1.5; margin: 0; padding-top: 8px; }
 .contact-step .consent-resources > span { margin-top: 4px; }
 
