@@ -1,5 +1,9 @@
 # PolicyBear final expense
 
+- [x] Reposition Mr Bear's fact-check pair on profile screens: 36px below the question card with the whole pair centred as one unit.
+- [x] Fix the invisible wizard "Resend code" / "No thanks, skip this step" buttons (shared .skip-link style conflicted with the header's visually-hidden skip link).
+- [ ] Full journey walkthrough after the remix, then publish — in progress.
+
 - [x] Show the owner-supplied original GeoTrust, TRUSTe and TrustLock seals on the Social Security step as equal white tiles above the three trust badges; verified fit with the footer visible and no overflow at 986x834, 1280x800 and 390x844, all 26 tests pass.
 
 
