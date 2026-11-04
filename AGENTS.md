@@ -28,3 +28,4 @@
 - Show the quote sidebar only after the illustration screen; the illustration already contains the editable estimate and coverage, so duplicating them distracts from the selection.
 - Keep Social Security and policy ownership as consecutive independent hash steps, with ownership choices auto-advancing; this separates sensitive entry from the ownership decision while preserving Back navigation.
 - Keep eligibility routing separate from the post-application celebration so declined offers remain available without repeating congratulations before beneficiary questions.
+- Route the last health answer directly through eligibility or beneficiary; reuse the underwriting hash for the browser-only timed preparation animation after insurance so Back skips transient screens.

@@ -37,7 +37,8 @@ describe('Quote sequence', () => {
     expect([...journeySteps]).not.toContain('personal')
   })
   it('places congratulations after insurance and immediately before payment', () => {
-    expect(journeySteps[journeySteps.indexOf('insurance') + 1]).toBe('decision')
+    expect(journeySteps[journeySteps.indexOf('insurance') + 1]).toBe('underwriting')
+    expect(journeySteps[journeySteps.indexOf('underwriting') + 1]).toBe('decision')
     expect(journeySteps[journeySteps.indexOf('decision') + 1]).toBe('payment')
     expect(journeySteps.indexOf('beneficiary')).toBeLessThan(journeySteps.indexOf('decision'))
   })
@@ -76,7 +77,7 @@ describe('Chapter progress counter', () => {
     expect(chapterProgress('who')).toEqual({ chapter: 1, position: 1, total: 15 })
     expect(chapterProgress('owner')).toEqual({ chapter: 1, position: 7, total: 15 })
     expect(chapterProgress('h8')).toEqual({ chapter: 1, position: 15, total: 15 })
-    expect(chapterProgress('underwriting').position).toBe(15)
+    expect(chapterFor('underwriting')).toBe(2)
   })
   it('keeps the Application and Finalize totals honest', () => {
     expect(chapterProgress('gi-offer')).toEqual({ chapter: 2, position: 1, total: 5 })
