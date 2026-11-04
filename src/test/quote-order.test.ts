@@ -62,10 +62,15 @@ describe('Chapter progress counter', () => {
     expect(chapterProgress('loading').position).toBe(5)
     expect(chapterProgress('price')).toEqual({ chapter: 0, position: 5, total: 5 })
   })
-  it('counts the fourteen Pre-Qualification questions without the illustration', () => {
-    expect(chapterProgress('who')).toEqual({ chapter: 1, position: 1, total: 14 })
-    expect(chapterProgress('h8')).toEqual({ chapter: 1, position: 14, total: 14 })
-    expect(chapterProgress('underwriting').position).toBe(14)
+  it('places policy ownership immediately after Social Security', () => {
+    expect(journeySteps[journeySteps.indexOf('ssn') + 1]).toBe('owner')
+    expect(journeySteps[journeySteps.indexOf('owner') + 2]).toBe('h1')
+  })
+  it('counts the fifteen Pre-Qualification questions without the illustration', () => {
+    expect(chapterProgress('who')).toEqual({ chapter: 1, position: 1, total: 15 })
+    expect(chapterProgress('owner')).toEqual({ chapter: 1, position: 7, total: 15 })
+    expect(chapterProgress('h8')).toEqual({ chapter: 1, position: 15, total: 15 })
+    expect(chapterProgress('underwriting').position).toBe(15)
   })
   it('keeps the Application and Finalize totals honest', () => {
     expect(chapterProgress('gi-offer')).toEqual({ chapter: 2, position: 1, total: 5 })

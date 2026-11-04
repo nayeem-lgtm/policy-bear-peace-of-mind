@@ -15,7 +15,7 @@ export const quoteSteps = [...basicInfoSteps, ...preQualSteps] as const
 
 export const journeySteps = [
   ...basicInfoSteps, 'loading', 'price', ...preQualSteps,
-  'address', 'identity', 'ssn', 'health-intro', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8',
+  'address', 'identity', 'ssn', 'owner', 'health-intro', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8',
   'underwriting', 'decision', 'gi-offer', 'beneficiary', 'insurance', 'payment', 'draft',
   'review', 'disclosures', 'signature', 'verify', 'submitting', 'issued', 'callback', 'ineligible',
 ] as const
@@ -97,7 +97,7 @@ export function chapterFor(step: JourneyStep) {
 // so the illustration, underwriting and decision screens don't inflate the total.
 const chapterQuestions: readonly JourneyStep[][] = [
   [...basicInfoSteps],
-  ['who', 'contact', 'size', 'address', 'identity', 'ssn', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
+  ['who', 'contact', 'size', 'address', 'identity', 'ssn', 'owner', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
   ['gi-offer', 'beneficiary', 'insurance', 'payment', 'draft'],
   ['review', 'disclosures', 'signature', 'verify'],
 ]
