@@ -311,8 +311,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
         (answers.beneficiaryKnowPhone === 'No' || beneficiaryPhoneDigits.length >= 10) &&
         answers.beneficiaryKnowAddress &&
         (answers.beneficiaryKnowAddress === 'No' || answers.beneficiaryAddress.trim()))
-      return shell('Who should receive your benefit?', '', <form className="centered-step beneficiary-step" onSubmit={submitNext('insurance', beneficiaryValid, 'Please complete the primary beneficiary details.')}>
-        <p className="beneficiary-chapter">Primary beneficiary</p>
+      return shell('Primary beneficiary', '', <form className="centered-step beneficiary-step" onSubmit={submitNext('insurance', beneficiaryValid, 'Please complete the primary beneficiary details.')}>
         <label className={`contact-tile${answers.beneficiaryType ? ' is-filled' : ''}`}>
           <span className="contact-tile-label">Beneficiary type<span className="contact-required" aria-hidden="true"> *</span></span>
           <span className="measurement-select">
