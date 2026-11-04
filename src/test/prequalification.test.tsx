@@ -175,7 +175,7 @@ describe('Identity split', () => {
   })
   it('requires nine SSN digits before opening the separate policy-owner step', () => {
     open('ssn')
-    const input = screen.getByRole('textbox', { name: 'Social Security number' })
+    const input = screen.getByLabelText('Social Security number')
     fireEvent.change(input, { target: { value: '12345678' } })
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
     fireEvent.change(input, { target: { value: '123456789' } })
@@ -183,7 +183,7 @@ describe('Identity split', () => {
     expect(window.location.hash).toBe('#step-owner')
     fireEvent.click(screen.getByRole('button', { name: /Go back/ }))
     expect(window.location.hash).toBe('#step-ssn')
-    expect(screen.getByRole('textbox', { name: 'Social Security number' })).toHaveValue('123-45-6789')
+    expect(screen.getByLabelText('Social Security number')).toHaveValue('123-45-6789')
     const saved = JSON.parse(localStorage.getItem('policybear-demo') || '{}')
     expect(saved.answers).not.toHaveProperty('ssn')
   })
