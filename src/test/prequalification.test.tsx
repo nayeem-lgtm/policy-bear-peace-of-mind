@@ -18,7 +18,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-function open(step: string, seed?: Record<string, string>) {
+function open(step: string, seed?: Record<string, string | string[]>) {
   if (seed) localStorage.setItem('policybear-demo', JSON.stringify({ answers: seed, screen: step, at: Date.now() }))
   window.history.replaceState(null, '', `/#step-${step}`)
   render(<PolicyWizard onStepChange={() => {}} />)
