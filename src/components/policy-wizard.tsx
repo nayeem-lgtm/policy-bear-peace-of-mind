@@ -80,6 +80,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const advanceTimer = useRef(0)
   const [showSSN, setShowSSN] = useState(false)
   const [consent, setConsent] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
   const [documents, setDocuments] = useState(false)
   const [pinDelivery, setPinDelivery] = useState<PinDelivery>('')
   const [signed, setSigned] = useState(false)
@@ -191,12 +192,12 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
   const sizeReady = Boolean(answers.feet && answers.inches && z.coerce.number().min(80).max(500).safeParse(answers.weight).success)
   const ssnProtected = answers.ssn.replace(/\D/g, '').length === 9
   useEffect(() => {
-    const next = screen === 'contact' && contactReady && consent ? 'size' : screen === 'size' && sizeReady ? 'address' : null
+    const next = screen === 'contact' && contactReady && termsAccepted ? 'size' : screen === 'size' && sizeReady ? 'address' : null
     if (!next || revisiting) return
     const timer = window.setTimeout(() => go(next), screen === 'contact' || screen === 'size' ? 1400 : 700)
     return () => window.clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screen, contactReady, sizeReady, consent, phoneVerified, revisiting, identityReady, answers.firstName, answers.lastName, answers.email, answers.phone, answers.weight])
+  }, [screen, contactReady, sizeReady, termsAccepted, phoneVerified, revisiting, identityReady, answers.firstName, answers.lastName, answers.email, answers.phone, answers.weight])
   useEffect(() => {
     if (screen !== 'identity') { identityTouched.current = false; return }
     if (!identityTouched.current) return
