@@ -352,20 +352,18 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       {answers.otherInsurance === 'Yes' && <fieldset className="identity-question"><legend>Will this policy replace or be paid for by cancelling any of them?</legend><Radio.Root aria-label="Replacement policy" value={answers.replacing} onValueChange={(value) => update('replacing', value)} className="identity-choices health-choices">{['No', 'Yes'].map((option) => <Radio.Item key={option} className="identity-choice" value={option} onClick={() => choose('replacing', option, 'underwriting')}><strong>{option}</strong></Radio.Item>)}</Radio.Root>{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</fieldset>}
     </div>, { icon: <ShieldCheck /> })
     if (screen === 'payment') {
-      const isBank = answers.paymentMethod === 'Bank account'
+      const isBank = answers.paymentMethod !== 'Debit or credit card'
       const routingInfo = lookupRouting(answers.routing)
-      const accountMatch = Boolean(answers.account && answers.accountConfirm && answers.account === answers.accountConfirm)
-      const accountMismatch = Boolean(answers.accountConfirm && answers.account !== answers.accountConfirm && answers.accountConfirm.length >= answers.account.length)
       const brand = cardBrand(answers.card)
       const cardOk = luhnValid(answers.card)
       const expOk = expiryValid(answers.expiry)
-      const ready = authorized && Boolean(answers.accountName) && (isBank ? routingInfo.status === 'verified' && answers.account.length >= 4 && accountMatch : cardOk && expOk && answers.paymentZip.length === 5)
+      const ready = Boolean(answers.accountName) && (isBank ? routingInfo.status === 'verified' && answers.account.length >= 4 : cardOk && expOk && answers.paymentZip.length === 5)
       const digits = (key: StringAnswerKey, max: number) => (event: React.ChangeEvent<HTMLInputElement>) => update(key, event.target.value.replace(/\D/g, '').slice(0, max))
-      return shell(`How would you like to pay your $${monthly.toFixed(2)} monthly premium?`, '', <form className="app-form pay-form" onSubmit={submitNext('draft', ready, isBank ? 'Please complete your bank details — the routing number must verify and account numbers must match.' : 'Please enter a valid card number, expiry and ZIP.')}>
-        {cards('paymentMethod', ['Bank account', 'Debit or credit card'], undefined, { 'Bank account': <Landmark />, 'Debit or credit card': <CreditCard /> }, 'pair', { 'Bank account': 'Most popular · auto-draft', 'Debit or credit card': 'Visa, Mastercard, Amex, Discover' }, 'pay-methods')}
+      return shell('Choose your preferred payment method to continue.', '', <form className="centered-step pay-form" onSubmit={submitNext('draft', ready, isBank ? 'Please complete your bank details — the routing number must verify.' : 'Please enter a valid card number, expiry and ZIP.')}>
+        {cards('paymentMethod', ['EFT', 'Debit or credit card'], undefined, { EFT: <Landmark />, 'Debit or credit card': <CreditCard /> }, 'pair', { EFT: 'Draft from your bank account', 'Debit or credit card': 'Visa, Mastercard, Amex, Discover' }, 'pay-methods')}
         <div className="app-panel pay-panel">
           {isBank ? <>
-            <div className="two-fields">{field('accountName', 'Account holder name', { autoComplete: 'name' })}{select('accountType', 'Account type', ['Checking', 'Savings'])}</div>
+            {field('accountName', 'Account holder name', { autoComplete: 'name' })}
             <label className="field-label">Routing number
               <div className={`pay-input is-${routingInfo.status}`}><Landmark className="pay-lead" aria-hidden="true" /><input className="text-field" inputMode="numeric" autoComplete="off" placeholder="9 digits" value={answers.routing} onChange={digits('routing', 9)} /><span className="pay-count">{routingInfo.status === 'verified' ? <Check /> : `${answers.routing.length}/9`}</span></div>
             </label>
@@ -373,14 +371,10 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
               {routingInfo.status === 'verified' && <div className="bank-chip"><span className="bank-chip-icon"><Landmark /></span><span><strong>{routingInfo.bank}</strong><small>{routingInfo.detail}</small></span><span className="bank-chip-ok"><ShieldCheck /> Verified</span></div>}
               {routingInfo.status === 'invalid' && <p className="pay-error"><AlertCircle /> We couldn’t find that routing number. Check the 9 digits at the bottom-left of a check.</p>}
             </div>
-            <div className="two-fields">
-              <label className="field-label">Account number<input className="text-field" type="password" inputMode="numeric" autoComplete="off" placeholder="4–17 digits" value={answers.account} onChange={digits('account', 17)} /></label>
-              <label className="field-label">Confirm account number<div className={`pay-input${accountMatch ? ' is-verified' : accountMismatch ? ' is-invalid' : ''}`}><input className="text-field" type="password" inputMode="numeric" autoComplete="off" placeholder="Re-enter" value={answers.accountConfirm} onChange={digits('accountConfirm', 17)} />{accountMatch && <span className="pay-count"><Check /></span>}</div></label>
-            </div>
-            {accountMismatch && <p className="pay-error"><AlertCircle /> Account numbers don’t match yet.</p>}
+            <label className="field-label">Account number<input className="text-field" type="password" inputMode="numeric" autoComplete="off" placeholder="4–17 digits" value={answers.account} onChange={digits('account', 17)} /></label>
           </> : <>
             {field('accountName', 'Name on card', { autoComplete: 'cc-name' })}
-            <label className="field-label">Card number
+            <label className="field-label"><span className="pay-label-row">Card number<span className="pay-brands" aria-hidden="true"><span className="pay-brand brand-visa">VISA</span><span className="pay-brand brand-mc"><i /><i /></span><span className="pay-brand brand-amex">AMEX</span><span className="pay-brand brand-disc">DISCOVER</span></span></span>
               <div className={`pay-input${cardOk ? ' is-verified' : answers.card.length >= 15 && !cardOk ? ' is-invalid' : ''}`}><CreditCard className="pay-lead" aria-hidden="true" /><input className="text-field" inputMode="numeric" autoComplete="cc-number" placeholder="1234 5678 9012 3456" value={formatCard(answers.card)} onChange={digits('card', 19)} />{brand && <span className="card-brand">{brand}</span>}</div>
             </label>
             <div className="two-fields">
@@ -388,8 +382,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
               <label className="field-label">Billing ZIP<input className="text-field" inputMode="numeric" autoComplete="postal-code" placeholder="5 digits" value={answers.paymentZip} onChange={digits('paymentZip', 5)} /></label>
             </div>
           </>}
-          <CheckRow checked={authorized} onChange={setAuthorized}>I authorize the insurance company to draft my premium from this {isBank ? 'account' : 'card'}.</CheckRow>
-          <div className="next-row panel-foot"><p className="reconnect-demo"><LockKeyhole /> Sample details only — nothing is charged or saved.</p><button type="submit" className="revisit-next" disabled={!ready}>Next</button></div>
+          <div className="next-row panel-foot"><button type="submit" className="revisit-next" disabled={!ready}>Next</button></div>
         </div>
       </form>, { icon: <Landmark /> })
     }
