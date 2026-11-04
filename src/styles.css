@@ -1784,7 +1784,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 
 /* Health questions — unified step design */
-.health-step { display: flex; flex-direction: column; gap: 12px; }
+.health-step { width: min(100%, 520px); margin-inline: auto; }
 .health-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; order: -2; }
 .health-topic { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px 5px 9px; border-radius: 999px; background: color-mix(in oklab, var(--primary) 9%, transparent); color: var(--primary); font-size: 14px; font-weight: 700; }
 .health-topic svg { width: 16px; height: 16px; }
@@ -1797,7 +1797,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .health-lead { margin: 0; font-size: 16px; font-weight: 600; color: var(--foreground); }
 .health-explain { display: flex; gap: 9px; align-items: flex-start; margin: 0; padding: 11px 14px; border-radius: 10px; background: var(--muted); color: var(--muted-foreground); font-size: 15px; line-height: 1.45; }
 .health-explain svg { flex: none; width: 17px; height: 17px; margin-top: 2px; color: var(--primary); }
-.health-step .health-choices { margin: 6px 0 0; }
+.health-step .health-choices { margin: 0; }
 .health-card { gap: 14px; justify-content: flex-start !important; transition: transform .15s, box-shadow .2s, border-color .2s; }
 .health-card .answer-copy { flex: 1; text-align: left; }
 .health-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -14px color-mix(in oklab, var(--primary) 55%, transparent); }
