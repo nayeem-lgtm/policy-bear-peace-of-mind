@@ -1,5 +1,6 @@
 # PolicyBear final expense
 
+- [x] Use a single price-for-coverage sentence and replace the range slider with minus/plus and selected-amount controls; verified desktop/phone and next-screen navigation, all 39 tests pass.
 - [x] Unify the illustration price and benefit, clarify coverage wording, remove the demo/payment note and improve the CTA; verified quote through the next screen, monthly/yearly controls and coverage changes on desktop and phone, all 39 tests pass.
 - [x] Simplify the illustration using the profile question design: centred heading, two separate estimate/coverage boxes, concise payment controls and one clear CTA.
 
