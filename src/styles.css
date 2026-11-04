@@ -2185,3 +2185,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @keyframes otp-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .otp-panel { animation: none; } }
 @media (max-width: 640px) { .contact-tiles.three, .contact-tiles.two { grid-template-columns: minmax(0, 1fr); } .contact-tiles.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } .contact-tiles.three .contact-tile:first-child { grid-column: 1 / -1; } .otp-cells { grid-template-columns: repeat(6, 38px); gap: 6px; } .otp-cell { height: 46px; } }
+.otp-panel-heading { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 16px; font-weight: 700; color: var(--brand-deep); }
+.otp-panel-heading svg { width: 18px; height: 18px; color: var(--primary); }
+.send-code-btn { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px -14px var(--primary); }
+.send-code-btn svg { width: 16px; height: 16px; }
+.send-code-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }

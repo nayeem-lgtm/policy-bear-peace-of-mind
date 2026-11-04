@@ -47,7 +47,7 @@ describe('Pre-qualification navigation', () => {
     fillContact()
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-contact')
-    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
     fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     expect(screen.getByRole('checkbox')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('checkbox'))
@@ -58,7 +58,7 @@ describe('Pre-qualification navigation', () => {
   it('requires the OTP before marketing permission can be skipped', () => {
     open('contact', contactAnswers)
     expect(screen.queryByRole('button', { name: /skip this step/ })).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
     fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('button', { name: /skip this step/ }))
     expect(window.location.hash).toBe('#step-size')
@@ -66,7 +66,7 @@ describe('Pre-qualification navigation', () => {
 
   it('advances automatically once permission is ticked', () => {
     open('contact', contactAnswers)
-    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
     fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('checkbox'))
     act(() => { vi.advanceTimersByTime(1500) })
@@ -105,7 +105,7 @@ describe('Revisiting a step', () => {
     expect(window.location.hash).toBe('#step-contact')
     fillContact()
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
-    fireEvent.click(screen.getByRole('button', { name: /^Verify$/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
     fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     act(() => { vi.advanceTimersByTime(2000) })
     expect(window.location.hash).toBe('#step-contact')
