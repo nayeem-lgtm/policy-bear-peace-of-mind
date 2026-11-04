@@ -25,3 +25,4 @@
 - Auto-advance every coverage-recipient choice to contact details, preserve the insured-person guidance there, and keep marketing permission optional: ticking it auto-advances and a skip link continues without it; revisited steps show a small Next button instead of auto-advancing; this avoids extra steps without conflating reconnection and automated marketing consent.
 - Derive quote order and progress from the shared quote sequence and identify chapter boundaries by named steps, so reordered questions preserve Back navigation and chapter placement.
 - Move from contact permission directly to address entry, mapping legacy personal-detail hashes to address; reuse earlier contact answers and use manual address fields rather than fabricated lookup results in this browser-only demo.
+- Show the quote sidebar only after the illustration screen; the illustration already contains the editable estimate and coverage, so duplicating them distracts from the selection.
