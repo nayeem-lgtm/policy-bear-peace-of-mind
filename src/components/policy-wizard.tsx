@@ -372,7 +372,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
         </Radio.Root>
         <div className="pay-fields">
           {isBank ? <>
-            {field('accountName', 'Account holder name', { autoComplete: 'name' })}
+            {tile('accountName', 'Account holder name', false, { autoComplete: 'name' })}
             <label className={`contact-tile${answers.routing ? ' is-filled' : ''}`}><span className="contact-tile-label">Routing number<span className="contact-required" aria-hidden="true"> *</span></span>
               <div className={`pay-input is-${routingInfo.status}`}><Landmark className="pay-lead" aria-hidden="true" /><input className="text-field" inputMode="numeric" autoComplete="off" placeholder="9 digits" value={answers.routing} onChange={digits('routing', 9)} /><span className="pay-count">{routingInfo.status === 'verified' ? <Check /> : `${answers.routing.length}/9`}</span></div>
             </label>
@@ -384,7 +384,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
               <div className="pay-input"><input className="text-field" type="password" inputMode="numeric" autoComplete="off" placeholder="4–17 digits" value={answers.account} onChange={digits('account', 17)} /></div>
             </label>
           </> : <>
-            {field('accountName', 'Name on card', { autoComplete: 'cc-name' })}
+            {tile('accountName', 'Name on card', false, { autoComplete: 'cc-name' })}
             <label className={`contact-tile${answers.card ? ' is-filled' : ''}`}><span className="contact-tile-label pay-label-row">Card number<span className="contact-required" aria-hidden="true"> *</span><span className="pay-brands" aria-hidden="true"><span className="pay-brand brand-visa">VISA</span><span className="pay-brand brand-mc"><i /><i /></span><span className="pay-brand brand-amex">AMEX</span><span className="pay-brand brand-disc">DISCOVER</span></span></span>
               <div className={`pay-input${cardOk ? ' is-verified' : answers.card.length >= 15 && !cardOk ? ' is-invalid' : ''}`}><CreditCard className="pay-lead" aria-hidden="true" /><input className="text-field" inputMode="numeric" autoComplete="cc-number" placeholder="1234 5678 9012 3456" value={formatCard(answers.card)} onChange={digits('card', 19)} />{brand && <span className="card-brand">{brand}</span>}</div>
             </label>
