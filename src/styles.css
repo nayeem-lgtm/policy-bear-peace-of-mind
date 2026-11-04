@@ -2166,8 +2166,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .contact-tile:hover { border-color: color-mix(in oklab, var(--primary) 40%, var(--border)); }
 .contact-tile.is-filled { border-color: var(--primary); background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 3%, var(--card)), color-mix(in oklab, var(--primary) 11%, var(--card))); box-shadow: 0 16px 30px -20px color-mix(in oklab, var(--primary) 75%, transparent); }
 .contact-tile:focus-within { border-color: color-mix(in oklab, var(--primary) 55%, var(--border)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 12%, transparent); }
-.contact-tile-label { font-size: 10.5px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; color: color-mix(in oklab, var(--brand-deep) 42%, transparent); }
-.contact-tile-label em { font-style: normal; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.contact-tile-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; color: var(--brand-deep); }
+.contact-required { color: var(--primary); font-weight: 700; }
 .contact-tile.is-filled .contact-tile-label { color: color-mix(in oklab, var(--primary) 80%, var(--brand-deep)); }
 .contact-tile input { width: 100%; min-width: 0; height: 28px; padding: 0; border: 0; background: transparent; outline: none; font: inherit; font-size: 17px; font-weight: 600; color: var(--primary); }
 .contact-tile input::placeholder { color: color-mix(in oklab, var(--brand-deep) 30%, transparent); font-weight: 500; }

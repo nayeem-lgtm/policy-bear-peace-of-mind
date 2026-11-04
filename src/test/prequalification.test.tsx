@@ -34,6 +34,16 @@ function fillContact() {
 }
 
 describe('Pre-qualification navigation', () => {
+  it.each(['First name', 'Last name', 'Email', 'Mobile phone'])('requires %s on the contact page', (name) => {
+    open('contact')
+    expect(screen.getByRole('textbox', { name })).toBeRequired()
+  })
+
+  it('keeps Middle name optional', () => {
+    open('contact')
+    expect(screen.getByRole('textbox', { name: 'Middle name' })).not.toBeRequired()
+  })
+
   it.each(['Me', 'My spouse or partner', 'My mom or dad', 'Someone else'])('automatically advances %s to contact details', (choice) => {
     open('who')
     fireEvent.click(screen.getByRole('radio', { name: new RegExp(`^${choice}`) }))
