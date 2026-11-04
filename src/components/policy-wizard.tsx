@@ -488,12 +488,13 @@ function Decision({ outcome, firstName, coverage, price, onContinue, onCallback 
   const graded = outcome === 'graded'
   const name = firstName || 'friend'
   return <div className="wizard-content celebrate">
+    <div className="celebrate-burst" aria-hidden="true">{Array.from({ length: 28 }, (_, index) => <i key={index} style={{ '--burst-x': `${Math.round(Math.cos(index * 2.4) * (100 + index % 5 * 28))}px`, '--burst-y': `${Math.round(Math.sin(index * 2.4) * (75 + index % 4 * 24))}px`, '--burst-turn': `${index * 47}deg`, '--burst-delay': `${index % 4 * 45}ms` } as CSSProperties} />)}</div>
     <span className="celebrate-seal" aria-hidden="true"><ShieldCheck /></span>
     <h2 id="wizard-title">{graded ? `Good news, ${name}.` : `Congratulations, ${name}!`}</h2>
     <section className="celebrate-summary" aria-label="Your coverage summary">
       <p className="illustration-summary"><span className="illustration-price"><strong>${price.toFixed(2)}</strong> per month</span><span className="illustration-coverage">for <strong>${coverage.toLocaleString()}</strong> of final expense coverage</span></p>
       {graded && <p className="celebrate-note">For the first 2 years, the full benefit applies to accidental loss only; a partial benefit applies otherwise. Full coverage begins in year 3. [CARRIER_TO_CONFIRM]</p>}
     </section>
-    <div className="celebrate-actions"><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Personalize my policy</Button><small>Illustrative result · Not an issued policy</small></div>
+    <div className="celebrate-actions"><Button type="button" variant="default" className="celebrate-next" onClick={onContinue}><span className="celebrate-paw" aria-hidden="true"><PawGlyph /></span>Make it mine</Button></div>
   </div>
 }
