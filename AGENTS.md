@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Keep the final expense landing page at `/`, with a dedicated browser-safe wizard component using URL hashes for the brief's question steps; this preserves phone Back navigation without duplicating content routes.
-- Keep the complete final expense journey presentation-only: browser-generated mock pricing and decisions, no network submissions, and never persist SSN or payment details.
+- Keep the complete final expense journey presentation-only: browser-generated mock pricing and decisions, no network submissions (address suggestions are the only server lookup), and never persist SSN or payment details.
 - Keep form focus changes tied to screen navigation only, never to answer updates, so typing remains uninterrupted.
 - Scroll the phone wizard into view only on screen navigation, and map signature pointer coordinates to canvas dimensions so touch strokes follow the finger at every size.
 - Keep electronic signing browser-only, offering typed style previews and an ephemeral draw pad without persisting drawn signatures.
@@ -24,5 +24,5 @@
 - Share contact consent across quote and callback screens, with legal links opening in new tabs so reviewing policies never interrupts entered answers; consent copy requires compliance approval before launch.
 - Auto-advance every coverage-recipient choice to contact details, preserve the insured-person guidance there, and keep marketing permission optional: ticking it auto-advances and a skip link continues without it; revisited steps show a small Next button instead of auto-advancing; this avoids extra steps without conflating reconnection and automated marketing consent.
 - Derive quote order and progress from the shared quote sequence and identify chapter boundaries by named steps, so reordered questions preserve Back navigation and chapter placement.
-- Order pre-qualification as recipient, contact (with optional middle name, phone verification and contact permission together on the same page), then height/weight before address entry, mapping legacy personal-detail hashes to address; reuse earlier contact answers and use manual address fields rather than fabricated lookup results in this browser-only demo.
+- Order pre-qualification as recipient, contact (with optional middle name, phone verification and contact permission together on the same page), then height/weight before address entry, mapping legacy personal-detail hashes to address; reuse earlier contact answers and street-address suggestions come from Google Places through server functions gated by a short-lived signed guest session (no customer sign-in), with fields still editable manually; never show fabricated lookup results.
 - Show the quote sidebar only after the illustration screen; the illustration already contains the editable estimate and coverage, so duplicating them distracts from the selection.

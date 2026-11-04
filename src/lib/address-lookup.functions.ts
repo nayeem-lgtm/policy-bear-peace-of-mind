@@ -51,7 +51,7 @@ const suggestInput = z.object({
 })
 
 export const suggestAddresses = createServerFn({ method: 'POST' })
-  .inputValidator((data: unknown) => suggestInput.parse(data))
+  .validator((data: unknown) => suggestInput.parse(data))
   .handler(async ({ data }) => {
     await verifyGuestSession(data.token)
     const response = await fetch(`${GATEWAY_URL}/places/v1/places:autocomplete`, {
@@ -75,7 +75,7 @@ const detailsInput = z.object({
 })
 
 export const addressDetails = createServerFn({ method: 'POST' })
-  .inputValidator((data: unknown) => detailsInput.parse(data))
+  .validator((data: unknown) => detailsInput.parse(data))
   .handler(async ({ data }) => {
     await verifyGuestSession(data.token)
     const response = await fetch(`${GATEWAY_URL}/places/v1/places/${data.placeId}?sessionToken=${encodeURIComponent(data.sessionToken)}`, {
