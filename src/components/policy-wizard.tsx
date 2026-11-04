@@ -111,7 +111,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
     try {
       const saved = JSON.parse(localStorage.getItem('policybear-demo') || 'null')
       if (saved?.answers && Date.now() - saved.at < 7 * 86400000) {
-        const restored = { ...blank, ...(saved.answers as Partial<Answers>), ssn: '', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', health: [...blank.health, ...(Array.isArray(saved.answers.health) ? saved.answers.health : [])].slice(0, 8) }
+        const restored = { ...blank, ...(saved.answers as Partial<Answers>), ssn: '', routing: '', account: '', accountConfirm: '', card: '', expiry: '', paymentZip: '', health: blank.health.map((value, index) => Array.isArray(saved.answers.health) ? saved.answers.health[index] || value : value) }
         setAnswers(restored)
         localStorage.setItem('policybear-demo', JSON.stringify({ answers: sanitizedAnswers(restored), screen: saved.screen, at: Date.now() }))
         if (saved.screen === 'personal') savedStep = 'address'
@@ -167,7 +167,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       if (screen === 'submitting') { setPolicyNumber(`PB-FE-${Math.floor(100000 + Math.random() * 900000)}`); go('issued') }
     }, screen === 'underwriting' ? 2800 : 2200)
     return () => { clearTimeout(first); clearTimeout(second); clearTimeout(finish) }
-  }, [screen])
+  }, [screen, outcome])
 
   const update = (key: StringAnswerKey, value: string) => { setAnswers((current) => ({ ...current, [key]: value })); setError('') }
   const go = (next: JourneyStep) => { window.clearTimeout(advanceTimer.current); window.clearTimeout(customTimer.current); setError(''); setResume(false); location.hash = `step-${next}`; setScreen(next) }
