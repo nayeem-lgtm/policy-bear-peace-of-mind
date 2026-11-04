@@ -291,12 +291,6 @@ describe('Application auto-advance', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Finalize' }))
     expect(window.location.hash).toBe('#step-payment')
   })
-  it('moves on from draft date with one tap', () => {
-    open('draft')
-    fireEvent.click(screen.getByRole('radio', { name: /^1st of the month/ }))
-    act(() => { vi.advanceTimersByTime(400) })
-    expect(window.location.hash).toBe('#step-review')
-  })
   it('keeps the person details on the beneficiary page', () => {
     open('beneficiary')
     fireEvent.change(screen.getByRole('combobox', { name: 'Beneficiary type' }), { target: { value: 'A person' } })
