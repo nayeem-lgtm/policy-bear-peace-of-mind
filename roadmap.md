@@ -1,6 +1,6 @@
 # PolicyBear final expense
 
-- [ ] Add the two-stage email/SMS signature flow and document authorization; verify both channels and phone layout.
+- [x] Add the two-stage email/SMS signature flow and document authorization; both channels, PIN/consent, Resend and completion verified at desktop/phone sizes; 52 tests pass.
 
 - [x] Change payment to Save and add the reference-style confirmation; both payment methods and Continue verified on desktop/phone, 55 tests pass.
 
