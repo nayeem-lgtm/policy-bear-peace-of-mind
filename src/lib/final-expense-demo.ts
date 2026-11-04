@@ -117,7 +117,7 @@ export const safeSavedKeys = [
   'zip', 'city', 'state', 'who', 'month', 'day', 'year', 'gender', 'tobacco', 'feet', 'inches', 'weight',
   'coverage', 'firstName', 'middleName', 'lastName', 'email', 'phone', 'street', 'apt', 'country', 'birthState',
   'citizen', 'resident', 'owner', 'health', 'beneficiaryType', 'beneficiaryFirst', 'beneficiaryLast',
-  'relationship', 'beneficiaryPhone', 'otherInsurance', 'replacing', 'paymentMethod', 'draftDate', 'coverageType',
+  'relationship', 'beneficiaryPhone', 'beneficiaryKnowPhone', 'beneficiaryKnowAddress', 'beneficiaryAddress', 'otherInsurance', 'replacing', 'paymentMethod', 'draftDate', 'coverageType',
 ] as const
 
 export function sanitizedAnswers(value: Record<string, unknown>) {
