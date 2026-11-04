@@ -1617,7 +1617,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .app-tip-stage > .back-orb { order: 1; align-self: flex-start; margin: 0; }
 .app-tip-stage > .wizard-content { order: 2; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px 28px 24px; box-shadow: 0 24px 48px -28px color-mix(in oklab, var(--primary) 45%, transparent); }
 .app-tip-stage > .wizard-content .answer-list { margin-bottom: 0; }
-.app-body .app-tip-stage .bear-tip { order: 3; align-items: flex-end; justify-content: center; gap: 10px; margin-top: 12px; }
+.app-body .app-tip-stage .bear-tip { order: 3; align-items: flex-end; justify-content: center; gap: 10px; margin-top: 32px; }
 .app-body .app-tip-stage .bear-tip-bubble { flex: 0 1 400px; }
 .app-body .app-tip-stage .bear-tip-img { width: 108px; margin-bottom: -6px; }
 .app-body .app-tip-stage .bear-tip-bubble { border-width: 1.5px; background: color-mix(in oklab, var(--primary) 4%, var(--card)); box-shadow: none; padding: 14px 18px; }
