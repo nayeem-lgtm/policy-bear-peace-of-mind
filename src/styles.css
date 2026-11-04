@@ -2190,3 +2190,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .send-code-btn { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px -14px var(--primary); }
 .send-code-btn svg { width: 16px; height: 16px; }
 .send-code-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+
+/* Themed Next / Send code buttons */
+.revisit-next, .send-code-btn { gap: 10px; height: 46px; padding: 0 6px 0 22px; border-radius: 999px; background: linear-gradient(135deg, var(--primary), color-mix(in oklab, var(--primary) 70%, var(--brand-deep))); color: var(--primary-foreground); font-size: 15px; font-weight: 700; letter-spacing: .01em; box-shadow: 0 14px 26px -16px color-mix(in oklab, var(--primary) 90%, transparent), inset 0 1px 0 color-mix(in oklab, white 25%, transparent); }
+.revisit-next svg, .send-code-btn svg { box-sizing: content-box; width: 16px; height: 16px; padding: 9px; border-radius: 50%; background: var(--brand-action); color: var(--brand-deep); }
+.centered-step > .revisit-next { margin: 6px auto 0; align-self: center; justify-self: center; }
+.revisit-next:hover:not(:disabled), .send-code-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 18px 30px -16px color-mix(in oklab, var(--primary) 95%, transparent); }
+.revisit-next:disabled, .send-code-btn:disabled { opacity: .4; box-shadow: none; }
