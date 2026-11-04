@@ -7,7 +7,7 @@ export const COVERAGE_MAX = 50000
 // Your Profile (shown as "Your Profile", formerly "Basic Info" then "About You") holds the five rating questions (state, gender, date of birth, tobacco, coverage).
 // The illustration is shown right after them; the remaining questions are Pre-Qualification.
 export const basicInfoSteps = ['state', 'gender', 'dob', 'tobacco', 'coverage'] as const
-export const preQualSteps = ['who', 'contact', 'size', 'opt-in'] as const
+export const preQualSteps = ['who', 'contact', 'phone-verify', 'opt-in', 'size'] as const
 export const quoteSteps = [...basicInfoSteps, ...preQualSteps] as const
 
 export const journeySteps = [
@@ -94,7 +94,7 @@ export function chapterFor(step: JourneyStep) {
 // so the illustration, underwriting and decision screens don't inflate the total.
 const chapterQuestions: readonly JourneyStep[][] = [
   [...basicInfoSteps],
-  ['who', 'contact', 'size', 'opt-in', 'address', 'identity', 'ssn', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
+  ['who', 'contact', 'phone-verify', 'opt-in', 'size', 'address', 'identity', 'ssn', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
   ['gi-offer', 'beneficiary', 'insurance', 'payment', 'draft'],
   ['review', 'disclosures', 'signature', 'verify'],
 ]
