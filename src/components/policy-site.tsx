@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import logo from '@/assets/policybear-logo.asset.json'
 
 export function PolicyHeader() {
-  return <header className="site-header"><a className="skip-link" href="#main-content">Skip to content</a><div className="header-inner"><Link to="/" hash="step-state" aria-label="PolicyBear home" className="brand-link"><img src={logo.url} width="238" height="47" alt="PolicyBear" /></Link><span className="header-call-wrap"><Button asChild variant="action" className="header-call"><a href="tel:+18447652327" aria-label="Call PolicyBear at (844) 765-2327"><span className="header-call-copy"><span className="call-caption">Want To Speak Live?</span><strong>(844) POL-BEAR</strong><span className="agents-available"><span className="agent-dot" />Licensed agents available</span></span></a></Button></span></div></header>
+  return <header className="site-header"><a className="skip-link" href="#main-content">Skip to content</a><div className="header-inner"><Link to="/" hash="step-state" aria-label="PolicyBear home" className="brand-link"><img src={logo.url} width="238" height="47" alt="PolicyBear" /></Link><span className="header-call-wrap"><Button asChild variant="action" className="header-call"><a href="tel:+18447652327" aria-label="Call PolicyBear at (844) 765-2327"><span className="header-call-copy"><span className="call-caption">Want To Speak Live?</span><strong>(844) POL-BEAR</strong><span className="agents-available"><span className="agent-dot" />Licensed Agents Available</span></span></a></Button></span></div></header>
 }
 
 export function PolicyFooter() {
