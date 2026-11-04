@@ -1744,48 +1744,42 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .address-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
 @media (max-width: 560px) { .address-pair { grid-template-columns: 1fr; gap: 0; } .home-address-form { padding: 16px; } .next-row { flex-wrap: wrap; } }
 
-/* Social Security step: security banner, trust badges and protected state */
-.ssn-security-group { padding: 16px 18px 12px; border: 1px solid var(--border); border-top: 2px solid var(--primary); border-radius: 8px; background: var(--seal-white); }
-.ssn-security-group > .field-label { margin: 0; }
-.ssn-trust { margin-top: 10px; }
-.ssn-trust-seals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 16px; padding: 4px 0 10px; }
-.ssn-seal-slot { min-width: 0; height: 48px; display: flex; align-items: center; justify-content: center; padding: 4px; }
-.ssn-seal { display: block; height: 40px; width: auto; max-width: 100%; object-fit: contain; }
-.ssn-trust-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--border); padding-top: 8px; }
-.ssn-trust-item { display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; padding: 2px 0; }
-.ssn-trust-icon { display: grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0; color: var(--primary); }
-.ssn-trust-icon svg { width: 12px; height: 12px; }
-.ssn-trust-item strong { font-size: 11.5px; font-weight: 700; color: var(--brand-deep); }
+/* Social Security: one answer tile, original seals and a quiet trust row. */
+.ssn-form { width: min(100%, 520px); margin-inline: auto; }
+.ssn-input-tile { padding: 16px 20px; }
+.ssn-form .contact-tile-label { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 800; color: var(--brand-deep); }
+.ssn-form .contact-tile-label > svg { width: 16px; height: 16px; color: var(--primary); }
+.ssn-input-row { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.ssn-form .ssn-input-row input { height: 40px; font-size: 24px; font-weight: 600; letter-spacing: 0; }
+.ssn-visibility { width: 36px; height: 36px; flex: none; padding: 8px; color: var(--primary); border-radius: 8px; }
+.ssn-visibility svg { width: 18px; height: 18px; }
+.ssn-trust { margin-top: 24px; }
+.ssn-trust-seals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 12px; }
+.ssn-seal-slot { min-width: 0; height: 76px; display: flex; align-items: center; justify-content: center; padding: 12px 10px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 8px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 40%, transparent); }
+.ssn-seal { display: block; height: auto; width: 100%; max-height: 42px; object-fit: contain; }
+.ssn-trust-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 14px; gap: 8px; }
+.ssn-trust-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-width: 0; text-align: center; }
+.ssn-trust-icon { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; color: var(--primary); background: var(--brand-soft-blue); border-radius: 50%; }
+.ssn-trust-icon svg { width: 13px; height: 13px; }
+.ssn-trust-item strong { font-size: 10px; line-height: 1.4; font-weight: 700; color: var(--brand-deep); }
 .ssn-trust-short { display: none; }
-.ssn-demo-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: var(--muted-foreground); margin: 8px 0 0; }
+.ssn-demo-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 10px; line-height: 1.5; color: var(--muted-foreground); margin: 18px 0 0; }
 .ssn-demo-note svg { width: 12px; height: 12px; flex-shrink: 0; }
 .secure-field.is-protected { border-color: color-mix(in oklab, var(--success) 42%, var(--input)); }
 .secure-field.is-protected:focus-within { border-color: var(--success); box-shadow: 0 0 0 3px color-mix(in oklab, var(--success) 16%, transparent); }
 .secure-field.is-protected .secure-lock { background: color-mix(in oklab, var(--success) 14%, var(--card)); color: var(--success); animation: lock-pop .35s ease-out; }
 @keyframes lock-pop { 0% { transform: scale(.7); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 @keyframes vault-sheen { 0%, 52% { transform: translateX(-80%); } 100% { transform: translateX(80%); } }
-.ssn-form .field-prompt { margin-top: 20px; }
-.ssn-form .secure-field { min-height: 52px; }
-.ssn-form .answer-list { gap: 8px; margin: 12px 0 6px; }
-.ssn-form .answer-card { min-height: 46px; padding: 10px 18px; }
-.ssn-form .next-row { margin-top: 12px; }
+.ssn-form .next-row { margin-top: 20px; }
 @media (max-width: 620px) {
-  .ssn-security-group { padding: 12px 10px 10px; }
-  .ssn-trust-seals { padding: 2px 0 8px; gap: 8px; }
-  .ssn-seal-slot { height: 36px; padding: 2px; }
-  .ssn-seal { height: 30px; }
-  .ssn-trust-item { gap: 4px; padding: 2px 0; }
-  .ssn-trust-icon { width: 18px; height: 18px; border-radius: 6px; }
-  .ssn-trust-icon svg { width: 11px; height: 11px; }
-  .ssn-trust-item strong { font-size: 10.5px; }
+  .ssn-input-tile { padding: 14px 16px; }
+  .ssn-trust-seals { gap: 8px; }
+  .ssn-seal-slot { height: 64px; padding: 8px; }
+  .ssn-trust-item { gap: 5px; }
+  .ssn-trust-item strong { font-size: 10px; }
   .ssn-trust-full { display: none; }
   .ssn-trust-short { display: block; }
-  .ssn-demo-note { margin: 4px 0 0; }
-  .ssn-form .field-prompt { margin-top: 16px; }
-  .ssn-form .secure-field { min-height: 48px; }
-  .ssn-form .answer-list { gap: 6px; margin: 10px 0 5px; }
-  .ssn-form .answer-card { min-height: 44px; padding: 8px 14px; }
-  .ssn-form .next-row { margin-top: 8px; }
+  .ssn-form .next-row { margin-top: 16px; }
 }
 
 
