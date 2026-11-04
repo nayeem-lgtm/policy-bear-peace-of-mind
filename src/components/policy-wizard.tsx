@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, Clock, Cigarette, CreditCard, Eye, EyeOff, Fingerprint, Heart, HeartPulse, Landmark, LockKeyhole, MapPin, Mars, Minus, Moon, PenLine, Phone, Smartphone, Plus, RotateCcw, ShieldCheck, Sparkles, Sun, Sunrise, User, UserRound, Users, Venus, X } from 'lucide-react'
+import { AlertCircle, ArrowLeft, Check, ChevronDown, Clock, Cigarette, CreditCard, Eye, EyeOff, Fingerprint, Heart, HeartPulse, Landmark, LockKeyhole, MapPin, Mars, Minus, Moon, PenLine, Phone, Smartphone, Plus, RotateCcw, ShieldCheck, Sparkles, Sun, Sunrise, User, UserRound, Users, Venus, X } from 'lucide-react'
 import * as Radio from '@radix-ui/react-radio-group'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { z } from 'zod'
@@ -394,7 +394,6 @@ function ContactConsent({ checked, onChange }: { checked: boolean; onChange: (va
       <span className="consent-paragraph">Consent isn’t required to buy. Message and data rates may apply. Reply STOP to opt out.</span>
       <span className="consent-paragraph">I agree to the <Link to="/terms-conditions" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</Link> and acknowledge the <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>.</span>
     </CheckRow>
-    <p className="consent-resources"><Link to="/disclaimers" target="_blank" rel="noopener noreferrer">Final expense disclosures <ArrowRight aria-hidden="true" /></Link><span>Legal links open in a new tab so you won’t lose your place.</span></p>
   </div>
 }
 function NextButton() { return <div className="next-row"><button type="submit" className="revisit-next">Next</button></div> }
