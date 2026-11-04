@@ -343,7 +343,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
           </fieldset>
           {answers.beneficiaryKnowAddress === 'Yes' && tile('beneficiaryAddress', 'Street address', false, { placeholder: 'Street, city, state, ZIP' })}
         </>}
-        <div className="next-row"><Button type="submit" variant="action" className="revisit-next">Next</Button></div>
+        <div className="next-row"><Button type="button" variant="action" className="revisit-next" onClick={submitNext('insurance', beneficiaryValid, 'Please complete the primary beneficiary details.')}>Next</Button></div>
       </form>, { icon: <Users /> })
     }
     if (screen === 'insurance') return shell('Do you have any other life insurance or annuities, or a pending application?', '', <>{cards('otherInsurance', ['No', 'Yes'], (option) => option === 'No' ? 'payment' : undefined, undefined, 'pair')}{answers.otherInsurance === 'Yes' && <div className="app-panel"><p className="app-panel-title"><RotateCcw /> Will this policy replace or be paid for by cancelling any of them?</p>{cards('replacing', ['No', 'Yes'], 'payment', undefined, 'pair')}{answers.replacing === 'Yes' && <p className="fine-print">We’ll include a replacement notice in your documents. [STATE_REPLACEMENT_FORMS]</p>}</div>}{nextLink('payment', answers.otherInsurance === 'No' || Boolean(answers.replacing))}</>, { icon: <ShieldCheck /> })
