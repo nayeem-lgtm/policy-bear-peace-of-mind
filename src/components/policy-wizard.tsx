@@ -378,7 +378,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
             </label>
           </> : <>
             {field('accountName', 'Name on card', { autoComplete: 'cc-name' })}
-            <label className={`contact-tile${answers.card ? ' is-filled' : ''}`}><span className="contact-tile-label pay-label-row">Card number<span className="pay-brands" aria-hidden="true"><span className="pay-brand brand-visa">VISA</span><span className="pay-brand brand-mc"><i /><i /></span><span className="pay-brand brand-amex">AMEX</span><span className="pay-brand brand-disc">DISCOVER</span></span></span>
+            <label className={`contact-tile${answers.card ? ' is-filled' : ''}`}><span className="contact-tile-label pay-label-row">Card number<span className="contact-required" aria-hidden="true"> *</span><span className="pay-brands" aria-hidden="true"><span className="pay-brand brand-visa">VISA</span><span className="pay-brand brand-mc"><i /><i /></span><span className="pay-brand brand-amex">AMEX</span><span className="pay-brand brand-disc">DISCOVER</span></span></span>
               <div className={`pay-input${cardOk ? ' is-verified' : answers.card.length >= 15 && !cardOk ? ' is-invalid' : ''}`}><CreditCard className="pay-lead" aria-hidden="true" /><input className="text-field" inputMode="numeric" autoComplete="cc-number" placeholder="1234 5678 9012 3456" value={formatCard(answers.card)} onChange={digits('card', 19)} />{brand && <span className="card-brand">{brand}</span>}</div>
             </label>
             <div className="pay-fields-pair">
