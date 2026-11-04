@@ -2154,3 +2154,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .centered-step .reconnect-demo, .centered-step .auto-next, .centered-step .skip-link { justify-self: center; text-align: center; }
 @media (max-width: 760px) { .three-fields { grid-template-columns: 1fr 1fr; } .three-fields > :first-child { grid-column: 1 / -1; } }
 .centered-step .reconnect-permission { padding: 18px 20px; } .centered-step .reconnect-permission .permission-optional { margin: 0 0 6px; }
+
+/* Contact page — tiles mirror the Your Profile date boxes */
+.contact-tiles { display: grid; gap: 10px; }
+.contact-tiles.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.contact-tiles.two { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+.contact-tile { display: flex; flex-direction: column; gap: 2px; padding: 11px 14px 10px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 60%, transparent); cursor: text; transition: border-color 220ms, background 220ms, box-shadow 220ms; }
+.contact-tile:hover { border-color: color-mix(in oklab, var(--primary) 40%, var(--border)); }
+.contact-tile.is-filled { border-color: var(--primary); background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 3%, var(--card)), color-mix(in oklab, var(--primary) 11%, var(--card))); box-shadow: 0 16px 30px -20px color-mix(in oklab, var(--primary) 75%, transparent); }
+.contact-tile:focus-within { border-color: color-mix(in oklab, var(--primary) 55%, var(--border)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 12%, transparent); }
+.contact-tile-label { font-size: 10.5px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; color: color-mix(in oklab, var(--brand-deep) 42%, transparent); }
+.contact-tile-label em { font-style: normal; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.contact-tile.is-filled .contact-tile-label { color: color-mix(in oklab, var(--primary) 80%, var(--brand-deep)); }
+.contact-tile input { width: 100%; min-width: 0; height: 28px; padding: 0; border: 0; background: transparent; outline: none; font: inherit; font-size: 17px; font-weight: 600; color: var(--primary); }
+.contact-tile input::placeholder { color: color-mix(in oklab, var(--brand-deep) 30%, transparent); font-weight: 500; }
+.phone-row { display: flex; align-items: center; gap: 8px; }
+.verify-chip, .verified-chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+.verify-chip { border: 0; background: var(--primary); color: var(--primary-foreground); cursor: pointer; transition: opacity 200ms; }
+.verify-chip:disabled { opacity: .35; cursor: not-allowed; }
+.verified-chip { background: color-mix(in oklab, var(--success) 14%, var(--card)); color: var(--success); }
+.verified-chip svg { width: 14px; height: 14px; }
+.otp-panel { display: grid; justify-items: center; gap: 10px; padding: 16px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: color-mix(in oklab, var(--primary) 4%, var(--card)); animation: otp-in 260ms ease-out; }
+.otp-panel-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--foreground); text-align: center; }
+.otp-panel-note { margin: 0; font-size: 12px; color: var(--muted-foreground); }
+.otp-cells { position: relative; display: grid; grid-template-columns: repeat(6, 44px); gap: 8px; }
+.otp-hidden-input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; font-size: 16px; }
+.otp-cell { display: grid; place-items: center; height: 52px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 14px; background: var(--card); font-size: 22px; font-weight: 700; color: var(--primary); transition: border-color 200ms, background 200ms; }
+.otp-cell.is-filled { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 11%, var(--card)); }
+.otp-cells:focus-within .otp-cell.is-active { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent); }
+@keyframes otp-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .otp-panel { animation: none; } }
+@media (max-width: 640px) { .contact-tiles.three, .contact-tiles.two { grid-template-columns: minmax(0, 1fr); } .contact-tiles.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } .contact-tiles.three .contact-tile:first-child { grid-column: 1 / -1; } .otp-cells { grid-template-columns: repeat(6, 38px); gap: 6px; } .otp-cell { height: 46px; } }
