@@ -2077,3 +2077,40 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .app-tip-stage .other-amount { width: auto; display: block; margin: 16px auto 0; font-size: 13.5px; }
 .app-tip-stage .coverage-custom { margin: 14px auto 0; border-radius: 16px; }
 @media (max-width: 560px) { .app-tip-stage .coverage-grid { margin-top: 12px; gap: 8px; } .app-tip-stage .coverage-card { min-height: 82px; padding: 9px 7px 8px; gap: 4px; border-radius: 15px; } .app-tip-stage .coverage-icon { width: 34px; height: 34px; } .app-tip-stage .coverage-icon svg { width: 18px; height: 18px; } .app-tip-stage .coverage-copy > strong { font-size: 15px; } .app-tip-stage .coverage-price { font-size: 10px; padding: 2px 7px; } .app-tip-stage .coverage-tag { font-size: 8.5px; padding: 2px 7px; } }
+
+/* Illustration follows the centred profile questions without a duplicate quote panel. */
+.app-body:has(.illustration) { max-width: 560px; padding-top: 0; }
+.wizard-content:has(.illustration) .question-head { display: block; text-align: center; margin-bottom: 22px; }
+.wizard-content:has(.illustration) .question-badge { width: 52px; height: 52px; margin: 0 auto 14px; background: var(--brand-soft-blue); }
+.wizard-content:has(.illustration) .question-head h2 { text-align: center; margin: 0; letter-spacing: 0; font-size: 28px; }
+.illustration { text-align: center; }
+.illustration-period { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; }
+.illustration-period button { min-height: 40px; padding: 8px 22px; border: 1px solid var(--border); border-radius: 8px; color: var(--muted-foreground); background: var(--card); }
+.illustration-period button[aria-pressed=true] { border-color: var(--primary); background: var(--brand-soft-blue); color: var(--primary); }
+.illustration-figures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.illustration-tile { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; padding: 18px 10px; border: 1px solid var(--border); border-radius: 18px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 60%, transparent); }
+.illustration-rate { border-color: color-mix(in oklab, var(--primary) 40%, var(--border)); background: var(--brand-soft-blue); }
+.illustration-icon { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 12px; border-radius: 50%; color: var(--primary); background: var(--card); }
+.illustration-icon svg { width: 24px; height: 24px; }
+.illustration-icon .date-frame { stroke: var(--primary); }
+.illustration-icon .date-mark { fill: var(--brand-action-hover); stroke: none; }
+.illustration-tile dt { font-size: 13px; color: var(--muted-foreground); margin-bottom: 8px; }
+.illustration-tile dd { margin: 0; font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--brand-deep); letter-spacing: 0; white-space: nowrap; }
+.illustration-rate dd { color: var(--primary); }
+.illustration-tile dd small { font-size: 13px; font-weight: 500; color: var(--muted-foreground); margin-left: 3px; }
+.illustration-saving { margin: 10px 0 0; font-size: 12px; color: var(--success); }
+.illustration-adjust { margin: 24px 0 20px; text-align: left; }
+.illustration-adjust label { font-size: 13px; font-weight: 600; color: var(--brand-deep); }
+.illustration-adjust input { display: block; width: 100%; height: 36px; accent-color: var(--primary); cursor: pointer; }
+.illustration-adjust .coverage-range { justify-content: space-between; font-size: 12px; }
+.illustration-next { width: 100%; margin: 0; }
+.illustration-note { font-size: 12px; color: var(--muted-foreground); margin: 12px 0 0; }
+@media (max-width: 760px) {
+  .wizard-content:has(.illustration) .question-head h2 { font-size: 22px; }
+  .wizard-content:has(.illustration) .question-head { margin-bottom: 18px; }
+  .illustration-tile { min-height: 142px; padding: 14px 8px; }
+  .illustration-tile dd { font-size: 24px; }
+  .illustration-tile dd small { font-size: 11px; }
+  .illustration-adjust { margin-top: 20px; }
+}
+@media (max-width: 360px) { .illustration-figures { gap: 8px; } .illustration-tile dd { font-size: 21px; } .illustration-tile dt { font-size: 12px; } }
