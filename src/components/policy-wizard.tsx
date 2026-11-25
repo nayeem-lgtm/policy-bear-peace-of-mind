@@ -373,10 +373,11 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
             <label className={`contact-tile${answers.routing ? ' is-filled' : ''}`}><span className="contact-tile-label">Routing number<span className="contact-required" aria-hidden="true"> *</span></span>
               <div className={`pay-input${routingInfo.status === 'invalid' ? ' is-invalid' : ''}`}><input className="text-field" inputMode="numeric" autoComplete="off" placeholder="9 digits" value={answers.routing} onChange={digits('routing', 9)} /></div>
             </label>
-            {routingInfo.status === 'verified' && <div className="routing-confirmation" role="status">
-              <span className="routing-confirmation-name">{routingInfo.bank === 'U.S. bank verified' ? 'Routing number' : routingInfo.bank}</span>
+            {routingInfo.status === 'verified' && routingInfo.bank !== 'U.S. bank verified' && <div className="routing-confirmation" role="status">
+              <span className="routing-confirmation-name">{routingInfo.bank}</span>
               <span className="routing-confirmation-status" title="Routing number checked; account ownership is not verified."><ShieldCheck aria-hidden="true" /> Verified</span>
             </div>}
+            {routingInfo.status === 'verified' && routingInfo.bank === 'U.S. bank verified' && <p className="fine-print" role="status">Bank name unavailable.</p>}
             {routingInfo.status === 'invalid' && <p className="pay-error" role="alert"><AlertCircle /> Please check your 9-digit routing number.</p>}
             <label className={`contact-tile${answers.account ? ' is-filled' : ''}`}><span className="contact-tile-label">Account number<span className="contact-required" aria-hidden="true"> *</span></span>
               <div className="pay-input"><input className="text-field" type="password" inputMode="numeric" autoComplete="off" placeholder="4–17 digits" value={answers.account} onChange={digits('account', 17)} /></div>
