@@ -2182,9 +2182,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 760px) { .three-fields { grid-template-columns: 1fr 1fr; } .three-fields > :first-child { grid-column: 1 / -1; } }
 .centered-step .reconnect-permission { padding: 18px 20px; } .centered-step .reconnect-permission .permission-optional { margin: 0 0 6px; }
 .contact-step .reconnect-permission { padding: 8px 10px; }
-.contact-step .contact-consent .check-row { font-size: 10px; line-height: 1.4; gap: 6px; margin: 0; }
-.contact-step .contact-consent .check-row > button { width: 14px; height: 14px; flex-basis: 14px; }
-.contact-step .contact-consent .check-row svg { width: 10px; height: 10px; }
+.contact-step .contact-consent .check-row { font-size: 11px; line-height: 1.45; gap: 9px; margin: 0; }
+.contact-step .contact-consent .check-row > button { width: 20px; height: 20px; flex-basis: 20px; border-radius: 6px; }
+.contact-step .contact-consent .check-row svg { width: 14px; height: 14px; }
 .contact-step .consent-paragraph + .consent-paragraph { margin-top: 3px; }
 .contact-step .consent-resources { font-size: 12px; line-height: 1.5; margin: 0; padding-top: 8px; }
 .contact-step .consent-resources > span { margin-top: 4px; }

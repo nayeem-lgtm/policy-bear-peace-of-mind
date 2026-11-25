@@ -92,7 +92,7 @@ describe('Pre-qualification navigation', () => {
     fillContact()
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-contact')
-    expect(screen.getAllByRole('checkbox')).toHaveLength(2)
+    expect(screen.getAllByRole('checkbox')).toHaveLength(1)
     fireEvent.click(screen.getByRole('checkbox', { name: /I agree to the Terms/ }))
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
@@ -109,12 +109,20 @@ describe('Pre-qualification navigation', () => {
     expect(window.location.hash).toBe('#step-size')
   })
 
-  it('marketing permission alone cannot advance without the required agreement', () => {
+  it('asks for one combined agreement covering marketing consent and the Terms', () => {
     open('contact', contactAnswers)
-    fireEvent.click(screen.getByRole('checkbox', { name: /By checking this box/ }))
+    const boxes = screen.getAllByRole('checkbox')
+    expect(boxes).toHaveLength(1)
+    const box = boxes[0]
+    if (!box) throw new Error('expected a single agreement checkbox')
+    const label = box.closest('label')?.textContent || ''
+    expect(label).toMatch(/By checking this box/)
+    expect(label).toMatch(/Do Not Call/)
+    expect(label).toMatch(/I agree to the Terms & Conditions/)
+    expect(label).toMatch(/Privacy Policy/)
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-contact')
-    fireEvent.click(screen.getByRole('checkbox', { name: /I agree to the Terms/ }))
+    fireEvent.click(box)
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
   })
