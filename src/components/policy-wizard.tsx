@@ -363,7 +363,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
       const expOk = expiryValid(answers.expiry)
       const ready = Boolean(answers.accountName) && (isBank ? routingInfo.status === 'verified' && answers.account.length >= 4 : cardOk && expOk && answers.paymentZip.length === 5)
       const digits = (key: StringAnswerKey, max: number) => (event: React.ChangeEvent<HTMLInputElement>) => update(key, event.target.value.replace(/\D/g, '').slice(0, max))
-      return shell('Choose your preferred payment method to continue.', '', <form className="centered-step pay-form" onSubmit={(event) => { event.preventDefault(); if (!ready) { setError(isBank ? 'Please complete your bank details — the routing number must verify.' : 'Please enter a valid card number, expiry and ZIP.'); return } setPaymentSavedAt(new Date()); go('payment-saved') }}>
+      return shell('Choose your preferred payment method to continue.', '', <form className="centered-step pay-form" onSubmit={(event) => { event.preventDefault(); if (!ready) { setError(isBank ? 'Please enter a valid routing number and complete your bank details.' : 'Please enter a valid card number, expiry and ZIP.'); return } setPaymentSavedAt(new Date()); go('payment-saved') }}>
         <Radio.Root aria-label="Payment method" value={answers.paymentMethod} onValueChange={(value) => update('paymentMethod', value)} className="identity-choices pay-method-choices">
           {(['EFT', 'Debit or credit card'] as const).map((option) => <Radio.Item className="identity-choice pay-method-choice" key={option} value={option} onClick={() => update('paymentMethod', option)}><span className="pay-method-icon" aria-hidden="true">{option === 'EFT' ? <Landmark /> : <CreditCard />}</span><strong>{option}</strong></Radio.Item>)}
         </Radio.Root>
@@ -371,12 +371,9 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
           {isBank ? <>
             {tile('accountName', 'Account holder name', false, { autoComplete: 'name' })}
             <label className={`contact-tile${answers.routing ? ' is-filled' : ''}`}><span className="contact-tile-label">Routing number<span className="contact-required" aria-hidden="true"> *</span></span>
-              <div className={`pay-input is-${routingInfo.status}`}><Landmark className="pay-lead" aria-hidden="true" /><input className="text-field" inputMode="numeric" autoComplete="off" placeholder="9 digits" value={answers.routing} onChange={digits('routing', 9)} /><span className="pay-count">{routingInfo.status === 'verified' ? <Check /> : `${answers.routing.length}/9`}</span></div>
+              <div className={`pay-input${routingInfo.status === 'invalid' ? ' is-invalid' : ''}`}><input className="text-field" inputMode="numeric" autoComplete="off" placeholder="9 digits" value={answers.routing} onChange={digits('routing', 9)} /></div>
             </label>
-            <div className="pay-status" aria-live="polite">
-              {routingInfo.status === 'verified' && <div className="bank-chip"><span className="bank-chip-icon"><Landmark /></span><span><strong>{routingInfo.bank}</strong><small>{routingInfo.detail}</small></span><span className="bank-chip-ok"><ShieldCheck /> Verified</span></div>}
-              {routingInfo.status === 'invalid' && <p className="pay-error"><AlertCircle /> We couldn’t find that routing number. Check the 9 digits at the bottom-left of a check.</p>}
-            </div>
+            {routingInfo.status === 'invalid' && <p className="pay-error" role="alert"><AlertCircle /> Please check your 9-digit routing number.</p>}
             <label className={`contact-tile${answers.account ? ' is-filled' : ''}`}><span className="contact-tile-label">Account number<span className="contact-required" aria-hidden="true"> *</span></span>
               <div className="pay-input"><input className="text-field" type="password" inputMode="numeric" autoComplete="off" placeholder="4–17 digits" value={answers.account} onChange={digits('account', 17)} /></div>
             </label>
