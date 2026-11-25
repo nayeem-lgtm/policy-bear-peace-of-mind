@@ -33,15 +33,12 @@ export function SignatureFlow(props: Props) {
   return <div className="sign-flow">
     <ol className="sign-stepper" aria-label="Signature progress"><li className={authorizing ? 'complete' : 'current'} aria-current={!authorizing ? 'step' : undefined}><span>{authorizing ? <Check /> : '1'}</span>Choose PIN delivery method</li><li className={authorizing ? 'current' : ''} aria-current={authorizing ? 'step' : undefined}><span>2</span>Authorize Signature</li></ol>
     {!authorizing ? <div className="sign-delivery">
-      <h3>Send application documents for signature</h3>
-      <p className="sign-intro">{props.name ? <><strong className="sign-client-name">{props.name}</strong> will review the application and authorization forms before signing.</> : 'The insured person will review the application and authorization forms before signing.'}</p>
-      <h4>Choose PIN delivery method</h4>
+      <h4 className="sign-delivery-label">How should we send your signing PIN?</h4>
       <Radio.Root aria-label="PIN delivery method" value={props.delivery} onValueChange={(value) => props.onDelivery(value as PinDelivery)} className="identity-choices sign-delivery-choices">
         {(['Email', 'Text Message'] as const).map((method) => <Radio.Item key={method} value={method} className="identity-choice"><span className="sign-choice-icon">{method === 'Email' ? <Mail /> : <MessageSquare />}</span><strong>{method}</strong></Radio.Item>)}
       </Radio.Root>
       {props.delivery && <p className="sign-destination">{destination || `Please add your ${props.delivery === 'Email' ? 'email address' : 'mobile number'} in contact details.`}</p>}
       <Button type="button" variant="action" className="revisit-next sign-primary" disabled={!available} onClick={props.onConfirm}>Confirm and send documents</Button>
-      <p className="sign-demo-note">Preview only — no email or text message is sent.</p>
     </div> : <div className="sign-authorize-layout">
       <section className="sign-document-view" aria-label="Review document">
         <div className="sign-document-toolbar"><span><FileText />Review Document</span><select aria-label="Document to review" value={document} onChange={(event) => setDocument(event.target.value)}>{['Application', 'Authorizations', 'Payment authorization'].map((value) => <option key={value}>{value}</option>)}</select></div>
