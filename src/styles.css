@@ -1950,6 +1950,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .card-brand { position: absolute; right: 0; font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: var(--primary); color: var(--primary-foreground); }
 .pay-panel .revisit-next:disabled { opacity: .45; cursor: not-allowed; }
 .pay-form .panel-foot { justify-content: center; }
+.routing-confirmation { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 34px; padding: 5px 10px; border-left: 2px solid var(--brand-action); animation: routing-confirmation-in 220ms ease-out; }
+.routing-confirmation-name { min-width: 0; font-size: 12px; font-weight: 600; line-height: 1.5; color: var(--brand-deep); overflow-wrap: anywhere; }
+.routing-confirmation-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; white-space: nowrap; color: var(--success); }
+.routing-confirmation-status svg { width: 17px; height: 17px; flex: none; stroke-width: 1.8; }
+@keyframes routing-confirmation-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .routing-confirmation { animation: none; } }
 .pay-error { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--destructive); }
 .pay-error svg { width: 15px; height: 15px; flex: none; }
 @media (max-width: 560px) { .pay-fields-pair { grid-template-columns: minmax(0, 1fr); } }
