@@ -13,6 +13,15 @@ type Props = {
   coverage: number; monthly: number; paymentMethod: string
 }
 
+export function SignatureMark() {
+  return <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <path className="sign-mark-script" d="M3.2 21.5c2.6 0 3-8.2 5.4-8.2s2.2 8.2 4.7 8.2 2.4-5.6 4.3-5.6" strokeWidth="2.2" strokeLinecap="round" />
+    <path className="sign-mark-flourish" d="M4.6 26.6c6.6-1.5 13.6-1.7 20.2-3.6" strokeWidth="2.2" strokeLinecap="round" />
+    <path className="sign-mark-pen" d="M18.4 15.1 27.2 6.3" strokeWidth="3.4" strokeLinecap="round" />
+    <circle className="sign-mark-nib" cx="17.6" cy="15.9" r="1.5" />
+  </svg>
+}
+
 export function SignatureFlow(props: Props) {
   const [pin, setPin] = useState('')
   const [agreed, setAgreed] = useState(false)
@@ -25,7 +34,7 @@ export function SignatureFlow(props: Props) {
     <ol className="sign-stepper" aria-label="Signature progress"><li className={authorizing ? 'complete' : 'current'} aria-current={!authorizing ? 'step' : undefined}><span>{authorizing ? <Check /> : '1'}</span>Choose PIN delivery method</li><li className={authorizing ? 'current' : ''} aria-current={authorizing ? 'step' : undefined}><span>2</span>Authorize Signature</li></ol>
     {!authorizing ? <div className="sign-delivery">
       <h3>Send application documents for signature</h3>
-      <p className="sign-intro">{props.name || 'The insured person'} will review the application and authorization forms before signing.</p>
+      <p className="sign-intro">{props.name ? <><strong className="sign-client-name">{props.name}</strong> will review the application and authorization forms before signing.</> : 'The insured person will review the application and authorization forms before signing.'}</p>
       <h4>Choose PIN delivery method</h4>
       <Radio.Root aria-label="PIN delivery method" value={props.delivery} onValueChange={(value) => props.onDelivery(value as PinDelivery)} className="identity-choices sign-delivery-choices">
         {(['Email', 'Text Message'] as const).map((method) => <Radio.Item key={method} value={method} className="identity-choice"><span className="sign-choice-icon">{method === 'Email' ? <Mail /> : <MessageSquare />}</span><strong>{method}</strong></Radio.Item>)}

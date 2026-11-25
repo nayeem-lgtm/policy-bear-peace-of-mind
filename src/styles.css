@@ -2277,7 +2277,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .payment-confirmation-continue { align-self: center; justify-self: center; min-width: 180px; }
 @media (max-width: 480px) { .payment-receipt { padding: 20px 16px; } .payment-receipt-details { grid-template-columns: minmax(0, 1fr); gap: 18px; } .payment-receipt-total { font-size: 14px; } }
 .wizard-content:has(.sign-flow) { width: 100%; max-width: 960px; }
-.wizard-content:has(.sign-flow) .question-head { text-align: center; justify-content: center; }
+.wizard-content:has(.sign-flow) .question-head { display: block; text-align: center; margin-bottom: 24px; }
+.wizard-content:has(.sign-flow) .question-badge { width: 58px; height: 58px; margin: 0 auto 14px; background: var(--brand-soft-blue); border-color: color-mix(in oklab, var(--primary) 28%, transparent); box-shadow: 0 8px 20px -10px color-mix(in oklab, var(--primary) 50%, transparent); }
+.wizard-content:has(.sign-flow) .question-badge svg { width: 30px; height: 30px; }
+.wizard-content:has(.sign-flow) .question-head h2 { text-align: center; font-size: 27px; }
+.wizard-content:has(.sign-flow) .question-helper { text-align: center; font-size: 15px; }
+.sign-mark-script { stroke: var(--primary); }
+.sign-mark-flourish { stroke: var(--brand-action); }
+.sign-mark-pen { stroke: var(--brand-deep); }
+.sign-mark-nib { fill: var(--brand-action); }
+.sign-client-name { font-weight: 800; color: var(--primary); font-size: 1.2em; letter-spacing: .2px; background: color-mix(in oklab, var(--brand-action) 22%, transparent); border-radius: 7px; padding: 1px 9px; }
+.sign-intro .sign-client-name { font-size: 19px; }
 .sign-flow { width: 100%; color: var(--brand-deep); }
 .sign-stepper { display: flex; justify-content: center; align-items: center; gap: 28px; padding: 0; margin: 12px 0 32px; list-style: none; }
 .sign-stepper li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted-foreground); }
