@@ -1914,17 +1914,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 @media (prefers-reduced-motion: reduce) { .answer-list.beneficiary-list .answer-card { transition: none; } }
 
-/* Opt-in mobile verification (mock OTP) */
-.otp-box { margin: 4px 0 16px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in oklab, var(--primary) 4%, var(--background)); display: grid; gap: 8px; justify-items: start; }
-.otp-box.is-verified { border-color: color-mix(in oklab, var(--success) 40%, var(--border)); background: color-mix(in oklab, var(--success) 7%, var(--background)); }
-.otp-title { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--foreground); margin: 0; }
-.otp-title svg { width: 18px; height: 18px; color: var(--primary); }
-.otp-box.is-verified .otp-title svg { color: var(--success); }
-.otp-text { margin: 0; font-size: 14px; color: var(--muted-foreground); }
-.otp-disclosure { margin: 2px 0 0; font-size: 12.5px; line-height: 1.45; color: var(--muted-foreground); }
-.otp-field { max-width: 220px; letter-spacing: .5em; font-size: 22px; font-weight: 700; text-align: center; }
-.otp-box .revisit-next { margin: 2px 0 0; align-self: start; }
-
 /* Payment step */
 /* Payment step: centred header, identity-tile choices and contact-tile fields */
 .wizard-content:has(.pay-form) .question-head { display: block; text-align: center; margin-bottom: 22px; }
@@ -2188,11 +2177,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .centered-step .text-field { border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 14px; background: var(--card); box-shadow: 0 12px 24px -22px color-mix(in oklab, var(--brand-deep) 60%, transparent); transition: border-color 200ms, box-shadow 200ms, background 200ms; }
 .centered-step .text-field:hover { border-color: color-mix(in oklab, var(--primary) 42%, var(--border)); }
 .centered-step .text-field:focus { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 4%, var(--card)); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent); outline: none; }
-.centered-step .reconnect-number, .centered-step .otp-box, .centered-step .reconnect-permission { border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 60%, transparent); }
-.centered-step .otp-box { text-align: center; justify-items: center; }
-.centered-step .otp-box .revisit-next { margin-inline: auto; }
-.centered-step .otp-field { max-width: 240px; margin-inline: auto; text-align: center; letter-spacing: .4em; font-size: 22px; }
-.centered-step .otp-box.is-verified { border-color: var(--primary); background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 3%, var(--card)), color-mix(in oklab, var(--primary) 11%, var(--card))); }
+.centered-step .reconnect-number, .centered-step .reconnect-permission { border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: var(--card); box-shadow: 0 12px 24px -20px color-mix(in oklab, var(--brand-deep) 60%, transparent); }
 .centered-step .reconnect-demo, .centered-step .auto-next, .centered-step .skip-link { justify-self: center; text-align: center; }
 @media (max-width: 760px) { .three-fields { grid-template-columns: 1fr 1fr; } .three-fields > :first-child { grid-column: 1 / -1; } }
 .centered-step .reconnect-permission { padding: 18px 20px; } .centered-step .reconnect-permission .permission-optional { margin: 0 0 6px; }
@@ -2371,38 +2356,4 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .size-step .contact-tile input { height: 32px; font-size: 20px; }
 @media (max-width: 480px) { .measurement-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } .measurement-fields > :last-child { grid-column: 1 / -1; } }
 .phone-row { display: flex; align-items: center; gap: 8px; }
-.verify-chip, .verified-chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 700; }
-.verify-chip { border: 0; background: var(--primary); color: var(--primary-foreground); cursor: pointer; transition: opacity 200ms; }
-.verify-chip:disabled { opacity: .35; cursor: not-allowed; }
-.verified-chip { background: color-mix(in oklab, var(--success) 14%, var(--card)); color: var(--success); }
-.verified-chip svg { width: 14px; height: 14px; }
-.otp-panel { display: grid; justify-items: center; gap: 10px; padding: 16px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 18px; background: color-mix(in oklab, var(--primary) 4%, var(--card)); animation: otp-in 260ms ease-out; }
-.otp-panel-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--foreground); text-align: center; }
-.otp-panel-note { margin: 0; font-size: 12px; color: var(--muted-foreground); }
-.otp-cells { position: relative; display: grid; grid-template-columns: repeat(6, 44px); gap: 8px; }
-.otp-hidden-input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; font-size: 16px; }
-.otp-cell { display: grid; place-items: center; height: 52px; border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border)); border-radius: 14px; background: var(--card); font-size: 22px; font-weight: 700; color: var(--primary); transition: border-color 200ms, background 200ms; }
-.otp-cell.is-filled { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 11%, var(--card)); }
-.otp-cells:focus-within .otp-cell.is-active { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent); }
-@keyframes otp-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .otp-panel { animation: none; } }
-@media (max-width: 640px) { .contact-tiles.three, .contact-tiles.two { grid-template-columns: minmax(0, 1fr); } .contact-tiles.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } .contact-tiles.three .contact-tile:first-child { grid-column: 1 / -1; } .otp-cells { grid-template-columns: repeat(6, 38px); gap: 6px; } .otp-cell { height: 46px; } }
-.otp-panel-heading { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 16px; font-weight: 700; color: var(--brand-deep); }
-.otp-panel-heading svg { width: 18px; height: 18px; color: var(--primary); }
-.send-code-btn { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px -14px var(--primary); }
-.send-code-btn svg { width: 16px; height: 16px; }
-.send-code-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
-
-/* Themed Next / Send code buttons */
-.revisit-next, .send-code-btn { gap: 10px; height: 46px; padding: 0 6px 0 22px; border-radius: 999px; background: linear-gradient(135deg, var(--primary), color-mix(in oklab, var(--primary) 70%, var(--brand-deep))); color: var(--primary-foreground); font-size: 15px; font-weight: 700; letter-spacing: .01em; box-shadow: 0 14px 26px -16px color-mix(in oklab, var(--primary) 90%, transparent), inset 0 1px 0 color-mix(in oklab, white 25%, transparent); }
-.revisit-next svg, .send-code-btn svg { box-sizing: content-box; width: 16px; height: 16px; padding: 9px; border-radius: 50%; background: var(--brand-action); color: var(--brand-deep); }
-.centered-step > .revisit-next { margin: 6px auto 0; align-self: center; justify-self: center; }
-.revisit-next:hover:not(:disabled), .send-code-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 18px 30px -16px color-mix(in oklab, var(--primary) 95%, transparent); }
-.revisit-next:disabled, .send-code-btn:disabled { opacity: .4; box-shadow: none; }
-
-/* Professional Next / Send code — clean solid brand button */
-.revisit-next, .send-code-btn { gap: 8px; height: 46px; min-width: 140px; justify-content: center; padding: 0 26px; border-radius: 12px; background: var(--primary); color: var(--primary-foreground); font-size: 15px; font-weight: 600; letter-spacing: 0; box-shadow: 0 1px 2px color-mix(in oklab, var(--brand-deep) 20%, transparent), 0 8px 18px -12px color-mix(in oklab, var(--primary) 70%, transparent); transition: background 180ms, box-shadow 180ms, transform 180ms; }
-.revisit-next svg, .send-code-btn svg { width: 16px; height: 16px; padding: 0; border-radius: 0; background: none; color: currentColor; }
-.revisit-next:hover:not(:disabled), .send-code-btn:hover:not(:disabled) { background: color-mix(in oklab, var(--primary) 86%, var(--brand-deep)); transform: none; box-shadow: 0 1px 2px color-mix(in oklab, var(--brand-deep) 20%, transparent), 0 10px 20px -12px color-mix(in oklab, var(--primary) 80%, transparent); }
-.revisit-next:active:not(:disabled), .send-code-btn:active:not(:disabled) { transform: translateY(1px); }
-.revisit-next:disabled, .send-code-btn:disabled { opacity: 1; background: color-mix(in oklab, var(--primary) 12%, var(--card)); color: color-mix(in oklab, var(--primary) 45%, var(--muted-foreground)); box-shadow: none; }
+@media (max-width: 640px) { .contact-tiles.three, .contact-tiles.two { grid-template-columns: minmax(0, 1fr); } .contact-tiles.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } .contact-tiles.three .contact-tile:first-child { grid-column: 1 / -1; } }

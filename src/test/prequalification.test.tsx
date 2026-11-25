@@ -87,36 +87,30 @@ describe('Pre-qualification navigation', () => {
     expect(screen.getByRole('textbox', { name: 'First name' })).toBeInTheDocument()
   })
 
-  it('collects contact, verifies the phone and asks permission on one page', () => {
+  it('collects contact and asks permission on one page', () => {
     open('contact')
     fillContact()
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-contact')
-    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
-    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     expect(screen.getAllByRole('checkbox')).toHaveLength(2)
     fireEvent.click(screen.getByRole('checkbox', { name: /I agree to the Terms/ }))
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-size')
   })
 
-  it('requires the OTP before continuing without marketing permission', () => {
+  it('requires the Terms agreement before continuing without marketing permission', () => {
     open('contact', contactAnswers)
-    expect(screen.queryByRole('button', { name: 'Next' })).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
-    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
     fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     expect(window.location.hash).toBe('#step-contact')
     fireEvent.click(screen.getByRole('checkbox', { name: /I agree to the Terms/ }))
+    expect(screen.getByRole('button', { name: 'Next' })).toBeEnabled()
     fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     expect(window.location.hash).toBe('#step-size')
   })
 
   it('marketing permission alone cannot advance without the required agreement', () => {
     open('contact', contactAnswers)
-    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
-    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     fireEvent.click(screen.getByRole('checkbox', { name: /By checking this box/ }))
     act(() => { vi.advanceTimersByTime(1500) })
     expect(window.location.hash).toBe('#step-contact')
@@ -125,7 +119,7 @@ describe('Pre-qualification navigation', () => {
     expect(window.location.hash).toBe('#step-size')
   })
 
-  it('stays on contact details until verified or skipped, with no Continue button', () => {
+  it('stays on contact details until the Terms agreement is given, with no Continue button', () => {
     open('contact')
     expect(screen.queryByRole('button', { name: /Continue/ })).toBeNull()
     fillContact()
@@ -175,8 +169,6 @@ describe('Revisiting a step', () => {
     expect(window.location.hash).toBe('#step-contact')
     fillContact()
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
-    fireEvent.click(screen.getByRole('button', { name: /Send code/ }))
-    fireEvent.change(screen.getByRole('textbox', { name: '6-digit verification code' }), { target: { value: '123456' } })
     act(() => { vi.advanceTimersByTime(2000) })
     expect(window.location.hash).toBe('#step-contact')
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
