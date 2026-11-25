@@ -375,7 +375,7 @@ export function PolicyWizard({ onStepChange }: { onStepChange: (step: number) =>
             </label>
             {routingInfo.status === 'verified' && <div className="routing-confirmation" role="status">
               <span className="routing-confirmation-name">{routingInfo.bank === 'U.S. bank verified' ? 'Routing number' : routingInfo.bank}</span>
-              <span className="routing-confirmation-status"><ShieldCheck aria-hidden="true" /> Format verified</span>
+              <span className="routing-confirmation-status" title="Routing number checked; account ownership is not verified."><ShieldCheck aria-hidden="true" /> Verified</span>
             </div>}
             {routingInfo.status === 'invalid' && <p className="pay-error" role="alert"><AlertCircle /> Please check your 9-digit routing number.</p>}
             <label className={`contact-tile${answers.account ? ' is-filled' : ''}`}><span className="contact-tile-label">Account number<span className="contact-required" aria-hidden="true"> *</span></span>

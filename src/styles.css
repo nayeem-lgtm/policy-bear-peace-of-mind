@@ -1952,7 +1952,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .pay-form .panel-foot { justify-content: center; }
 .routing-confirmation { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 34px; padding: 5px 10px; border-left: 2px solid var(--brand-action); animation: routing-confirmation-in 220ms ease-out; }
 .routing-confirmation-name { min-width: 0; font-size: 12px; font-weight: 600; line-height: 1.5; color: var(--brand-deep); overflow-wrap: anywhere; }
-.routing-confirmation-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; white-space: nowrap; color: var(--success); }
+.routing-confirmation-status { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px; border: 1px solid color-mix(in oklab, var(--success) 16%, transparent); background: color-mix(in oklab, var(--success) 7%, var(--background)); font-size: 11px; font-weight: 600; white-space: nowrap; color: var(--success); }
 .routing-confirmation-status svg { width: 17px; height: 17px; flex: none; stroke-width: 1.8; }
 @keyframes routing-confirmation-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .routing-confirmation { animation: none; } }
