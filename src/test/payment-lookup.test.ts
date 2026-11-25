@@ -11,6 +11,13 @@ describe('payment lookup', () => {
   it('waits until all 9 digits are entered', () => {
     expect(lookupRouting('0210').status).toBe('incomplete')
   })
+  it('shows a demo bank name for a valid routing number it does not recognise', () => {
+    const result = lookupRouting('091000019')
+    expect(result.status).toBe('verified')
+    if (result.status !== 'verified') return
+    expect(result.bank).toBe('Pacific Meridian Bank')
+    expect(lookupRouting('091000019')).toEqual(result)
+  })
   it('detects card brand and validates the number', () => {
     expect(cardBrand('4111111111111111')).toBe('Visa')
     expect(luhnValid('4111111111111111')).toBe(true)
